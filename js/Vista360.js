@@ -8,6 +8,15 @@ class Component extends DCLogic {
     super(p);
     this.state = { period: 'all', group: false, hidden: {}, nba: {} };
     this.data = this.buildSeries();
+    // Repinta cuando el panel oculto de feature flags cambia algo (p. ej.
+    // showNBA), para que renderVals() vuelva a leer AlianzaFlags.get(...).
+    this._onFlagsChanged = () => this.forceUpdate();
+  }
+  componentDidMount() {
+    window.addEventListener(window.AlianzaFlags.CHANGE_EVENT, this._onFlagsChanged);
+  }
+  componentWillUnmount() {
+    window.removeEventListener(window.AlianzaFlags.CHANGE_EVENT, this._onFlagsChanged);
   }
   buildSeries() {
     const n = 127, out = { months: [], s: {} };
@@ -210,6 +219,8 @@ class Component extends DCLogic {
     return {
       inst,
       k, nba, factors, gauge, align, donut,
+      showNBA: window.AlianzaFlags.get('showNBA'),
+      showBriefing: window.AlianzaFlags.get('showBriefing'),
       nbaDone: done + ' de 3 revisadas',
       scopeLabel: st.group ? 'grupo familiar' : 'cliente individual',
       indStyle: btn(!st.group) + ' height: 40px;', grpStyle: btn(st.group) + ' height: 40px;',

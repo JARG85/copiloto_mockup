@@ -5,6 +5,8 @@
 <link rel="icon" href="../assets/favicon.ico" sizes="any">
 <link rel="icon" href="../assets/favicon-32.png" type="image/png">
 <link rel="apple-touch-icon" href="../assets/favicon-180.png">
+<script src="../js/feature-flags.js"></script>
+<script src="../js/dev-panel.js"></script>
 <script src="../js/resources.js"></script>
 <script src="../vendor/dc-runtime.js"></script>
 </head>
@@ -31,6 +33,7 @@
         <svg width="20" height="20" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="8" r="3"></circle><circle cx="17" cy="9" r="2.5"></circle><path d="M2 20a6 6 0 0 1 12 0"></path><path d="M14 20a4 4 0 0 1 8 0"></path></svg>Grupo familiar</a>
       <a href="RentaVariable.dc.html" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 10px; color: #D6E4F0; text-decoration: none; font-size: 14.5px; font-weight: 600">
         <svg width="20" height="20" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 20h18"></path><path d="m4 15 5-5 4 3 7-7"></path></svg>Renta variable</a>
+      <a href="Pensiones.dc.html" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 10px; color: #D6E4F0; text-decoration: none; font-size: 14.5px; font-weight: 600"><svg width="20" height="20" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10h18"></path><path d="M12 2 3 7h18z"></path><path d="M5 10v9"></path><path d="M9 10v9"></path><path d="M15 10v9"></path><path d="M19 10v9"></path><path d="M3 21h18"></path></svg>Pensiones</a>
       <a href="Cartera.dc.html" style="display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 10px; color: #D6E4F0; text-decoration: none; font-size: 14.5px; font-weight: 600">
         <span style="display: flex; align-items: center; gap: 12px"><svg width="20" height="20" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 8 3 8H3s3-1 3-8"></path><path d="M10 20a2 2 0 0 0 4 0"></path></svg>Alertas</span>
         <span style="min-width: 22px; height: 22px; border-radius: 11px; background: #D2D755; color: #003057; font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center">7</span></a>
@@ -119,6 +122,8 @@
       </section>
 
       <!-- AI BRIEFING -->
+      <!-- Oculta por defecto; se activa desde el panel oculto de feature flags (showBriefing). -->
+      <sc-if value="{{showBriefing}}" hint-placeholder-val="{{ true }}">
       <section style="background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 16px; padding: 24px 28px; display: flex; flex-direction: column; gap: 16px">
         <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap">
           <div style="display: flex; gap: 12px; align-items: center">
@@ -142,6 +147,7 @@
           <li>Sus dos empresas concentran el 43 % del patrimonio del grupo; el encargo fiduciario de Inversiones Mejía SAS vence el 18 nov. <a href="#" style="font-size: 12px; font-weight: 700; text-decoration: none; padding: 1px 6px; border-radius: 6px; background: #E3F1FB">[4] Contratos</a></li>
         </ul>
       </section>
+      </sc-if>
 
       <!-- EVOLUTION + COMPOSITION -->
       <div style="display: flex; flex-wrap: wrap; gap: 24px">
@@ -369,6 +375,8 @@
 
       <!-- NBA + ALERTS + TIMELINE -->
       <div style="display: flex; flex-wrap: wrap; gap: 24px">
+        <!-- Oculta por defecto; se activa desde el panel oculto de feature flags (showNBA). -->
+        <sc-if value="{{showNBA}}" hint-placeholder-val="{{ true }}">
         <section style="flex: 999 1 560px; min-width: 0; background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 16px">
           <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap">
             <div style="display: flex; flex-direction: column; gap: 4px">
@@ -402,6 +410,7 @@
             </article>
           </sc-for>
         </section>
+        </sc-if>
 
         <div style="flex: 1 1 320px; display: flex; flex-direction: column; gap: 24px">
           <section style="background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 14px">
@@ -437,7 +446,7 @@
         <section style="flex: 1 1 420px; min-width: 0; position: relative; overflow: hidden; background: #003057; color: #FFFFFF; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 14px">
           <div aria-hidden="true" style="position: absolute; inset: 0; background: #0B3D6B; clip-path: polygon(0% 0%, 100% 0%, 100% 18%, 0% 62%)"></div>
           <div style="position: relative; display: flex; justify-content: space-between; align-items: center; gap: 12px">
-            <h2 style="margin: 0; font-size: 18px">Pregúntale al copiloto</h2>
+            <h2 style="margin: 0; font-size: 18px">Pregúntale al asistente</h2>
             <span style="font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 999px; background: #D2D755; color: #003057">Con evidencia</span>
           </div>
           <div style="position: relative; align-self: flex-end; max-width: 85%; padding: 12px 14px; border-radius: 14px 14px 4px 14px; background: #0072CE; font-size: 14px; line-height: 1.5">¿Qué fondo de renta fija encaja con su perfil y cuánto rentó en el último año?</div>
