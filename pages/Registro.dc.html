@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es"><head>
+<meta charset="utf-8">
+<title>Solicitud de registro · Plataforma Asesor 360</title>
+<script src="../js/resources.js"></script>
+<script src="../vendor/dc-runtime.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="../css/fonts.css">
+<link rel="stylesheet" href="../css/Registro.css">
+</helmet>
+<div style="min-height: 1080px; font-family: 'Open Sans', 'Segoe UI', system-ui, sans-serif; color: #1B2A3A; background: #F4F6F9; display: flex; flex-direction: column">
+
+  <header style="position: relative; overflow: hidden; background: #003057; padding: 22px 48px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap">
+    <div aria-hidden="true" style="position: absolute; inset: 0; background: #0072CE; clip-path: polygon(78% 100%, 100% 0%, 100% 100%)"></div>
+    <div aria-hidden="true" style="position: absolute; inset: 0; background: #D2D755; clip-path: polygon(96% 100%, 100% 82%, 100% 100%)"></div>
+    <img src="../assets/alianza-logo.png" alt="Alianza Fiduciaria" style="position: relative; width: 150px; height: auto">
+    <a href="../index.html" style="position: relative; color: #FFFFFF; font-size: 14px; font-weight: 600; text-decoration: none; display: flex; align-items: center; gap: 8px; min-height: 44px">
+      <svg width="18" height="18" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg>
+      Volver al ingreso
+    </a>
+  </header>
+
+  <main style="flex: 1; width: 100%; max-width: 1200px; margin: 0 auto; box-sizing: border-box; padding: 48px 32px 64px; display: flex; flex-wrap: wrap; gap: 32px; align-items: flex-start">
+
+    <section style="flex: 999 1 600px; min-width: 0; background: #FFFFFF; border-radius: 16px; border: 1px solid #E1E7EE; padding: 40px; display: flex; flex-direction: column; gap: 32px">
+      <div style="display: flex; flex-direction: column; gap: 8px">
+        <span style="font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #0072CE">Nuevo usuario</span>
+        <h1 style="margin: 0; font-size: 32px; font-weight: 700; color: #003057">Solicitud de acceso a la plataforma</h1>
+        <p style="margin: 0; font-size: 15px; line-height: 1.6; color: #4F5D6B">Tu líder aprobará la solicitud y Ciberseguridad habilitará tu perfil sobre la cuenta corporativa.</p>
+      </div>
+
+      <ol style="list-style: none; margin: 0; padding: 0; display: flex; gap: 12px; flex-wrap: wrap">
+        <li style="flex: 1 1 160px; display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: 10px; background: #003057; color: #FFFFFF; font-size: 14px; font-weight: 600"><span style="width: 26px; height: 26px; border-radius: 50%; background: #D2D755; color: #003057; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800">1</span>Datos personales</li>
+        <li style="flex: 1 1 160px; display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: 10px; background: #EEF4FA; color: #003057; font-size: 14px; font-weight: 600"><span style="width: 26px; height: 26px; border-radius: 50%; background: #FFFFFF; border: 1px solid #9FB4C8; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800">2</span>Rol y oficina</li>
+        <li style="flex: 1 1 160px; display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: 10px; background: #EEF4FA; color: #003057; font-size: 14px; font-weight: 600"><span style="width: 26px; height: 26px; border-radius: 50%; background: #FFFFFF; border: 1px solid #9FB4C8; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800">3</span>Validación</li>
+      </ol>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px">
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <label for="nom" style="font-size: 14px; font-weight: 600">Nombres</label>
+          <input id="nom" type="text" placeholder="Ej. María Fernanda" style="height: 48px; padding: 0 14px; border: 1px solid #C9D2DC; border-radius: 10px; font-size: 15px; font-family: inherit; background: #F8FAFC">
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <label for="ape" style="font-size: 14px; font-weight: 600">Apellidos</label>
+          <input id="ape" type="text" placeholder="Ej. Restrepo Gómez" style="height: 48px; padding: 0 14px; border: 1px solid #C9D2DC; border-radius: 10px; font-size: 15px; font-family: inherit; background: #F8FAFC">
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <label for="tdoc" style="font-size: 14px; font-weight: 600">Tipo de documento</label>
+          <sc-raw-select id="tdoc" style="height: 48px; padding: 0 12px; border: 1px solid #C9D2DC; border-radius: 10px; font-size: 15px; font-family: inherit; background: #F8FAFC; color: #1B2A3A">
+            <option>Cédula de ciudadanía</option><option>Cédula de extranjería</option><option>Pasaporte</option>
+          </sc-raw-select>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <label for="ndoc" style="font-size: 14px; font-weight: 600">Número de documento</label>
+          <input id="ndoc" type="text" placeholder="Sin puntos ni espacios" style="height: 48px; padding: 0 14px; border: 1px solid #C9D2DC; border-radius: 10px; font-size: 15px; font-family: inherit; background: #F8FAFC">
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <label for="mail" style="font-size: 14px; font-weight: 600">Correo corporativo</label>
+          <input id="mail" type="email" placeholder="nombre.apellido@alianza.com.co" style="height: 48px; padding: 0 14px; border: 1px solid #C9D2DC; border-radius: 10px; font-size: 15px; font-family: inherit; background: #F8FAFC">
+          <span style="font-size: 12.5px; color: #5B6876">Solo se aceptan dominios @alianza.com.co</span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <label for="cel" style="font-size: 14px; font-weight: 600">Celular</label>
+          <input id="cel" type="tel" placeholder="+57 300 000 0000" style="height: 48px; padding: 0 14px; border: 1px solid #C9D2DC; border-radius: 10px; font-size: 15px; font-family: inherit; background: #F8FAFC">
+        </div>
+      </div>
+
+      <fieldset style="border: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 14px">
+        <legend style="font-size: 14px; font-weight: 600; margin-bottom: 14px">Rol en la plataforma</legend>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px">
+          <sc-for list="{{roles}}" as="r" hint-placeholder-count="4">
+            <button type="button" sc-camel-on-click="{{r.pick}}" aria-pressed="{{r.selected}}" style="{{r.style}}">
+              <span style="font-size: 15px; font-weight: 700; color: #003057">{{r.name}}</span>
+              <span style="font-size: 13px; line-height: 1.45; color: #4F5D6B">{{r.desc}}</span>
+            </button>
+          </sc-for>
+        </div>
+      </fieldset>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px">
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <label for="ofi" style="font-size: 14px; font-weight: 600">Regional / oficina</label>
+          <sc-raw-select id="ofi" style="height: 48px; padding: 0 12px; border: 1px solid #C9D2DC; border-radius: 10px; font-size: 15px; font-family: inherit; background: #F8FAFC; color: #1B2A3A">
+            <option>Seleccionar…</option><option>Bogotá</option><option>Medellín</option><option>Cali</option><option>Barranquilla</option><option>Bucaramanga</option>
+          </sc-raw-select>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <label for="lid" style="font-size: 14px; font-weight: 600">Líder que aprueba</label>
+          <input id="lid" type="email" placeholder="lider@alianza.com.co" style="height: 48px; padding: 0 14px; border: 1px solid #C9D2DC; border-radius: 10px; font-size: 15px; font-family: inherit; background: #F8FAFC">
+        </div>
+      </div>
+
+      <label style="display: flex; gap: 12px; align-items: flex-start; font-size: 14px; line-height: 1.55; color: #3D4C5B">
+        <input type="checkbox" style="width: 18px; height: 18px; margin-top: 2px; accent-color: #0072CE; flex: none">
+        <span>Acepto la política de tratamiento de datos personales y el código de uso de herramientas de IA de Alianza. Entiendo que mis consultas quedan registradas con fines de auditoría.</span>
+      </label>
+
+      <div style="display: flex; gap: 14px; flex-wrap: wrap; justify-content: flex-end">
+        <a href="../index.html" style="display: flex; align-items: center; justify-content: center; height: 50px; padding: 0 26px; border-radius: 10px; border: 1px solid #C9D2DC; color: #003057; text-decoration: none; font-size: 15px; font-weight: 600">Cancelar</a>
+        <a href="../index.html" style="display: flex; align-items: center; justify-content: center; height: 50px; padding: 0 30px; border-radius: 10px; background: #0072CE; color: #FFFFFF; text-decoration: none; font-size: 15px; font-weight: 700">Enviar solicitud</a>
+      </div>
+    </section>
+
+    <aside style="flex: 1 1 300px; display: flex; flex-direction: column; gap: 20px">
+      <div style="background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 16px; padding: 28px; display: flex; flex-direction: column; gap: 20px">
+        <h2 style="margin: 0; font-size: 18px; color: #003057">¿Cómo se aprueba tu acceso?</h2>
+        <div style="display: flex; gap: 14px">
+          <span style="flex: none; width: 34px; height: 34px; border-radius: 10px; background: #EEF4FA; color: #0072CE; display: flex; align-items: center; justify-content: center; font-weight: 800">1</span>
+          <div style="display: flex; flex-direction: column; gap: 4px"><strong style="font-size: 14px">Envías la solicitud</strong><span style="font-size: 13px; line-height: 1.5; color: #4F5D6B">Con tu rol y oficina.</span></div>
+        </div>
+        <div style="display: flex; gap: 14px">
+          <span style="flex: none; width: 34px; height: 34px; border-radius: 10px; background: #EEF4FA; color: #0072CE; display: flex; align-items: center; justify-content: center; font-weight: 800">2</span>
+          <div style="display: flex; flex-direction: column; gap: 4px"><strong style="font-size: 14px">Tu líder la aprueba</strong><span style="font-size: 13px; line-height: 1.5; color: #4F5D6B">Recibe un correo y valida la cartera asignada.</span></div>
+        </div>
+        <div style="display: flex; gap: 14px">
+          <span style="flex: none; width: 34px; height: 34px; border-radius: 10px; background: #EEF4FA; color: #0072CE; display: flex; align-items: center; justify-content: center; font-weight: 800">3</span>
+          <div style="display: flex; flex-direction: column; gap: 4px"><strong style="font-size: 14px">Ciberseguridad habilita el perfil</strong><span style="font-size: 13px; line-height: 1.5; color: #4F5D6B">Permisos de mínimo privilegio sobre Entra ID.</span></div>
+        </div>
+      </div>
+      <div style="position: relative; overflow: hidden; background: #003057; color: #FFFFFF; border-radius: 16px; padding: 28px; display: flex; flex-direction: column; gap: 10px">
+        <div aria-hidden="true" style="position: absolute; inset: 0; background: #0072CE; clip-path: polygon(55% 100%, 100% 30%, 100% 100%)"></div>
+        <strong style="position: relative; font-size: 16px">Solo verás tu cartera</strong>
+        <span style="position: relative; font-size: 13.5px; line-height: 1.55; color: #D6E4F0">El acceso a datos de clientes se limita a la cartera asignada por tu líder y a tu rol.</span>
+      </div>
+    </aside>
+  </main>
+</div>
+</x-dc>
+<script src="../js/Registro.js"></script>
+<script type="text/x-dc" data-dc-script="" data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1080}}">
+const Component = window.AppLogic.Registro(DCLogic, StreamableLogic, React);
+</script>
+
+
+</body></html>
