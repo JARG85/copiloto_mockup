@@ -141,6 +141,24 @@ Si alguien entra por URL a un módulo oculto, ve un aviso con enlace a Mi carter
 Para un **módulo nuevo**: agrégalo a `MODULOS` en `js/ui.js` (con su `flag`
 y `enDef`) y crea su página copiando la estructura de `pages/Setup.dc.html`.
 
+## Responsive
+
+Estilos compartidos en `css/app.css` (menú y puntos de quiebre). El
+contenido ocupa siempre todo el ancho disponible.
+
+| Ancho | Menú | Contenido |
+|---|---|---|
+| ≥ 1280 px | Menú lateral completo | Vista 360 en una pantalla, sin scroll de página |
+| 1024–1279 px | Riel de iconos (etiqueta como tooltip; punto verde = "En definición") | Tabla del 360 sin la columna "% de su línea" |
+| < 1024 px | Barra superior con botón ☰ que despliega el menú (Esc lo cierra) | Columnas apiladas; KPI en 2 columnas |
+| < 768 px | Igual | Tablas como tarjetas; el Asistente pasa a botón redondo |
+
+Clases útiles: `.kpi-grid` (rejilla de indicadores), `.rt` / `.rt-head` /
+`.rt-row` / `.rt-full` (tablas en grid que pasan a tarjetas en el teléfono).
+
+El login ocupa exactamente la altura de la ventana (`css/Main.css`) y apila
+sus dos paneles en pantallas angostas.
+
 ## Accesibilidad
 
 - Objetivos clicables de al menos 44 px en las pantallas internas.

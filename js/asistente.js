@@ -31,6 +31,7 @@
     btn = el('button', 'position: fixed; right: 0; top: 50%; transform: translateY(-50%); z-index: 2147483000; display: flex; align-items: center; gap: 10px; width: 44px; padding: 16px 0; border: none; border-radius: 12px 0 0 12px; writing-mode: vertical-rl; background: #003057; color: #FFFFFF; font-family: ' + FONT + '; font-size: 13.5px; font-weight: 700; cursor: pointer; box-shadow: -4px 4px 16px rgba(0,48,87,.3)',
       '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00A3E0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"></path><path d="M8.5 11h.01M12 11h.01M15.5 11h.01"></path></svg>Asistente Alianza');
     btn.type = 'button';
+    btn.className = 'asistente-tab';
     btn.setAttribute('aria-haspopup', 'dialog');
     btn.addEventListener('click', open);
     document.body.appendChild(btn);

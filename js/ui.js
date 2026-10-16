@@ -94,3 +94,34 @@ window.AlianzaUI = (function () {
   }
   return { seg: seg, pill: pill, chip: chip, rentChip: rentChip, riesgoChip: riesgoChip, watchFlags: watchFlags };
 })();
+
+/* Menú desplegable en pantallas angostas (< 1024 px, ver css/app.css):
+   el botón ☰ (data-nav-toggle) agrega la clase .nav-open a <html>.
+   Se cierra con Esc, al volver a pulsar el botón o al pasar a escritorio. */
+(function () {
+  function toggle(btn, open) {
+    document.documentElement.classList.toggle('nav-open', open);
+    if (btn) {
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      btn.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
+    }
+    if (open) {
+      var first = document.querySelector('#app-nav-panel a');
+      if (first) first.focus();
+    }
+  }
+  function btn() { return document.querySelector('[data-nav-toggle]'); }
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest && e.target.closest('[data-nav-toggle]');
+    if (b) toggle(b, !document.documentElement.classList.contains('nav-open'));
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && document.documentElement.classList.contains('nav-open')) {
+      toggle(btn(), false);
+      if (btn()) btn().focus();
+    }
+  });
+  window.addEventListener('resize', function () {
+    if (window.innerWidth >= 1024 && document.documentElement.classList.contains('nav-open')) toggle(btn(), false);
+  });
+})();

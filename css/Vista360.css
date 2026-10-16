@@ -15,3 +15,22 @@ input:focus,button:focus-visible,a:focus-visible,[data-modal]:focus-visible{outl
   .v360-panel{min-height:0}
   .v360-scroll{overflow:auto;min-height:0}
 }
+
+/* Pantallas angostas: columnas apiladas y tabla de portafolio reducida a
+   producto · saldo · rentabilidad (el % total y % de su línea se ocultan). */
+@media (max-width: 1023px){
+  .v360-body{grid-template-columns:minmax(0,1fr) !important}
+}
+@media (min-width: 768px) and (max-width: 1279px){
+  .v360-row{grid-template-columns:minmax(0,1fr) 100px 64px 112px !important}
+  .v360-row > :nth-child(4){display:none !important}
+}
+@media (max-width: 767px){
+  .v360-head{display:none !important}
+  .v360-row{grid-template-columns:minmax(0,1fr) auto !important;row-gap:4px !important}
+  .v360-row > :first-child{grid-column:1 / -1}
+  .v360-row > :nth-child(2){text-align:left !important;padding-left:2px}
+  .v360-row > :nth-child(3),.v360-row > :nth-child(4){display:none !important}
+  .v360-sub{padding-left:12px !important}
+  .v360-tabhint{text-align:left !important}
+}
