@@ -1,4 +1,17 @@
-/* 03 · Vista Cliente 360 — estilos de la pantalla. */
+/* Vista Cliente 360 — estilos de la pantalla. */
 body{margin:0;background:#F2F5F9}
 a{color:#0072CE}a:hover{color:#003057}
-input:focus,button:focus-visible,a:focus-visible{outline:2px solid #00A3E0;outline-offset:2px}
+input:focus,button:focus-visible,a:focus-visible,[data-modal]:focus-visible{outline:2px solid #00A3E0;outline-offset:2px}
+.v360-prod:hover{border-color:#0072CE !important;background:#F7FBFE !important}
+
+/* Escritorio: la vista ocupa exactamente la altura de la ventana (objetivo
+   1440×900 sin scroll de página). Si el contenido no cabe, solo se desplaza
+   el interior de la columna izquierda o del panel de portafolio. En
+   pantallas pequeñas todo vuelve al flujo normal. */
+@media (min-width: 1200px) and (min-height: 700px){
+  .v360-content{height:100vh}
+  .v360-main{flex:1;min-height:0}
+  .v360-body{flex:1;min-height:0;grid-template-rows:minmax(0,1fr)}
+  .v360-panel{min-height:0}
+  .v360-scroll{overflow:auto;min-height:0}
+}

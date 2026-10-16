@@ -1,115 +1,160 @@
 # copiloto_mockup
 
-Mockup de la **Plataforma Asesor 360** de Alianza Fiduciaria. Es una web
-multipágina de verdad (sin iframes ni tableros de diseño): cada pantalla es
-un `.html` navegable con enlaces reales, renderizada con `dc-runtime`
-(React 18 UMD) desde plantillas con binding `{{ }}`.
+Mockup del **Copiloto Comercial** de Alianza Fiduciaria (plataforma para los
+asesores comerciales). Es una web multipágina de verdad (sin iframes ni
+tableros de diseño): cada pantalla es un `.html` navegable con enlaces
+reales, renderizada con `dc-runtime` (React 18 UMD) desde plantillas con
+binding `{{ }}`. **Todos los datos son ilustrativos**; las fuentes reales aún
+no están definidas y no se conecta ninguna API.
+
+Estructura acordada en la revisión con Alianza del 15 oct 2026: la Vista 360
+es solo informativa y compacta; alertas, siguiente mejor acción, campañas y
+setup viven en módulos propios.
 
 ## Estructura
 
 ```
-index.html                  Pantalla de login (raíz / punto de entrada)
-pages/Registro.dc.html      Solicitud de registro
-pages/Vista360.dc.html      Vista Cliente 360
-pages/GrupoFamiliar.dc.html Consolidado grupo familiar y empresarial
-pages/RentaVariable.dc.html Resumen renta variable
-pages/Cartera.dc.html       Mi cartera · riesgo de fuga
-pages/Pensiones.dc.html     Pensiones · consolidado operativo (FPV, PAP)
-css/fonts.css               @font-face de Open Sans (compartido)
-css/<Pantalla>.css          Estilos propios de cada pantalla
-js/<Pantalla>.js            Lógica (class Component) de cada pantalla
-js/resources.js             Mapea los CDN de React a las copias de vendor/
-js/feature-flags.js         Flags para mostrar/ocultar secciones a voluntad
-js/dev-panel.js             Panel oculto para activar esos flags (ver abajo)
-vendor/                     dc-runtime.js, react, react-dom
-assets/                     Logo, favicon y fuentes .woff2
-original-bundle.html        Bundle original de 2,6 MB (respaldo, se puede borrar)
+index.html                     Login (raíz / punto de entrada) → Mi cartera
+pages/Registro.dc.html         Solicitud de registro
+pages/Cartera.dc.html          Mi cartera: listado general de clientes
+pages/Vista360.dc.html         Vista Cliente 360 (?cliente=<id>, ?vista=grupo)
+pages/Alertas.dc.html          Alertas de riesgo de fuga (?cliente=<id>)
+pages/SiguienteAccion.dc.html  Siguiente mejor acción (?cliente=<id>)
+pages/Campanas.dc.html         Campañas comerciales
+pages/Setup.dc.html            Setup del cliente (vinculación / onboarding)
+pages/Pensiones.dc.html        Pensiones · consolidado back-office (oculto por defecto)
+
+js/data/copiloto-data.js       ÚNICO archivo de datos de ejemplo (ver abajo)
+js/data/detalle-schema.js      Campos del modal de detalle por tipo de producto
+js/portafolio.js               Cálculos (saldos, rentabilidad, líneas) y formatos
+js/ui.js                       Menú lateral de módulos (AlianzaNav) y estilos comunes
+js/modal.js                    Modales accesibles: Esc, foco atrapado, foco de regreso
+js/asistente.js                Botón flotante "Asistente Alianza" (proyecto paralelo)
+js/feature-flags.js            Flags para mostrar/ocultar módulos y bloques
+js/dev-panel.js                Panel oculto para esos flags (Ctrl+Shift+Alt+F)
+js/<Pantalla>.js               Lógica (class Component) de cada pantalla
+js/resources.js                Mapea los CDN de React a las copias de vendor/
+css/fonts.css                  @font-face de Open Sans (compartido)
+css/<Pantalla>.css             Estilos propios de cada pantalla
+vendor/                        dc-runtime.js, react, react-dom
+assets/                        Logo, favicon y fuentes .woff2
+original-bundle.html           Bundle original de 2,6 MB (respaldo, se puede borrar)
 ```
 
-## Navegación
+Las antiguas páginas `RentaVariable` y `GrupoFamiliar` se eliminaron: la
+renta variable es un producto de la línea Intermediación (su detalle se abre
+en un modal de la Vista 360) y el grupo familiar es un selector dentro de la
+Vista 360.
 
-Las pantallas se enlazan entre sí con `<a href>` normales, como una web real:
+## Módulos y navegación
 
-- `index.html` → "Ingresar" / "Continuar con Microsoft" llevan a
-  `pages/Vista360.dc.html`; "Solicitar registro" lleva a
-  `pages/Registro.dc.html`.
-- Dentro de `pages/`, el menú lateral navega entre `Vista360.dc.html`,
-  `GrupoFamiliar.dc.html`, `RentaVariable.dc.html`, `Pensiones.dc.html` y
-  `Cartera.dc.html`.
-- "Volver al ingreso" (en Registro y en el menú de Vista360) regresa a
-  `../index.html`.
+El menú lateral se define en un solo lugar: `MODULOS` en `js/ui.js`. Cada
+página lo pinta con `<sc-for list="{{nav.items}}">` y obtiene los ítems con
+`AlianzaNav.shell('<id>')` desde `renderVals()`.
 
-Si renombras un archivo de `pages/` o el propio `index.html`, actualiza los
-`href` correspondientes en las demás pantallas (`grep -rn "nombre.dc.html"`).
+1. **Mi cartera** — listado de los clientes del asesor (búsqueda, segmento,
+   orden). Desde cada fila se entra a su Vista 360.
+2. **Vista 360** — quién es el cliente y cómo está su portafolio. Diseñada
+   para caber en 1440×900 sin scroll de página:
+   - encabezado (documento, segmento, asesor, vinculación, perfil oficial)
+     con un badge pequeño de riesgo de fuga que enlaza a Alertas;
+   - totales (saldo y rentabilidad), patrimonio e ingresos;
+   - contactabilidad (teléfonos, correos, dirección) y últimas 3
+     interacciones, con "Ver todo" en un modal;
+   - pestaña **Portafolio por línea**: acordeón Línea → Producto con saldo,
+     % total, % de su línea y rentabilidad; clic en un producto abre su
+     **modal de detalle**; pestaña **Evolución histórica**;
+   - selector **Cliente individual / Grupo familiar**: consolidado del
+     grupo con filtro por integrante.
+3. **Alertas de riesgo de fuga** — termómetro a 30 y 60 días con factores,
+   señales anticipadas, mapa de prioridad, motivos y clientes priorizados.
+4. **Siguiente mejor acción** — todos los clientes con su acción sugerida;
+   briefing, tarjetas NBA (aceptar / descartar), alineación frente al perfil
+   y recomendación de portafolio (en exploración).
+5. **Campañas comerciales** — campañas activas; al abrir una, la regla en
+   lenguaje natural y los clientes de la cartera que encajan.
+6. **Setup del cliente** — etapa de vinculación de cada cliente y checklist
+   de documentos (completo / pendiente / vencido).
 
-## Pensiones · consolidado operativo
+Los módulos 3 a 6 llevan el badge **"En definición"**. Pensiones
+(back-office) sigue disponible detrás de un flag.
 
-`pages/Pensiones.dc.html` consolida, para un operario de back-office (no para
-un asesor comercial), los tres productos de pensiones que administra Alianza
-Fiduciaria:
+## Datos: `js/data/copiloto-data.js`
 
-- **FPV individual** — fondo de pensiones voluntarias de personas naturales.
-- **FPV institucional** — planes patrocinados por un empleador.
-- **PAP** — patrimonios autónomos de pensión (encargos fiduciarios con los
-  que una empresa respalda su pasivo pensional / cálculo actuarial).
+Un solo archivo, fácil de editar, con el modelo jerárquico acordado:
 
-Incluye KPIs consolidados (afiliados, saldo, aportes del mes, solicitudes
-pendientes), una **bandeja de solicitudes** filtrable (retiros, certificados,
-cambios de perfil, otras gestiones) con estados accionables, el desglose de
-saldo por línea de producto, y una tabla de **vencimientos de permanencia y
-beneficio tributario** (retirar antes de tiempo en una FPV hace perder el
-beneficio tributario). Los datos de `js/Pensiones.js` son ilustrativos.
+- `lineasProducto`: **Fondos** (FIC y pensiones voluntarias), **Fiducia**,
+  **Intermediación** (renta variable, renta fija, divisas) y **Alianza Corp**.
+- `clientes[].productos[]`: cada producto pertenece a una `linea` y tiene un
+  `tipo` (`fic`, `fpv`, `encargo`, `fideicomiso`, `rentaVariable`,
+  `rentaFija`, `divisas`, `fcp`).
+- `clientes[].lineaNegocio`: `dyv` (Distribución y ventas) o `nf` (Negocios
+  fiduciarios). Por ahora solo está en el modelo, sin UI propia.
+- `grupos`, `perfiles`, `senales`, `campanas`, `setupEtapas`,
+  `setupDocumentos`, `setup`.
 
-## Cómo editar
+Los saldos **no se escriben dos veces**: `js/portafolio.js` los calcula
+(renta variable = Σ cantidad × precio de mercado; renta fija = Σ valor de
+mercado de los títulos), y de ahí salen las líneas, el cliente, el grupo y la
+cartera. Así los totales cuadran en todas las pantallas.
 
-- **Maquetado y contenido** → el `.html` de cada pantalla, dentro de
-  `<x-dc>`. Los valores entre `{{ }}` vienen de `renderVals()`.
-- **Estilos** → `css/<Pantalla>.css` (reglas globales de la pantalla) o los
-  `style="…"` en línea del marcado.
-- **Datos y comportamiento** → `js/<Pantalla>.js`: expone
-  `window.AppLogic.<Pantalla>` con la clase `Component extends DCLogic`.
-  El HTML solo la engancha con una línea en el `<script type="text/x-dc">`
-  final, que es la forma en que `dc-runtime` recibe la lógica (no acepta
-  `<script src>` para el componente).
+### Modal de detalle de producto
 
-## Flags para mostrar/ocultar secciones (panel oculto)
+`js/data/detalle-schema.js` define, por tipo de producto, las tarjetas
+(`campos`), una tabla (`tabla`) y una subtabla de la fila elegida
+(`subtabla`). Agregar las variables definitivas de un producto es solo
+editar ese archivo. Los tipos sin variables definidas (`definido: false`)
+muestran saldo, rentabilidad, fecha de apertura y la nota *"Variables de
+detalle en definición"*.
 
-El sitio no tiene build, así que no hay `.env` real: el equivalente es
-`js/feature-flags.js`, un registro de flags booleanos (por defecto todos
-en `false`) que se guardan en `localStorage` del navegador y se leen desde
-`renderVals()` de cada pantalla.
+## Flags y ajustes predefinidos (panel oculto)
 
-Están pensados para quedar **ocultos de cualquier usuario normal**: no hay
-ningún botón ni menú visible que los exponga. Se activan así:
+El sitio no tiene build, así que no hay `.env`: el equivalente es
+`js/feature-flags.js`, un registro de flags booleanos guardados en
+`localStorage` (`alianza360:flags:v2`) que cada pantalla lee en `renderVals()`.
 
-1. En cualquier pantalla, presiona **Ctrl + Shift + Alt + F**. Abre un panel
-   flotante en la esquina inferior derecha, visible solo para quien conoce
-   el atajo.
-2. Marca o desmarca el flag que quieras. El cambio se aplica al instante
-   (sin recargar) y queda guardado en ese navegador.
-3. Vuelve a presionar el mismo atajo (o `Esc`) para cerrar el panel.
+1. En cualquier pantalla, presiona **Ctrl + Shift + Alt + F**. Se abre un
+   panel en la esquina inferior izquierda, visible solo para quien conoce el
+   atajo.
+2. Arriba, los ajustes predefinidos:
+   - **Modo presentación** (por defecto): solo Mi cartera y Vista 360. Úsalo
+     para enviar el mockup a Alianza sin módulos sin definir.
+   - **Todos los módulos**: todo visible, con badges "En definición".
+3. Debajo, cada flag agrupado (módulos del menú, Global, Vista 360, Mi
+   cartera, Alertas, Siguiente mejor acción) para afinar a mano. El cambio
+   se aplica al instante y queda guardado en ese navegador.
+4. Vuelve a presionar el atajo (o `Esc`) para cerrar.
 
-Flags incluidos hoy (ambos en Vista Cliente 360, ocultos por defecto):
-
-- `showNBA` — sección **"Siguiente mejor acción"**.
-- `showBriefing` — sección **"Briefing antes del contacto"**.
+Si alguien entra por URL a un módulo oculto, ve un aviso con enlace a Mi cartera.
 
 ### Cómo agregar un flag nuevo
 
-1. Agrega una entrada al objeto `REGISTRY` en `js/feature-flags.js`
-   (`id`, `label`, `default`) — aparece sola en el panel.
-2. En el `.js` de la pantalla, agrega `miFlag: window.AlianzaFlags.get('miFlag')`
-   al objeto que retorna `renderVals()`.
-3. En el `.dc.html` de esa pantalla, envuelve la sección con
-   `<sc-if value="{{miFlag}}" hint-placeholder-val="{{ true }}"> … </sc-if>`.
-4. Si el Component de esa pantalla no lo tiene aún, agrega el
-   `componentDidMount`/`componentWillUnmount` que escucha
-   `window.AlianzaFlags.CHANGE_EVENT` y llama `this.forceUpdate()` (cópialo
-   de `js/Vista360.js`) — es lo que hace que el toggle se refleje sin
-   recargar la página.
+1. Agrega una entrada a `REGISTRY` en `js/feature-flags.js`
+   (`group`, `label`, `presentacion`): aparece sola en el panel.
+2. En el `.js` de la pantalla, léelo con `window.AlianzaFlags.get('miFlag')`
+   dentro de `renderVals()`.
+3. En el `.dc.html`, envuelve la sección con `<sc-if value="{{miFlag}}"> … </sc-if>`.
+4. El Component debe suscribirse a los cambios en `componentDidMount` con
+   `this._unwatch = window.AlianzaUI.watchFlags(this)` (ya lo hacen todas
+   las pantallas internas).
 
-El atajo de teclado se puede cambiar editando `SHORTCUT` al inicio de
-`js/dev-panel.js`.
+Para un **módulo nuevo**: agrégalo a `MODULOS` en `js/ui.js` (con su `flag`
+y `enDef`) y crea su página copiando la estructura de `pages/Setup.dc.html`.
+
+## Accesibilidad
+
+- Objetivos clicables de al menos 44 px en las pantallas internas.
+- Modales (`js/modal.js`): se cierran con `Esc`, atrapan el foco y lo
+  devuelven al elemento que los abrió.
+- Contraste de texto ≥ 4,5:1 con la paleta de marca (#003057, #0072CE,
+  #00A3E0, #D2D755, #999B30).
+
+## Pendientes de validar con Alianza
+
+Están marcados en el código con `// TODO: confirmar …` (`grep -rn TODO js`):
+nombres y clasificación de productos, rangos por perfil, variables de detalle
+por tipo de producto, fórmula de liquidación estimada, criterios del modelo
+de fuga y señales, campañas y reglas, etapas y documentos de setup.
 
 ## Cómo verlo
 

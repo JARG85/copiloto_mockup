@@ -1,46 +1,68 @@
-/* 06 · Mi cartera · Riesgo de fuga — logica del componente (dc-runtime).
-   Se registra en window.AppLogic; pages/Cartera.dc.html la monta con una linea puente. */
+/* Mi cartera — lógica del componente (dc-runtime).
+   Se registra en window.AppLogic; pages/Cartera.dc.html la monta con una línea puente.
+   Listado general de los clientes del asesor; desde aquí se entra a la
+   Vista 360 de cada uno. Las cifras salen de js/portafolio.js. */
 window.AppLogic = window.AppLogic || {};
 window.AppLogic.Cartera = function (DCLogic, StreamableLogic, React) {
 
+const P = window.Portafolio, UI = window.AlianzaUI;
+
 class Component extends DCLogic {
-  constructor(p) { super(p); this.state = { f: 'alto' }; }
+  constructor(p) { super(p); this.state = { q: '', seg: 'all', sort: 'saldo' }; }
+  componentDidMount() { this._unwatch = UI.watchFlags(this); }
+  componentWillUnmount() { this._unwatch && this._unwatch(); }
+
   renderVals() {
-    const col = v => v >= 65 ? '#B3272D' : v >= 40 ? '#D57E00' : '#00A98E';
-    const chip = v => 'display: inline-flex; min-width: 64px; justify-content: center; font-size: 12.5px; font-weight: 700; padding: 5px 10px; border-radius: 999px; ' + (v >= 65 ? 'background: #FDE8E6; color: #9A1F24' : v >= 40 ? 'background: #FFF4DE; color: #8A5300' : 'background: #E1F5EF; color: #00664F');
-    const lab = v => v + (v >= 65 ? ' · Alto' : v >= 40 ? ' · Medio' : ' · Bajo');
-    const C = [
-      { name: 'Carlos Andrés Mejía', seg: 'Patrimonial', prof: 'Moderado', aum: 4820, c30: 58, c60: 72, off: true, factor: 'Retiro de $310 M el 22 sep', nba: 'Llamada de retención' },
-      { name: 'Constructora Altamar SAS', seg: 'Empresarial', prof: 'Conservador', aum: 6150, c30: 61, c60: 69, off: false, factor: 'Cotizó con otra fiduciaria', nba: 'Reunión con gerente' },
-      { name: 'Lucía Fernanda Ospina', seg: 'Patrimonial', prof: 'Moderado', aum: 2310, c30: 49, c60: 67, off: false, factor: 'Saldo cae 4 meses seguidos', nba: 'Revisión de estrategia' },
-      { name: 'Jorge Iván Castaño', seg: 'Preferente', prof: 'Mayor riesgo', aum: 980, c30: 52, c60: 66, off: true, factor: 'Rentabilidad bajo referencia', nba: 'Propuesta de rebalanceo' },
-      { name: 'Comercializadora del Valle SAS', seg: 'Empresarial', prof: 'Conservador', aum: 3400, c30: 44, c60: 58, off: false, factor: 'Uso del portal en descenso', nba: 'Contacto de seguimiento' },
-      { name: 'Marta Cecilia Arango', seg: 'Patrimonial', prof: 'Conservador', aum: 1760, c30: 31, c60: 47, off: true, factor: 'Exposición alta a acciones', nba: 'Suitability asistida' },
-      { name: 'Andrés Felipe Rojas', seg: 'Preferente', prof: 'Moderado', aum: 640, c30: 22, c60: 35, off: true, factor: 'Perfil vencido', nba: 'Actualizar perfil' },
-      { name: 'Familia Duarte Pinzón', seg: 'Patrimonial', prof: 'Moderado', aum: 5200, c30: 12, c60: 18, off: false, factor: 'Sin señales relevantes', nba: 'Profundizar: nuevo encargo' }
-    ];
-    const f = this.state.f;
-    const keep = c => f === 'all' ? true : f === 'alto' ? c.c60 >= 65 : f === 'medio' ? (c.c60 >= 40 && c.c60 < 65) : c.off;
-    const rows = C.filter(keep).sort((a, b) => b.c60 * b.aum - a.c60 * a.aum).map(c => ({ ...c, aum: '$' + c.aum.toLocaleString('es-CO') + ' M', s30: chip(c.c30), s60: chip(c.c60), c30: lab(c.c30), c60: lab(c.c60) }));
-    const defs = [{ id: 'alto', label: 'Riesgo alto' }, { id: 'medio', label: 'Riesgo medio' }, { id: 'off', label: 'Fuera de perfil' }, { id: 'all', label: 'Todos' }];
-    const filters = defs.map(d => { const on = d.id === f; return { label: d.label, pressed: on ? 'true' : 'false',
-      style: 'height: 40px; padding: 0 14px; border-radius: 999px; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer; ' + (on ? 'border: 1px solid #003057; background: #003057; color: #FFFFFF' : 'border: 1px solid #C9D2DC; background: #FFFFFF; color: #3D4C5B'),
-      pick: () => this.setState({ f: d.id }) }; });
+    const st = this.state, D = window.CopilotoData;
+    const cart = P.cartera(), all = cart.clientes;
+    const fRiesgo = window.AlianzaFlags.get('carteraRiesgo');
+    const norm = t => t.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+    const q = norm(st.q.trim());
+    const listed = all
+      .filter(c => st.seg === 'all' || c.segmento === st.seg)
+      .filter(c => !q || norm(c.nombre + ' ' + c.documento).includes(q))
+      .sort((a, b) => st.sort === 'contacto' ? b.diasSinContacto - a.diasSinContacto : st.sort === 'nombre' ? a.nombre.localeCompare(b.nombre) : b.saldo - a.saldo);
 
-    const X = s => 60 + s / 100 * 564, Y = a => 296 - Math.min(a, 7000) / 7000 * 280;
-    const dots = [];
-    for (let i = 0; i < 60; i++) {
-      const s = Math.abs((Math.sin(i * 12.9898) * 43758.5453) % 1) * 100;
-      const sc = Math.pow(s / 100, 1.6) * 100;
-      const a = 150 + Math.abs((Math.sin(i * 78.233) * 12345.678) % 1) * 3800;
-      dots.push({ x: X(sc).toFixed(1), y: Y(a).toFixed(1), r: (4 + a / 900).toFixed(1), c: col(sc) });
-    }
-    C.forEach(c => dots.push({ x: X(c.c60).toFixed(1), y: Y(c.aum).toFixed(1), r: (4 + c.aum / 900).toFixed(1), c: col(c.c60) }));
-    const me = { x: X(72).toFixed(1), y: Y(4820).toFixed(1), tx: (X(72) - 16).toFixed(1), ty: (Y(4820) + 4).toFixed(1) };
+    const segs = [{ id: 'all', label: 'Todos' }, { id: 'Patrimonial', label: 'Patrimonial' }, { id: 'Preferente', label: 'Preferente' }, { id: 'Empresarial', label: 'Empresarial' }]
+      .map(s => ({ label: s.label + ' · ' + (s.id === 'all' ? all.length : all.filter(c => c.segmento === s.id).length), pressed: st.seg === s.id ? 'true' : 'false', style: UI.pill(st.seg === s.id), pick: () => this.setState({ seg: s.id }) }));
+    const sorts = [{ id: 'saldo', label: 'Saldo' }, { id: 'contacto', label: 'Días sin contacto' }, { id: 'nombre', label: 'Nombre' }]
+      .map(s => ({ label: s.label, pressed: st.sort === s.id ? 'true' : 'false', style: UI.seg(st.sort === s.id), pick: () => this.setState({ sort: s.id }) }));
 
-    const R = [['Retiros parciales recientes', 5], ['Rentabilidad bajo referencia', 4], ['Menor interacción con el asesor', 4], ['Consulta de tasas en otra entidad', 3], ['Perfil de riesgo vencido', 2]];
-    const reasons = R.map(r => ({ name: r[0], n: r[1], bar: 'height: 100%; border-radius: 4px; background: #0072CE; width: ' + (r[1] / 5 * 100) + '%' }));
-    return { rows, filters, dots, me, reasons };
+    const grupos = {};
+    D.grupos.forEach(g => { grupos[g.id] = g.nombre.replace('Grupo familiar ', ''); });
+    const rows = listed.map(c => {
+      const lin = c.lineas.map(l => ({ title: l.nombre + (l.productos.length ? ': ' + P.money(l.saldo) : ': sin productos'),
+        style: 'width: 14px; height: 14px; border-radius: 4px; background: ' + (l.productos.length ? l.color : '#E1E7EE') }));
+      return {
+        nombre: c.nombre, iniciales: c.iniciales,
+        sub: c.documento + ' · ' + c.segmento,
+        grupo: c.grupo ? 'Grupo ' + grupos[c.grupo] + ' · ' + c.relacion : '',
+        perfil: c.perfil, perfilVencido: c.diasPerfil > 365,
+        saldo: P.money(c.saldo), rent: P.signedPct(c.rentPct), rentChip: UI.rentChip(c.rentPct),
+        productos: c.productos.length + (c.productos.length === 1 ? ' producto' : ' productos'), lineas: lin,
+        contacto: c.ultimoContacto ? P.fechaCorta(c.ultimoContacto) : '—',
+        contactoSub: 'hace ' + c.diasSinContacto + ' días',
+        contactoStyle: 'font-size: 12px; font-weight: 600; color: ' + (c.diasSinContacto >= 30 ? '#8A5300' : '#4F5D6B'),
+        riesgo: c.riesgo.d60 + ' · ' + c.nivel.label, riesgoStyle: UI.riesgoChip(c.riesgo.d60),
+        href: 'Vista360.dc.html?cliente=' + c.id, aria: 'Abrir Vista 360 de ' + c.nombre
+      };
+    });
+
+    const invertido = cart.invertido;
+    const sinContacto = all.filter(c => c.diasSinContacto >= 30).length;
+    return {
+      ...window.AlianzaNav.shell('cartera'),
+      fRiesgo,
+      gridCols: 'display: grid; grid-template-columns: minmax(260px, 2.6fr) 110px 110px 104px 96px 120px' + (fRiesgo ? ' 110px' : '') + ' 120px; gap: 14px; align-items: center',
+      kpi: {
+        clientes: String(all.length), clientesSub: D.grupos.length + ' grupo familiar · ' + all.filter(c => c.tipoPersona === 'PJ').length + ' personas jurídicas',
+        saldo: P.money(cart.saldo), saldoSub: all.reduce((a, c) => a + c.productos.length, 0) + ' productos en 4 líneas',
+        rent: P.signedPct(P.rent(cart.saldo, invertido)), rentSub: P.signedMoney(cart.saldo - invertido) + ' sobre lo invertido',
+        sinContacto: String(sinContacto), sinContactoSub: 'clientes sin contacto en 30 días o más'
+      },
+      q: st.q, onSearch: e => this.setState({ q: e.target.value }),
+      segs, sorts, rows, count: rows.length + ' de ' + all.length + ' clientes', empty: rows.length === 0
+    };
   }
 }
 

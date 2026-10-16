@@ -1,0 +1,4 @@
+/* Siguiente mejor acción — estilos de la pantalla. */
+body{margin:0;background:#F2F5F9}
+a{color:#0072CE}a:hover{color:#003057}
+input:focus,button:focus-visible,a:focus-visible,select:focus-visible,[data-modal]:focus-visible{outline:2px solid #00A3E0;outline-offset:2px}

@@ -13,6 +13,8 @@ window.AppLogic.Pensiones = function (DCLogic, StreamableLogic, React) {
 
 class Component extends DCLogic {
   constructor(p) { super(p); this.state = { f: 'todas' }; }
+  componentDidMount() { this._unwatch = window.AlianzaUI.watchFlags(this); }
+  componentWillUnmount() { this._unwatch && this._unwatch(); }
 
   money(v) { return '$' + v.toLocaleString('es-CO') + ' M'; }
 
@@ -67,7 +69,7 @@ class Component extends DCLogic {
       const on = d.id === f;
       return {
         label: d.label, pressed: on ? 'true' : 'false',
-        style: 'height: 40px; padding: 0 14px; border-radius: 999px; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer; white-space: nowrap; ' +
+        style: 'min-height: 44px; padding: 0 14px; border-radius: 999px; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer; white-space: nowrap; ' +
           (on ? 'border: 1px solid #003057; background: #003057; color: #FFFFFF' : 'border: 1px solid #C9D2DC; background: #FFFFFF; color: #3D4C5B'),
         pick: () => this.setState({ f: d.id })
       };
@@ -88,6 +90,7 @@ class Component extends DCLogic {
     }));
 
     return {
+      ...window.AlianzaNav.shell('pensiones'),
       afiliados: totalCount.toLocaleString('es-CO'),
       saldoTotal: this.money(totalSaldo),
       aportesMes: this.money(5230),
