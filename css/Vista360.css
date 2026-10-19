@@ -1,4 +1,44 @@
-/* 03 · Vista Cliente 360 — estilos de la pantalla. */
+/* Vista Cliente 360 — estilos de la pantalla. */
 body{margin:0;background:#F2F5F9}
 a{color:#0072CE}a:hover{color:#003057}
-input:focus,button:focus-visible,a:focus-visible{outline:2px solid #00A3E0;outline-offset:2px}
+input:focus,button:focus-visible,a:focus-visible,[data-modal]:focus-visible{outline:2px solid #00A3E0;outline-offset:2px}
+.v360-prod:hover{border-color:#0072CE !important;background:#F7FBFE !important}
+
+/* Escritorio: la vista ocupa exactamente la altura de la ventana (objetivo
+   1440×900 sin scroll de página). Si el contenido no cabe, solo se desplaza
+   el interior de la columna izquierda o del panel de portafolio. En
+   pantallas pequeñas todo vuelve al flujo normal. */
+@media (min-width: 1200px) and (min-height: 700px){
+  .v360-content{height:100vh}
+  .v360-main{flex:1;min-height:0}
+  .v360-body{flex:1;min-height:0;grid-template-rows:minmax(0,1fr)}
+  .v360-panel{min-height:0}
+  .v360-scroll{overflow:auto;min-height:0}
+}
+
+/* Pantallas angostas: columnas apiladas y tabla de portafolio reducida a
+   producto · saldo · rentabilidad (el % total y % de su línea se ocultan). */
+@media (max-width: 1023px){
+  .v360-body{grid-template-columns:minmax(0,1fr) !important}
+  .v360-legend{grid-template-columns:repeat(2, minmax(0,1fr)) !important}
+}
+@media (min-width: 768px) and (max-width: 1279px){
+  .v360-row{grid-template-columns:minmax(0,1fr) 100px 64px 112px !important}
+  .v360-row > :nth-child(4){display:none !important}
+}
+@media (max-width: 767px){
+  .v360-head{display:none !important}
+  .v360-row{grid-template-columns:minmax(0,1fr) auto !important;row-gap:4px !important}
+  .v360-row > :first-child{grid-column:1 / -1}
+  .v360-row > :nth-child(2){text-align:left !important;padding-left:2px}
+  .v360-row > :nth-child(3),.v360-row > :nth-child(4){display:none !important}
+  .v360-tabhint{text-align:left !important}
+}
+
+/* Gráfico de torta del portafolio: en teléfono los botones de la leyenda
+   ocupan todo el ancho, en una sola columna. */
+@media (max-width: 560px){
+  .v360-donut{align-items:stretch !important}
+  .v360-donut svg{align-self:center}
+  .v360-legend{grid-template-columns:minmax(0,1fr) !important}
+}

@@ -1,12 +1,17 @@
 <!DOCTYPE html>
 <html lang="es"><head>
 <meta charset="utf-8">
-<title>Mi cartera · Riesgo de fuga</title>
+<title>Mi cartera · Copiloto Comercial</title>
 <link rel="icon" href="../assets/favicon.ico" sizes="any">
 <link rel="icon" href="../assets/favicon-32.png" type="image/png">
 <link rel="apple-touch-icon" href="../assets/favicon-180.png">
 <script src="../js/feature-flags.js"></script>
 <script src="../js/dev-panel.js"></script>
+<script src="../js/data/copiloto-data.js"></script>
+<script src="../js/portafolio.js"></script>
+<script src="../js/ui.js"></script>
+<script src="../js/modal.js"></script>
+<script src="../js/asistente.js"></script>
 <script src="../js/resources.js"></script>
 <script src="../vendor/dc-runtime.js"></script>
 </head>
@@ -15,140 +20,150 @@
 <helmet>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="../css/fonts.css">
+<link rel="stylesheet" href="../css/app.css">
 <link rel="stylesheet" href="../css/Cartera.css">
 </helmet>
-<div style="min-height: 1500px; display: flex; flex-wrap: wrap; font-family: 'Open Sans', 'Segoe UI', system-ui, sans-serif; color: #1B2A3A; background: #F2F5F9">
+<div style="min-height: 100vh; display: flex; flex-wrap: wrap; font-family: 'Open Sans', 'Segoe UI', system-ui, sans-serif; color: #1B2A3A; background: #F2F5F9">
 
-  <nav aria-label="Navegación principal" style="flex: 1 1 248px; position: relative; overflow: hidden; background: #003057; color: #FFFFFF; padding: 28px 18px; display: flex; flex-direction: column; gap: 28px; box-sizing: border-box">
-    <div aria-hidden="true" style="position: absolute; left: 0; right: 0; bottom: 0; height: 320px; background: #0072CE; clip-path: polygon(0% 100%, 0% 72%, 100% 28%, 100% 100%); opacity: 0.55"></div>
-    <img src="../assets/alianza-logo.png" alt="Alianza Fiduciaria" style="position: relative; width: 150px; height: auto; margin-left: 8px">
-    <div style="position: relative; display: flex; flex-direction: column; gap: 4px">
-      <span style="font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #9FB8CF; padding: 0 12px 8px">Asesor 360</span>
-      <a href="Cartera.dc.html" aria-current="page" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 10px; background: #FFFFFF; color: #003057; text-decoration: none; font-size: 14.5px; font-weight: 700"><svg width="20" height="20" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h18v13H3z"></path><path d="M8 7V4h8v3"></path></svg>Mi cartera</a>
-      <a href="Vista360.dc.html" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 10px; color: #D6E4F0; text-decoration: none; font-size: 14.5px; font-weight: 600"><svg width="20" height="20" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21a8 8 0 0 1 16 0"></path></svg>Vista cliente 360</a>
-      <a href="GrupoFamiliar.dc.html" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 10px; color: #D6E4F0; text-decoration: none; font-size: 14.5px; font-weight: 600"><svg width="20" height="20" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="8" r="3"></circle><circle cx="17" cy="9" r="2.5"></circle><path d="M2 20a6 6 0 0 1 12 0"></path><path d="M14 20a4 4 0 0 1 8 0"></path></svg>Grupo familiar</a>
-      <a href="RentaVariable.dc.html" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 10px; color: #D6E4F0; text-decoration: none; font-size: 14.5px; font-weight: 600"><svg width="20" height="20" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 20h18"></path><path d="m4 15 5-5 4 3 7-7"></path></svg>Renta variable</a>
-      <a href="Pensiones.dc.html" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 10px; color: #D6E4F0; text-decoration: none; font-size: 14.5px; font-weight: 600"><svg width="20" height="20" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10h18"></path><path d="M12 2 3 7h18z"></path><path d="M5 10v9"></path><path d="M9 10v9"></path><path d="M15 10v9"></path><path d="M19 10v9"></path><path d="M3 21h18"></path></svg>Pensiones</a>
-      <a href="Cartera.dc.html" style="display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 10px; color: #D6E4F0; text-decoration: none; font-size: 14.5px; font-weight: 600"><span style="display: flex; align-items: center; gap: 12px"><svg width="20" height="20" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 8 3 8H3s3-1 3-8"></path><path d="M10 20a2 2 0 0 0 4 0"></path></svg>Alertas</span><span style="min-width: 22px; height: 22px; border-radius: 11px; background: #D2D755; color: #003057; font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center">7</span></a>
+  <!-- MENÚ LATERAL (ítems en js/ui.js · AlianzaNav; estilos y responsive en css/app.css) -->
+  <nav aria-label="Navegación principal" class="app-nav">
+    <div aria-hidden="true" class="app-nav-diag"></div>
+    <div class="app-nav-top">
+      <img src="../assets/alianza-logo.png" alt="Alianza Fiduciaria" class="app-nav-logo">
+      <img src="../assets/favicon-180.png" alt="Alianza Fiduciaria" class="app-nav-mark">
+      <button type="button" class="app-nav-toggle" data-nav-toggle="" aria-controls="app-nav-panel" aria-label="Abrir menú">
+        <svg class="ico-open" width="22" height="22" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16 M4 12h16 M4 18h16"></path></svg>
+        <svg class="ico-close" width="22" height="22" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12 M18 6 6 18"></path></svg>
+      </button>
     </div>
-    <div style="position: relative; margin-top: auto; display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 12px; background: #0B3D6B">
-      <span style="width: 40px; height: 40px; border-radius: 50%; background: #00A3E0; color: #003057; font-weight: 800; display: flex; align-items: center; justify-content: center; font-size: 14px">LG</span>
-      <div style="display: flex; flex-direction: column"><strong style="font-size: 14px">Laura Gómez</strong><span style="font-size: 12px; color: #B9CDE0">Asesora · Bogotá</span></div>
+    <div id="app-nav-panel" class="app-nav-panel">
+      <div class="app-nav-menu">
+        <span class="app-nav-kicker">Copiloto comercial</span>
+        <sc-for list="{{nav.items}}" as="i" hint-placeholder-count="6">
+          <a href="{{i.href}}" aria-current="{{i.current}}" title="{{i.label}}" data-endef="{{i.enDef}}" class="app-nav-item" style="{{i.style}}">
+            <svg width="20" height="20" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none"><path d="{{i.icon}}"></path></svg>
+            <span class="app-nav-label">{{i.label}}<sc-if value="{{i.enDef}}"><span style="{{i.badgeStyle}}">En definición</span></sc-if></span>
+            <sc-if value="{{i.count}}"><span class="app-nav-count" style="{{i.countStyle}}">{{i.count}}</span></sc-if>
+          </a>
+        </sc-for>
+      </div>
+      <div class="app-nav-foot">
+        <div class="app-nav-user" title="{{nav.asesor.nombre}}">
+          <span class="app-nav-avatar">{{nav.asesor.iniciales}}</span>
+          <div class="app-nav-user-text" style="display: flex; flex-direction: column"><strong style="font-size: 14px">{{nav.asesor.nombre}}</strong><span style="font-size: 12px; color: #B9CDE0">{{nav.asesor.cargo}}</span></div>
+        </div>
+        <a href="../index.html" class="app-nav-logout" title="Cerrar sesión">
+          <svg width="18" height="18" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><path d="m16 17 5-5-5-5"></path><path d="M21 12H9"></path></svg><span class="app-nav-logout-text">Cerrar sesión</span></a>
+      </div>
     </div>
   </nav>
 
-  <div style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
-    <header style="background: #FFFFFF; border-bottom: 1px solid #E1E7EE; padding: 18px 32px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap">
+  <div class="app-content" style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+    <header class="app-header" style="background: #FFFFFF; border-bottom: 1px solid #E1E7EE; padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap">
       <div style="display: flex; flex-direction: column; gap: 2px">
         <span style="font-size: 13px; color: #4F5D6B">Buenos días, Laura</span>
-        <h1 style="margin: 0; font-size: 24px; color: #003057">Mi cartera · riesgo de fuga</h1>
+        <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap">
+          <h1 style="margin: 0; font-size: 24px; color: #003057">Mi cartera</h1>
+        </div>
       </div>
       <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap">
-        <span style="font-size: 13px; color: #4F5D6B">Modelo actualizado: <strong style="color: #1B2A3A">hoy 06:00</strong></span>
+        <span style="font-size: 13px; color: #4F5D6B">Corte de datos: <strong style="color: #1B2A3A">{{corte}}</strong></span>
         <span style="font-size: 12px; font-weight: 700; padding: 6px 10px; border-radius: 999px; background: #FFF4DE; color: #8A5300">Datos ilustrativos</span>
       </div>
     </header>
 
-    <main style="padding: 28px 32px 48px; display: flex; flex-direction: column; gap: 24px; max-width: 1240px; width: 100%; box-sizing: border-box">
+    <!-- Módulo oculto por el ajuste actual (Ctrl+Shift+Alt+F) -->
+    <sc-if value="{{oculto}}">
+      <main class="app-main" style="padding: 40px 32px">
+        <section style="max-width: 560px; background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 16px; padding: 22px 24px; display: flex; flex-direction: column; gap: 14px">
+          <h2 style="margin: 0; font-size: 18px; color: #003057">Este módulo no está disponible en la vista actual</h2>
+          <p style="margin: 0; font-size: 14px; line-height: 1.6; color: #3D4C5B">Está oculto en la configuración actual del mockup.</p>
+          <a href="Cartera.dc.html" style="align-self: flex-start; display: flex; align-items: center; min-height: 44px; padding: 0 18px; border-radius: 10px; background: #0072CE; color: #FFFFFF; text-decoration: none; font-size: 14px; font-weight: 700">Ir a Mi cartera</a>
+        </section>
+      </main>
+    </sc-if>
 
-      <section aria-label="Resumen de cartera" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px">
-        <div style="background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 6px"><span style="font-size: 13px; font-weight: 600; color: #4F5D6B">Clientes en cartera</span><strong style="font-size: 28px; font-weight: 800; color: #003057">86</strong><span style="font-size: 12.5px; color: #4F5D6B">31 grupos familiares</span></div>
-        <div style="background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 6px"><span style="font-size: 13px; font-weight: 600; color: #4F5D6B">Saldo administrado</span><strong style="font-size: 28px; font-weight: 800; color: #003057">$214.300 M</strong><span style="font-size: 12.5px; color: #4F5D6B">−1,8 % frente al mes anterior</span></div>
-        <div style="position: relative; overflow: hidden; background: #003057; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 6px; color: #FFFFFF">
-          <div aria-hidden="true" style="position: absolute; inset: 0; background: #B3272D; clip-path: polygon(66% 100%, 100% 36%, 100% 100%)"></div>
-          <span style="position: relative; font-size: 13px; font-weight: 600; color: #D6E4F0">Saldo en riesgo a 60 días</span>
-          <strong style="position: relative; font-size: 28px; font-weight: 800">$18.900 M</strong>
-          <span style="position: relative; font-size: 12.5px; color: #D6E4F0">8,8 % de la cartera</span>
+    <sc-if value="{{visible}}">
+    <main class="app-main" style="padding: 24px 32px 48px; display: flex; flex-direction: column; gap: 20px; width: 100%; box-sizing: border-box">
+
+      <section class="kpi-grid" aria-label="Resumen de la cartera" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px">
+        <div style="position: relative; overflow: hidden; background: #003057; border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 4px; color: #FFFFFF">
+          <div aria-hidden="true" style="position: absolute; inset: 0; background: #0072CE; clip-path: polygon(70% 100%, 100% 30%, 100% 100%)"></div>
+          <div aria-hidden="true" style="position: absolute; inset: 0; background: #00A3E0; clip-path: polygon(87% 100%, 100% 64%, 100% 100%)"></div>
+          <span style="position: relative; font-size: 13px; font-weight: 600; color: #D6E4F0">Saldo administrado</span>
+          <strong style="position: relative; font-size: 26px; font-weight: 800">{{kpi.saldo}}</strong>
+          <span style="position: relative; font-size: 12.5px; color: #D6E4F0">{{kpi.saldoSub}}</span>
         </div>
-        <div style="background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 6px"><span style="font-size: 13px; font-weight: 600; color: #4F5D6B">Fuera de perfil</span><strong style="font-size: 28px; font-weight: 800; color: #8A5300">12 clientes</strong><span style="font-size: 12.5px; color: #4F5D6B">Revisión de idoneidad pendiente</span></div>
+        <div style="background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 4px"><span style="font-size: 13px; font-weight: 600; color: #4F5D6B">Clientes en cartera</span><strong style="font-size: 26px; font-weight: 800; color: #003057">{{kpi.clientes}}</strong><span style="font-size: 12.5px; color: #4F5D6B">{{kpi.clientesSub}}</span></div>
+        <div style="background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 4px"><span style="font-size: 13px; font-weight: 600; color: #4F5D6B">Rentabilidad total</span><strong style="font-size: 26px; font-weight: 800; color: #00806B">{{kpi.rent}}</strong><span style="font-size: 12.5px; color: #4F5D6B">{{kpi.rentSub}}</span></div>
+        <div style="background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 4px"><span style="font-size: 13px; font-weight: 600; color: #4F5D6B">Sin contacto reciente</span><strong style="font-size: 26px; font-weight: 800; color: #8A5300">{{kpi.sinContacto}}</strong><span style="font-size: 12.5px; color: #4F5D6B">{{kpi.sinContactoSub}}</span></div>
       </section>
 
-      <div style="display: flex; flex-wrap: wrap; gap: 24px">
-        <section style="flex: 999 1 560px; min-width: 0; background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 14px">
+      <section aria-labelledby="h-clientes" style="background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 16px; padding: 22px 24px; display: flex; flex-direction: column; gap: 14px">
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; flex-wrap: wrap">
           <div style="display: flex; flex-direction: column; gap: 4px">
-            <h2 style="margin: 0; font-size: 18px; color: #003057">Mapa de prioridad: riesgo vs. saldo</h2>
-            <span style="font-size: 13px; color: #4F5D6B">Cada punto es un cliente · arriba a la derecha, atender primero</span>
+            <h2 id="h-clientes" style="margin: 0; font-size: 18px; color: #003057">Clientes</h2>
+            <span style="font-size: 13px; color: #4F5D6B">{{count}} · abre la Vista 360 de cada cliente</span>
           </div>
-          <div style="overflow-x: auto">
-            <svg sc-camel-view-box="0 0 640 340" role="img" aria-label="Dispersión de clientes según riesgo de fuga a 60 días y saldo administrado" style="width: 100%; min-width: 480px; height: auto; display: block">
-              <rect x="380" y="16" width="244" height="140" fill="#FDE8E6" rx="6"></rect>
-              <text x="616" y="36" text-anchor="end" font-size="12" font-weight="700" fill="#9A1F24" font-family="Open Sans, sans-serif">Prioridad alta</text>
-              <line x1="60" x2="624" y1="296" y2="296" stroke="#C9D2DC"></line>
-              <line x1="60" x2="60" y1="16" y2="296" stroke="#C9D2DC"></line>
-              <line x1="380" x2="380" y1="16" y2="296" stroke="#C9D2DC" stroke-dasharray="4 4"></line>
-              <line x1="60" x2="624" y1="156" y2="156" stroke="#C9D2DC" stroke-dasharray="4 4"></line>
-              <text x="60" y="316" font-size="11" fill="#5B6876" font-family="Open Sans, sans-serif">0</text>
-              <text x="380" y="316" text-anchor="middle" font-size="11" fill="#5B6876" font-family="Open Sans, sans-serif">50</text>
-              <text x="624" y="316" text-anchor="end" font-size="11" fill="#5B6876" font-family="Open Sans, sans-serif">100</text>
-              <text x="342" y="334" text-anchor="middle" font-size="12" fill="#3D4C5B" font-family="Open Sans, sans-serif">Riesgo de fuga a 60 días</text>
-              <text x="20" y="156" text-anchor="middle" font-size="12" fill="#3D4C5B" font-family="Open Sans, sans-serif" transform="rotate(-90 20 156)">Saldo administrado</text>
-              <sc-for list="{{dots}}" as="p" hint-placeholder-count="20">
-                <circle cx="{{p.x}}" cy="{{p.y}}" r="{{p.r}}" fill="{{p.c}}" fill-opacity="0.85" stroke="#FFFFFF" stroke-width="1.5"></circle>
-              </sc-for>
-              <circle cx="{{me.x}}" cy="{{me.y}}" r="11" fill="none" stroke="#003057" stroke-width="2.5"></circle>
-              <text x="{{me.tx}}" y="{{me.ty}}" text-anchor="end" font-size="12" font-weight="700" fill="#003057" font-family="Open Sans, sans-serif">C. Mejía</text>
-            </svg>
+          <div role="group" aria-label="Ordenar por" style="display: flex; align-items: center; padding: 3px; border-radius: 10px; background: #F2F5F9; gap: 2px">
+            <sc-for list="{{sorts}}" as="o" hint-placeholder-count="3"><button type="button" sc-camel-on-click="{{o.pick}}" aria-pressed="{{o.pressed}}" style="{{o.style}}">{{o.label}}</button></sc-for>
           </div>
-        </section>
-
-        <section style="flex: 1 1 320px; background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 16px">
-          <h2 style="margin: 0; font-size: 18px; color: #003057">Motivos más frecuentes</h2>
-          <span style="font-size: 13px; color: #4F5D6B; margin-top: -8px">En clientes con riesgo alto esta semana</span>
-          <sc-for list="{{reasons}}" as="m" hint-placeholder-count="5">
-            <div style="display: flex; flex-direction: column; gap: 6px">
-              <div style="display: flex; justify-content: space-between; font-size: 13.5px"><span>{{m.name}}</span><strong>{{m.n}}</strong></div>
-              <div style="height: 8px; border-radius: 4px; background: #EEF1F5"><div style="{{m.bar}}"></div></div>
-            </div>
-          </sc-for>
-        </section>
-      </div>
-
-      <section style="background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 16px">
-        <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap">
-          <h2 style="margin: 0; font-size: 18px; color: #003057">Clientes priorizados</h2>
-          <div role="group" aria-label="Filtrar" style="display: flex; gap: 6px; flex-wrap: wrap">
-            <sc-for list="{{filters}}" as="f" hint-placeholder-count="4">
-              <button type="button" sc-camel-on-click="{{f.pick}}" aria-pressed="{{f.pressed}}" style="{{f.style}}">{{f.label}}</button>
-            </sc-for>
+        </div>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center">
+          <label for="buscar" style="position: absolute; left: -9999px">Buscar cliente</label>
+          <div style="flex: 1 1 280px; display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 14px; border-radius: 10px; background: #F2F5F9; border: 1px solid #E1E7EE; box-sizing: border-box">
+            <svg width="18" height="18" sc-camel-view-box="0 0 24 24" fill="none" stroke="#5B6876" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+            <input id="buscar" type="search" value="{{q}}" sc-camel-on-change="{{onSearch}}" placeholder="Buscar por nombre, cédula o NIT" style="flex: 1; min-width: 0; border: none; background: transparent; font-size: 14px; font-family: inherit; color: #1B2A3A; outline: none">
+          </div>
+          <div role="group" aria-label="Filtrar por segmento" style="display: flex; gap: 6px; flex-wrap: wrap">
+            <sc-for list="{{segs}}" as="s" hint-placeholder-count="4"><button type="button" sc-camel-on-click="{{s.pick}}" aria-pressed="{{s.pressed}}" style="{{s.style}}">{{s.label}}</button></sc-for>
           </div>
         </div>
         <div style="overflow-x: auto">
-          <sc-raw-table style="width: 100%; min-width: 900px; border-collapse: collapse; font-size: 14px">
-            <sc-raw-thead>
-              <sc-raw-tr style="color: #4F5D6B; font-size: 12.5px; text-align: left">
-                <sc-raw-th style="padding: 10px 12px; border-bottom: 1px solid #E1E7EE">Cliente</sc-raw-th>
-                <sc-raw-th style="padding: 10px 12px; border-bottom: 1px solid #E1E7EE; text-align: right">Saldo</sc-raw-th>
-                <sc-raw-th style="padding: 10px 12px; border-bottom: 1px solid #E1E7EE">Riesgo 30 d</sc-raw-th>
-                <sc-raw-th style="padding: 10px 12px; border-bottom: 1px solid #E1E7EE">Riesgo 60 d</sc-raw-th>
-                <sc-raw-th style="padding: 10px 12px; border-bottom: 1px solid #E1E7EE">Factor principal</sc-raw-th>
-                <sc-raw-th style="padding: 10px 12px; border-bottom: 1px solid #E1E7EE">Acción sugerida</sc-raw-th>
-                <sc-raw-th style="padding: 10px 12px; border-bottom: 1px solid #E1E7EE"><span style="position: absolute; left: -9999px">Abrir</span></sc-raw-th>
-              </sc-raw-tr>
-            </sc-raw-thead>
-            <sc-raw-tbody>
-              <sc-for list="{{rows}}" as="r" hint-placeholder-count="8">
-                <sc-raw-tr>
-                  <sc-raw-td style="padding: 12px; border-bottom: 1px solid #F0F3F7"><strong style="color: #003057">{{r.name}}</strong><div style="font-size: 12px; color: #4F5D6B">{{r.seg}} · perfil {{r.prof}}</div></sc-raw-td>
-                  <sc-raw-td style="padding: 12px; border-bottom: 1px solid #F0F3F7; text-align: right; font-weight: 700">{{r.aum}}</sc-raw-td>
-                  <sc-raw-td style="padding: 12px; border-bottom: 1px solid #F0F3F7"><span style="{{r.s30}}">{{r.c30}}</span></sc-raw-td>
-                  <sc-raw-td style="padding: 12px; border-bottom: 1px solid #F0F3F7"><span style="{{r.s60}}">{{r.c60}}</span></sc-raw-td>
-                  <sc-raw-td style="padding: 12px; border-bottom: 1px solid #F0F3F7; font-size: 13px; color: #3D4C5B">{{r.factor}}</sc-raw-td>
-                  <sc-raw-td style="padding: 12px; border-bottom: 1px solid #F0F3F7; font-size: 13px; color: #3D4C5B">{{r.nba}}</sc-raw-td>
-                  <sc-raw-td style="padding: 12px; border-bottom: 1px solid #F0F3F7"><a href="Vista360.dc.html" style="display: inline-flex; align-items: center; height: 40px; padding: 0 14px; border-radius: 10px; border: 1px solid #C9D2DC; color: #003057; text-decoration: none; font-size: 13px; font-weight: 700; white-space: nowrap">Vista 360</a></sc-raw-td>
-                </sc-raw-tr>
-              </sc-for>
-            </sc-raw-tbody>
-          </sc-raw-table>
+          <div class="rt" style="min-width: 1080px; display: flex; flex-direction: column">
+            <div class="rt-head" style="{{gridCols}}; padding: 0 10px 10px; border-bottom: 1px solid #E1E7EE; font-size: 12.5px; font-weight: 700; color: #4F5D6B">
+              <span>Cliente</span><span>Perfil oficial</span><span style="text-align: right">Saldo</span><span style="text-align: right">Rentabilidad</span><span>Líneas</span><span>Último contacto</span><sc-if value="{{fRiesgo}}"><span>Riesgo de fuga</span></sc-if><span><span style="position: absolute; left: -9999px">Abrir</span></span>
+            </div>
+            <sc-for list="{{rows}}" as="r" hint-placeholder-count="10">
+              <div class="rt-row" style="{{gridCols}}; padding: 10px; border-bottom: 1px solid #F0F3F7">
+                <div style="display: flex; gap: 12px; align-items: center; min-width: 0">
+                  <span style="flex: none; width: 38px; height: 38px; border-radius: 10px; background: #E3F1FB; color: #003057; font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center">{{r.iniciales}}</span>
+                  <div style="display: flex; flex-direction: column; gap: 2px; min-width: 0">
+                    <strong style="font-size: 14px; color: #003057">{{r.nombre}}</strong>
+                    <span style="font-size: 12px; color: #4F5D6B">{{r.sub}}</span>
+                    <sc-if value="{{r.grupo}}"><span style="align-self: flex-start; font-size: 11px; font-weight: 700; padding: 1px 7px; border-radius: 999px; background: #EEF4FA; color: #004E8C">{{r.grupo}}</span></sc-if>
+                  </div>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 13px; font-weight: 600">{{r.perfil}}</span><sc-if value="{{r.perfilVencido}}"><span style="font-size: 11.5px; font-weight: 700; color: #9A1F24">Perfil vencido</span></sc-if></div>
+                <strong style="text-align: right; font-size: 14px">{{r.saldo}}</strong>
+                <span style="display: flex; justify-content: flex-end"><span style="{{r.rentChip}}">{{r.rent}}</span></span>
+                <div style="display: flex; flex-direction: column; gap: 4px"><span style="display: flex; gap: 4px"><sc-for list="{{r.lineas}}" as="l" hint-placeholder-count="4"><span title="{{l.title}}" style="{{l.style}}"></span></sc-for></span><span style="font-size: 11.5px; color: #4F5D6B">{{r.productos}}</span></div>
+                <div style="display: flex; flex-direction: column; gap: 1px"><span style="font-size: 13px; font-weight: 600">{{r.contacto}}</span><span style="{{r.contactoStyle}}">{{r.contactoSub}}</span></div>
+                <sc-if value="{{fRiesgo}}"><span><span style="{{r.riesgoStyle}}">{{r.riesgo}}</span></span></sc-if>
+                <a href="{{r.href}}" aria-label="{{r.aria}}" class="rt-full" style="justify-self: end; display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 14px; border-radius: 10px; background: #0072CE; color: #FFFFFF; text-decoration: none; font-size: 13px; font-weight: 700; white-space: nowrap">Vista 360</a>
+              </div>
+            </sc-for>
+            <sc-if value="{{empty}}"><p style="margin: 0; padding: 24px 10px; font-size: 14px; color: #4F5D6B">No hay clientes que coincidan con la búsqueda.</p></sc-if>
+          </div>
+        </div>
+        <div style="display: flex; gap: 16px; flex-wrap: wrap; font-size: 12px; color: #4F5D6B">
+          <span>Líneas de producto:</span>
+          <span style="display: flex; align-items: center; gap: 6px"><span style="width: 12px; height: 12px; border-radius: 3px; background: #00A3E0"></span>Fondos</span>
+          <span style="display: flex; align-items: center; gap: 6px"><span style="width: 12px; height: 12px; border-radius: 3px; background: #0072CE"></span>Fiducia</span>
+          <span style="display: flex; align-items: center; gap: 6px"><span style="width: 12px; height: 12px; border-radius: 3px; background: #003057"></span>Intermediación</span>
+          <span style="display: flex; align-items: center; gap: 6px"><span style="width: 12px; height: 12px; border-radius: 3px; background: #999B30"></span>Alianza Corp</span>
+          <span style="display: flex; align-items: center; gap: 6px"><span style="width: 12px; height: 12px; border-radius: 3px; background: #E1E7EE"></span>Sin productos</span>
         </div>
       </section>
     </main>
+    </sc-if>
   </div>
+
 </div>
 </x-dc>
 <script src="../js/Cartera.js"></script>
-<script type="text/x-dc" data-dc-script="" data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1500}}">
+<script type="text/x-dc" data-dc-script="" data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1300}}">
 const Component = window.AppLogic.Cartera(DCLogic, StreamableLogic, React);
 </script>
-
 
 </body></html>

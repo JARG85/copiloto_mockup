@@ -1,12 +1,20 @@
 <!DOCTYPE html>
 <html lang="es"><head>
 <meta charset="utf-8">
-<title>Vista Cliente 360 · Plataforma Asesor</title>
+<title>Vista Cliente 360 · Copiloto Comercial</title>
 <link rel="icon" href="../assets/favicon.ico" sizes="any">
 <link rel="icon" href="../assets/favicon-32.png" type="image/png">
 <link rel="apple-touch-icon" href="../assets/favicon-180.png">
 <script src="../js/feature-flags.js"></script>
 <script src="../js/dev-panel.js"></script>
+<script src="../js/data/copiloto-data.js"></script>
+<script src="../js/data/detalle-schema.js"></script>
+<script src="../js/portafolio.js"></script>
+<script src="../js/pensiones.js"></script>
+<script src="../js/ui.js"></script>
+<script src="../js/modal.js"></script>
+<script src="../js/vistas-modulos.js"></script>
+<script src="../js/asistente.js"></script>
 <script src="../js/resources.js"></script>
 <script src="../vendor/dc-runtime.js"></script>
 </head>
@@ -15,463 +23,1124 @@
 <helmet>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="../css/fonts.css">
+<link rel="stylesheet" href="../css/app.css">
 <link rel="stylesheet" href="../css/Vista360.css">
 </helmet>
-<div style="min-height: 3560px; display: flex; flex-wrap: wrap; font-family: 'Open Sans', 'Segoe UI', system-ui, sans-serif; color: #1B2A3A; background: #F2F5F9">
+<div style="min-height: 100vh; display: flex; flex-wrap: wrap; font-family: 'Open Sans', 'Segoe UI', system-ui, sans-serif; color: #1B2A3A; background: #F2F5F9">
 
-  <!-- SIDEBAR -->
-  <nav aria-label="Navegación principal" style="flex: 1 1 248px; position: relative; overflow: hidden; background: #003057; color: #FFFFFF; padding: 28px 18px; display: flex; flex-direction: column; gap: 28px; box-sizing: border-box">
-    <div aria-hidden="true" style="position: absolute; left: 0; right: 0; bottom: 0; height: 320px; background: #0072CE; clip-path: polygon(0% 100%, 0% 72%, 100% 28%, 100% 100%); opacity: 0.55"></div>
-    <img src="../assets/alianza-logo.png" alt="Alianza Fiduciaria" style="position: relative; width: 150px; height: auto; margin-left: 8px">
-    <div style="position: relative; display: flex; flex-direction: column; gap: 4px">
-      <span style="font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #9FB8CF; padding: 0 12px 8px">Asesor 360</span>
-      <a href="Cartera.dc.html" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 10px; color: #D6E4F0; text-decoration: none; font-size: 14.5px; font-weight: 600">
-        <svg width="20" height="20" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h18v13H3z"></path><path d="M8 7V4h8v3"></path></svg>Mi cartera</a>
-      <a href="Vista360.dc.html" aria-current="page" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 10px; background: #FFFFFF; color: #003057; text-decoration: none; font-size: 14.5px; font-weight: 700">
-        <svg width="20" height="20" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21a8 8 0 0 1 16 0"></path></svg>Vista cliente 360</a>
-      <a href="GrupoFamiliar.dc.html" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 10px; color: #D6E4F0; text-decoration: none; font-size: 14.5px; font-weight: 600">
-        <svg width="20" height="20" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="8" r="3"></circle><circle cx="17" cy="9" r="2.5"></circle><path d="M2 20a6 6 0 0 1 12 0"></path><path d="M14 20a4 4 0 0 1 8 0"></path></svg>Grupo familiar</a>
-      <a href="RentaVariable.dc.html" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 10px; color: #D6E4F0; text-decoration: none; font-size: 14.5px; font-weight: 600">
-        <svg width="20" height="20" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 20h18"></path><path d="m4 15 5-5 4 3 7-7"></path></svg>Renta variable</a>
-      <a href="Pensiones.dc.html" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 10px; color: #D6E4F0; text-decoration: none; font-size: 14.5px; font-weight: 600"><svg width="20" height="20" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10h18"></path><path d="M12 2 3 7h18z"></path><path d="M5 10v9"></path><path d="M9 10v9"></path><path d="M15 10v9"></path><path d="M19 10v9"></path><path d="M3 21h18"></path></svg>Pensiones</a>
-      <a href="Cartera.dc.html" style="display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 10px; color: #D6E4F0; text-decoration: none; font-size: 14.5px; font-weight: 600">
-        <span style="display: flex; align-items: center; gap: 12px"><svg width="20" height="20" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 8 3 8H3s3-1 3-8"></path><path d="M10 20a2 2 0 0 0 4 0"></path></svg>Alertas</span>
-        <span style="min-width: 22px; height: 22px; border-radius: 11px; background: #D2D755; color: #003057; font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center">7</span></a>
+  <!-- MENÚ LATERAL (ítems en js/ui.js · AlianzaNav; estilos y responsive en css/app.css) -->
+  <nav aria-label="Navegación principal" class="app-nav">
+    <div aria-hidden="true" class="app-nav-diag"></div>
+    <div class="app-nav-top">
+      <img src="../assets/alianza-logo.png" alt="Alianza Fiduciaria" class="app-nav-logo">
+      <img src="../assets/favicon-180.png" alt="Alianza Fiduciaria" class="app-nav-mark">
+      <button type="button" class="app-nav-toggle" data-nav-toggle="" aria-controls="app-nav-panel" aria-label="Abrir menú">
+        <svg class="ico-open" width="22" height="22" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16 M4 12h16 M4 18h16"></path></svg>
+        <svg class="ico-close" width="22" height="22" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12 M18 6 6 18"></path></svg>
+      </button>
     </div>
-    <div style="position: relative; margin-top: auto; display: flex; flex-direction: column; gap: 12px">
-      <div style="display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 12px; background: #0B3D6B">
-        <span style="width: 40px; height: 40px; border-radius: 50%; background: #00A3E0; color: #003057; font-weight: 800; display: flex; align-items: center; justify-content: center; font-size: 14px">LG</span>
-        <div style="display: flex; flex-direction: column"><strong style="font-size: 14px">Laura Gómez</strong><span style="font-size: 12px; color: #B9CDE0">Asesora · Bogotá</span></div>
+    <div id="app-nav-panel" class="app-nav-panel">
+      <div class="app-nav-menu">
+        <span class="app-nav-kicker">Copiloto comercial</span>
+        <sc-for list="{{nav.items}}" as="i" hint-placeholder-count="6">
+          <a href="{{i.href}}" aria-current="{{i.current}}" title="{{i.label}}" data-endef="{{i.enDef}}" class="app-nav-item" style="{{i.style}}">
+            <svg width="20" height="20" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none"><path d="{{i.icon}}"></path></svg>
+            <span class="app-nav-label">{{i.label}}<sc-if value="{{i.enDef}}"><span style="{{i.badgeStyle}}">En definición</span></sc-if></span>
+            <sc-if value="{{i.count}}"><span class="app-nav-count" style="{{i.countStyle}}">{{i.count}}</span></sc-if>
+          </a>
+        </sc-for>
       </div>
-      <a href="../index.html" style="display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 12px; color: #D6E4F0; text-decoration: none; font-size: 14px; font-weight: 600">
-        <svg width="18" height="18" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><path d="m16 17 5-5-5-5"></path><path d="M21 12H9"></path></svg>Cerrar sesión</a>
+      <div class="app-nav-foot">
+        <div class="app-nav-user" title="{{nav.asesor.nombre}}">
+          <span class="app-nav-avatar">{{nav.asesor.iniciales}}</span>
+          <div class="app-nav-user-text" style="display: flex; flex-direction: column"><strong style="font-size: 14px">{{nav.asesor.nombre}}</strong><span style="font-size: 12px; color: #B9CDE0">{{nav.asesor.cargo}}</span></div>
+        </div>
+        <a href="../index.html" class="app-nav-logout" title="Cerrar sesión">
+          <svg width="18" height="18" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><path d="m16 17 5-5-5-5"></path><path d="M21 12H9"></path></svg><span class="app-nav-logout-text">Cerrar sesión</span></a>
+      </div>
     </div>
   </nav>
 
   <!-- CONTENT -->
-  <div style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+  <div class="v360-content app-content" style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
 
-    <header style="background: #FFFFFF; border-bottom: 1px solid #E1E7EE; padding: 14px 32px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap">
+    <header class="app-header" style="background: #FFFFFF; border-bottom: 1px solid #E1E7EE; padding: 8px 24px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap">
+      <a href="Cartera.dc.html" style="display: flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 12px 0 6px; border-radius: 10px; color: #003057; text-decoration: none; font-size: 13.5px; font-weight: 700">
+        <svg width="18" height="18" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg>Mi cartera</a>
       <label for="q" style="position: absolute; left: -9999px">Buscar cliente</label>
-      <div style="flex: 1 1 320px; display: flex; align-items: center; gap: 10px; height: 46px; padding: 0 16px; border-radius: 10px; background: #F2F5F9; border: 1px solid #E1E7EE">
+      <div style="flex: 1 1 280px; display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 14px; border-radius: 10px; background: #F2F5F9; border: 1px solid #E1E7EE; box-sizing: border-box">
         <svg width="18" height="18" sc-camel-view-box="0 0 24 24" fill="none" stroke="#5B6876" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
-        <input id="q" type="search" placeholder="Buscar cliente por nombre, cédula o NIT" style="flex: 1; border: none; background: transparent; font-size: 14.5px; font-family: inherit; color: #1B2A3A; outline: none">
+        <input id="q" type="search" placeholder="Buscar cliente por nombre, cédula o NIT" style="flex: 1; min-width: 0; border: none; background: transparent; font-size: 14px; font-family: inherit; color: #1B2A3A; outline: none">
       </div>
-      <span style="font-size: 13px; color: #4F5D6B">Corte de datos: <strong style="color: #1B2A3A">12 oct 2026</strong></span>
+      <span style="font-size: 13px; color: #4F5D6B">Corte de datos: <strong style="color: #1B2A3A">{{corte}}</strong></span>
       <span style="font-size: 12px; font-weight: 700; padding: 6px 10px; border-radius: 999px; background: #FFF4DE; color: #8A5300">Datos ilustrativos</span>
-      <button type="button" aria-label="Notificaciones" style="width: 44px; height: 44px; border-radius: 10px; border: 1px solid #E1E7EE; background: #FFFFFF; display: flex; align-items: center; justify-content: center; cursor: pointer">
-        <svg width="20" height="20" sc-camel-view-box="0 0 24 24" fill="none" stroke="#003057" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 8 3 8H3s3-1 3-8"></path><path d="M10 20a2 2 0 0 0 4 0"></path></svg>
-      </button>
     </header>
 
-    <main style="padding: 28px 32px 48px; display: flex; flex-direction: column; gap: 24px; max-width: 1240px; width: 100%; box-sizing: border-box">
+    <main class="v360-main app-main" style="padding: 12px 24px 14px; display: flex; flex-direction: column; gap: 10px; width: 100%; box-sizing: border-box">
 
-      <!-- CLIENT HEADER -->
-      <section style="position: relative; overflow: hidden; background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 16px; padding: 24px 28px; display: flex; flex-wrap: wrap; gap: 24px; align-items: center; justify-content: space-between">
+      <!-- ENCABEZADO DEL CLIENTE -->
+      <section style="position: relative; overflow: hidden; flex: none; background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 14px; padding: 12px 20px; display: flex; gap: 14px; align-items: center">
         <div aria-hidden="true" style="position: absolute; top: 0; right: 0; width: 220px; height: 100%; background: #EEF4FA; clip-path: polygon(45% 0%, 100% 0%, 100% 100%, 0% 100%)"></div>
-        <div style="position: relative; display: flex; gap: 18px; align-items: center; flex-wrap: wrap">
-          <span style="width: 64px; height: 64px; border-radius: 16px; background: #003057; color: #FFFFFF; font-size: 22px; font-weight: 800; display: flex; align-items: center; justify-content: center">CM</span>
-          <div style="display: flex; flex-direction: column; gap: 6px">
-            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap">
-              <h1 style="margin: 0; font-size: 26px; font-weight: 700; color: #003057">Carlos Andrés Mejía</h1>
-              <span style="font-size: 12px; font-weight: 700; padding: 5px 10px; border-radius: 999px; background: #003057; color: #FFFFFF">Patrimonial</span>
-            </div>
-            <span style="font-size: 14px; color: #4F5D6B">C.C. ••• 4821 · Cliente desde 14 mar 2016 · Asesora: Laura Gómez</span>
-            <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px">
-              <span style="font-size: 12.5px; font-weight: 600; padding: 5px 10px; border-radius: 8px; background: #E3F1FB; color: #004E8C">Perfil oficial: Moderado</span>
-              <span style="font-size: 12.5px; font-weight: 600; padding: 5px 10px; border-radius: 8px; background: #F2F5F9; color: #3D4C5B">Perfil actualizado: 03 feb 2026</span>
-              <span style="font-size: 12.5px; font-weight: 600; padding: 5px 10px; border-radius: 8px; background: #F2F5F9; color: #3D4C5B">7 productos activos</span>
-            </div>
+        <div aria-hidden="true" style="position: absolute; top: 0; right: 0; width: 90px; height: 100%; background: #D2D755; opacity: 0.35; clip-path: polygon(70% 0%, 100% 0%, 100% 100%, 20% 100%)"></div>
+        <span style="position: relative; flex: none; width: 52px; height: 52px; border-radius: 14px; background: #003057; color: #FFFFFF; font-size: 18px; font-weight: 800; display: flex; align-items: center; justify-content: center">{{hdr.iniciales}}</span>
+        <div style="position: relative; flex: 1; display: flex; flex-direction: column; gap: 4px; min-width: 0">
+          <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap">
+            <h1 style="margin: 0; font-size: 22px; font-weight: 700; color: #003057">{{hdr.titulo}}</h1>
+            <sc-for list="{{hdr.chips}}" as="ch" hint-placeholder-count="2"><span title="{{ch.title}}" style="{{ch.style}}">{{ch.text}}</span></sc-for>
+            <sc-if value="{{riesgo.show}}">
+              <sc-if value="{{riesgo.link}}">
+                <button type="button" sc-camel-on-click="{{abrirAlertas}}" aria-haspopup="dialog" style="{{riesgo.linkStyle}}" title="Ver alertas de riesgo de fuga"><span style="{{riesgo.dot}}"></span>{{riesgo.text}}
+                  <svg width="14" height="14" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"></path><path d="M8 7h9v9"></path></svg></button>
+              </sc-if>
+              <sc-if value="{{riesgo.noLink}}"><span style="{{riesgo.style}}"><span style="{{riesgo.dot}}"></span>{{riesgo.text}}</span></sc-if>
+            </sc-if>
           </div>
-        </div>
-        <div style="position: relative; display: flex; flex-direction: column; gap: 12px; align-items: flex-end">
-          <div role="group" aria-label="Alcance de la vista" style="display: flex; padding: 4px; border-radius: 12px; background: #F2F5F9; border: 1px solid #E1E7EE">
-            <button type="button" sc-camel-on-click="{{setInd}}" aria-pressed="{{indPressed}}" style="{{indStyle}}">Cliente individual</button>
-            <button type="button" sc-camel-on-click="{{setGrp}}" aria-pressed="{{grpPressed}}" style="{{grpStyle}}">Grupo familiar · 5 cuentas</button>
-          </div>
-          <div style="display: flex; gap: 10px; flex-wrap: wrap">
-            <a href="#" style="display: flex; align-items: center; height: 44px; padding: 0 18px; border-radius: 10px; border: 1px solid #C9D2DC; color: #003057; text-decoration: none; font-size: 14px; font-weight: 600; background: #FFFFFF">Registrar contacto</a>
-            <a href="#" style="display: flex; align-items: center; height: 44px; padding: 0 18px; border-radius: 10px; background: #0072CE; color: #FFFFFF; text-decoration: none; font-size: 14px; font-weight: 700">Preparar reunión</a>
+          <div style="display: flex; gap: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap">
+            <span style="font-size: 13px; color: #4F5D6B">{{hdr.linea}}</span>
+            <sc-if value="{{scope.show}}">
+              <div role="group" aria-label="Alcance de la vista" style="flex: none; display: flex; padding: 3px; border-radius: 12px; background: #F2F5F9; border: 1px solid #E1E7EE">
+                <button type="button" sc-camel-on-click="{{scope.ind.pick}}" aria-pressed="{{scope.ind.pressed}}" style="{{scope.ind.style}}">Cliente individual</button>
+                <button type="button" sc-camel-on-click="{{scope.grp.pick}}" aria-pressed="{{scope.grp.pressed}}" style="{{scope.grp.style}}">{{scope.grp.label}}</button>
+              </div>
+            </sc-if>
           </div>
         </div>
       </section>
 
-      <!-- KPI ROW -->
-      <section aria-label="Indicadores clave" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px">
-        <div style="background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 8px">
-          <span style="font-size: 13px; font-weight: 600; color: #4F5D6B">{{k.aumLabel}}</span>
-          <strong style="font-size: 30px; font-weight: 800; color: #003057">{{k.aum}}</strong>
-          <span style="font-size: 13px; color: #4F5D6B">{{k.aumSub}}</span>
+      <!-- TOTALES + INFORMACIÓN FINANCIERA -->
+      <section class="kpi-grid" aria-label="Totales e información financiera" style="{{kpiGrid}}">
+        <div style="position: relative; overflow: hidden; background: #003057; border-radius: 12px; padding: 10px 16px; display: flex; flex-direction: column; gap: 0; color: #FFFFFF">
+          <div aria-hidden="true" style="position: absolute; inset: 0; background: #0072CE; clip-path: polygon(72% 100%, 100% 30%, 100% 100%)"></div>
+          <div aria-hidden="true" style="position: absolute; inset: 0; background: #00A3E0; clip-path: polygon(88% 100%, 100% 66%, 100% 100%)"></div>
+          <span style="position: relative; font-size: 12.5px; font-weight: 600; color: #D6E4F0">Saldo total</span>
+          <strong style="position: relative; font-size: 22px; font-weight: 800; line-height: 1.25">{{kpi.saldo}}</strong>
+          <span style="position: relative; font-size: 12px; color: #D6E4F0">{{kpi.saldoSub}}</span>
         </div>
-        <div style="background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 8px">
-          <span style="font-size: 13px; font-weight: 600; color: #4F5D6B">Rentabilidad desde vinculación</span>
-          <strong style="font-size: 30px; font-weight: 800; color: #00806B">{{k.ret}}</strong>
-          <span style="font-size: 13px; color: #4F5D6B">{{k.retSub}}</span>
+        <div style="background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 12px; padding: 10px 16px; display: flex; flex-direction: column; gap: 0">
+          <span style="font-size: 12.5px; font-weight: 600; color: #4F5D6B">Rentabilidad total</span>
+          <strong style="{{kpi.rentStyle}}">{{kpi.rent}}</strong>
+          <span style="font-size: 12px; color: #4F5D6B">{{kpi.rentSub}}</span>
         </div>
-        <div style="background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 8px">
-          <span style="font-size: 13px; font-weight: 600; color: #4F5D6B">Flujo neto últimos 30 días</span>
-          <strong style="font-size: 30px; font-weight: 800; color: #B3272D">{{k.flow}}</strong>
-          <span style="font-size: 13px; color: #4F5D6B">{{k.flowSub}}</span>
-        </div>
-        <a href="#fuga" style="text-decoration: none; position: relative; overflow: hidden; background: #003057; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 8px; color: #FFFFFF">
-          <div aria-hidden="true" style="position: absolute; inset: 0; background: #B3272D; clip-path: polygon(70% 100%, 100% 40%, 100% 100%)"></div>
-          <span style="position: relative; font-size: 13px; font-weight: 600; color: #D6E4F0">Riesgo de fuga a 60 días</span>
-          <strong style="position: relative; font-size: 30px; font-weight: 800">{{k.churn}} <span style="font-size: 16px; font-weight: 700; color: #FFB0A8">Alto</span></strong>
-          <span style="position: relative; font-size: 13px; color: #D6E4F0">Ver factores explicativos</span>
-        </a>
+        <sc-if value="{{fFin}}">
+          <div style="background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 12px; padding: 10px 16px; display: flex; flex-direction: column; gap: 0">
+            <span style="font-size: 12.5px; font-weight: 600; color: #4F5D6B">Patrimonio</span>
+            <strong style="font-size: 22px; font-weight: 800; line-height: 1.25; color: #003057">{{kpi.patrimonio}}</strong>
+            <span style="font-size: 12px; color: #4F5D6B">{{kpi.patrimonioSub}}</span>
+          </div>
+          <div style="background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 12px; padding: 10px 16px; display: flex; flex-direction: column; gap: 0">
+            <span style="font-size: 12.5px; font-weight: 600; color: #4F5D6B">Ingresos mensuales</span>
+            <strong style="font-size: 22px; font-weight: 800; line-height: 1.25; color: #003057">{{kpi.ingresos}}</strong>
+            <span style="font-size: 12px; color: #4F5D6B">{{kpi.ingresosSub}}</span>
+          </div>
+        </sc-if>
       </section>
 
-      <!-- AI BRIEFING -->
-      <!-- Oculta por defecto; se activa desde el panel oculto de feature flags (showBriefing). -->
-      <sc-if value="{{showBriefing}}" hint-placeholder-val="{{ true }}">
-      <section style="background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 16px; padding: 24px 28px; display: flex; flex-direction: column; gap: 16px">
-        <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap">
-          <div style="display: flex; gap: 12px; align-items: center">
-            <span style="width: 40px; height: 40px; border-radius: 12px; background: #E3F1FB; display: flex; align-items: center; justify-content: center">
-              <svg width="22" height="22" sc-camel-view-box="0 0 24 24" fill="none" stroke="#0072CE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v3"></path><path d="M12 18v3"></path><path d="M3 12h3"></path><path d="M18 12h3"></path><path d="m6 6 2 2"></path><path d="m16 16 2 2"></path><path d="m6 18 2-2"></path><path d="m16 8 2-2"></path><circle cx="12" cy="12" r="3"></circle></svg>
-            </span>
+      <!-- CUERPO -->
+      <div class="v360-body" style="{{bodyGrid}}">
+
+        <sc-if value="{{showLeft}}">
+        <div class="v360-scroll" style="display: flex; flex-direction: column; gap: 12px; min-width: 0">
+
+          <!-- Contactabilidad -->
+          <sc-if value="{{contacto.show}}">
+          <section aria-labelledby="h-contacto" style="background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 14px; padding: 12px 16px; display: flex; flex-direction: column; gap: 0">
             <div style="display: flex; flex-direction: column; gap: 2px">
-              <h2 style="margin: 0; font-size: 18px; color: #003057">Briefing antes del contacto</h2>
-              <span style="font-size: 12.5px; color: #5B6876">Generado por el copiloto a las 08:12 · Revisa la evidencia antes de usarlo</span>
+              <h2 id="h-contacto" style="margin: 0; font-size: 15px; color: #003057">Contactabilidad</h2>
+              <span style="font-size: 12px; color: #4F5D6B">Preferencia: {{contacto.canal}}</span>
             </div>
-          </div>
-          <div style="display: flex; gap: 8px">
-            <button type="button" style="height: 40px; padding: 0 14px; border-radius: 10px; border: 1px solid #C9D2DC; background: #FFFFFF; color: #003057; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer">Útil</button>
-            <button type="button" style="height: 40px; padding: 0 14px; border-radius: 10px; border: 1px solid #C9D2DC; background: #FFFFFF; color: #003057; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer">No útil</button>
-          </div>
-        </div>
-        <ul style="margin: 0; padding: 0 0 0 20px; display: flex; flex-direction: column; gap: 10px; font-size: 15px; line-height: 1.6; color: #1B2A3A">
-          <li>Retiró <strong>$310 M</strong> del FIC de liquidez el 22 sep y su saldo cae por tercer mes consecutivo. <a href="#" style="font-size: 12px; font-weight: 700; text-decoration: none; padding: 1px 6px; border-radius: 6px; background: #E3F1FB">[1] Movimientos</a></li>
-          <li>Su exposición a mayor riesgo (34 %) supera el rango de su perfil Moderado; principalmente por acciones locales. <a href="#" style="font-size: 12px; font-weight: 700; text-decoration: none; padding: 1px 6px; border-radius: 6px; background: #E3F1FB">[2] Extracto sep-2026</a></li>
-          <li>En la última llamada (28 sep) preguntó por alternativas con mejor rentabilidad en renta fija. Sin contacto desde hace 15 días. <a href="#" style="font-size: 12px; font-weight: 700; text-decoration: none; padding: 1px 6px; border-radius: 6px; background: #E3F1FB">[3] CRM</a></li>
-          <li>Sus dos empresas concentran el 43 % del patrimonio del grupo; el encargo fiduciario de Inversiones Mejía SAS vence el 18 nov. <a href="#" style="font-size: 12px; font-weight: 700; text-decoration: none; padding: 1px 6px; border-radius: 6px; background: #E3F1FB">[4] Contratos</a></li>
-        </ul>
-      </section>
-      </sc-if>
+            <span style="height: 4px"></span>
+            <sc-for list="{{contacto.telefonos}}" as="t" hint-placeholder-count="2">
+              <a href="{{t.href}}" style="display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 8px; margin: 0 -8px; border-radius: 8px; text-decoration: none; color: #1B2A3A">
+                <svg width="16" height="16" sc-camel-view-box="0 0 24 24" fill="none" stroke="#0072CE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"></path></svg>
+                <span style="flex: 1; min-width: 0; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis"><strong style="color: #003057">{{t.numero}}</strong> <span style="color: #4F5D6B">· {{t.tipo}}</span></span>
+                <sc-if value="{{t.pref}}"><span style="font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 999px; background: #EEF0D2; color: #3F410C">Preferido</span></sc-if>
+              </a>
+            </sc-for>
+            <sc-for list="{{contacto.correos}}" as="m" hint-placeholder-count="2">
+              <a href="{{m.href}}" style="display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 8px; margin: 0 -8px; border-radius: 8px; text-decoration: none; color: #1B2A3A">
+                <svg width="16" height="16" sc-camel-view-box="0 0 24 24" fill="none" stroke="#0072CE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="m3 7 9 6 9-6"></path></svg>
+                <span title="{{m.correo}}" style="flex: 1; min-width: 0; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis"><strong style="color: #003057">{{m.correo}}</strong> <span style="color: #4F5D6B">· {{m.tipo}}</span></span>
+                <sc-if value="{{m.pref}}"><span style="font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 999px; background: #EEF0D2; color: #3F410C">Preferido</span></sc-if>
+              </a>
+            </sc-for>
+            <div style="display: flex; align-items: center; gap: 10px; min-height: 36px">
+              <svg width="16" height="16" sc-camel-view-box="0 0 24 24" fill="none" stroke="#0072CE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+              <span style="font-size: 13px"><strong style="color: #003057">{{contacto.direccion}}</strong></span>
+            </div>
+          </section>
+          </sc-if>
 
-      <!-- EVOLUTION + COMPOSITION -->
-      <div style="display: flex; flex-wrap: wrap; gap: 24px">
-        <section style="flex: 999 1 560px; min-width: 0; background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 16px">
-          <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap">
-            <div style="display: flex; flex-direction: column; gap: 4px">
-              <h2 style="margin: 0; font-size: 18px; color: #003057">Evolución histórica del portafolio</h2>
-              <span style="font-size: 13px; color: #4F5D6B">Saldo mensual en millones de pesos · {{rangeLabel}}</span>
+          <!-- Integrantes del grupo familiar -->
+          <sc-if value="{{integrantes.show}}">
+          <section aria-labelledby="h-integrantes" style="background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 14px; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px">
+            <h2 id="h-integrantes" style="margin: 0 0 2px; font-size: 15px; color: #003057">Integrantes del grupo</h2>
+            <sc-for list="{{integrantes.items}}" as="m" hint-placeholder-count="6">
+              <button type="button" sc-camel-on-click="{{m.pick}}" aria-pressed="{{m.pressed}}" style="{{m.style}}">
+                <span style="{{m.iniStyle}}">{{m.ini}}</span>
+                <span style="display: flex; flex-direction: column; gap: 1px; min-width: 0">
+                  <strong style="font-size: 13px; color: #003057">{{m.nombre}}</strong>
+                  <span style="font-size: 11.5px; color: #4F5D6B">{{m.rel}}</span>
+                </span>
+                <span style="display: flex; flex-direction: column; align-items: flex-end; gap: 2px">
+                  <strong style="font-size: 13px; color: #1B2A3A">{{m.saldo}}</strong>
+                  <sc-if value="{{m.riesgo}}"><span style="{{m.riesgoStyle}}">Fuga {{m.riesgo}}</span></sc-if>
+                </span>
+              </button>
+            </sc-for>
+            <sc-if value="{{integrantes.sel}}">
+              <a href="{{integrantes.sel.href}}" style="display: flex; align-items: center; justify-content: center; min-height: 44px; border-radius: 10px; border: 1px solid #C9D2DC; color: #003057; text-decoration: none; font-size: 13px; font-weight: 700">{{integrantes.sel.label}}</a>
+            </sc-if>
+          </section>
+          </sc-if>
+
+          <!-- Historial de interacciones (compacto) -->
+          <sc-if value="{{inter.show}}">
+          <section aria-labelledby="h-inter" style="background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 14px; padding: 12px 16px; display: flex; flex-direction: column; gap: 8px">
+            <div style="display: flex; flex-direction: column; gap: 2px">
+              <h2 id="h-inter" style="margin: 0; font-size: 15px; color: #003057">Últimas interacciones</h2>
+              <span style="font-size: 12px; color: #4F5D6B">{{inter.ultimo}}</span>
             </div>
-            <div role="group" aria-label="Periodo" style="display: flex; padding: 4px; border-radius: 10px; background: #F2F5F9; gap: 2px">
-              <sc-for list="{{periods}}" as="p" hint-placeholder-count="4">
-                <button type="button" sc-camel-on-click="{{p.pick}}" aria-pressed="{{p.pressed}}" style="{{p.style}}">{{p.label}}</button>
+            <sc-for list="{{inter.items}}" as="x" hint-placeholder-count="3">
+              <div style="display: grid; grid-template-columns: 48px 10px minmax(0, 1fr); gap: 8px; align-items: start">
+                <span style="font-size: 12px; font-weight: 700; color: #4F5D6B; padding-top: 1px">{{x.fecha}}</span>
+                <span style="width: 10px; height: 10px; margin-top: 4px; border-radius: 50%; background: #0072CE"></span>
+                <div style="display: flex; flex-direction: column; gap: 1px; min-width: 0">
+                  <strong style="font-size: 13px; color: #003057">{{x.tipo}}</strong>
+                  <sc-if value="{{x.quien}}"><span style="font-size: 11.5px; font-weight: 600; color: #004E8C">{{x.quien}}</span></sc-if>
+                  <span style="font-size: 12px; line-height: 1.45; color: #3D4C5B; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden">{{x.nota}}</span>
+                </div>
+              </div>
+            </sc-for>
+            <sc-if value="{{inter.more}}">
+              <button type="button" sc-camel-on-click="{{inter.verTodo}}" aria-haspopup="dialog" style="min-height: 44px; border-radius: 10px; border: 1px solid #C9D2DC; background: #FFFFFF; color: #003057; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer">Ver todo ({{inter.total}})</button>
+            </sc-if>
+          </section>
+          </sc-if>
+        </div>
+        </sc-if>
+
+        <!-- PORTAFOLIO: pestañas -->
+        <section aria-label="Portafolio" class="v360-panel" style="min-width: 0; background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 14px; padding: 10px 16px; display: flex; flex-direction: column; gap: 8px">
+          <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap">
+            <div role="tablist" aria-label="Vistas del portafolio" style="display: flex; padding: 2px; border-radius: 10px; background: #F2F5F9; gap: 2px">
+              <sc-for list="{{tabs}}" as="t" hint-placeholder-count="5">
+                <button type="button" role="tab" id="{{t.id}}" aria-selected="{{t.selected}}" sc-camel-on-click="{{t.pick}}" style="{{t.style}}">{{t.label}}<sc-if value="{{t.endef}}"><span title="En definición" style="width: 8px; height: 8px; border-radius: 50%; background: #999B30"></span><span style="position: absolute; left: -9999px">(en definición)</span></sc-if></button>
               </sc-for>
             </div>
+            <span class="v360-tabhint" style="font-size: 12.5px; color: #4F5D6B; text-align: right"><strong style="color: #003057">{{port.scopeLabel}}</strong> · {{port.sub}}<sc-if value="{{portHint}}"> · clic en una línea del gráfico para ver su detalle</sc-if></span>
           </div>
-          <div style="display: flex; gap: 8px; flex-wrap: wrap">
-            <sc-for list="{{seriesBtns}}" as="s" hint-placeholder-count="5">
-              <button type="button" sc-camel-on-click="{{s.toggle}}" aria-pressed="{{s.pressed}}" style="{{s.style}}"><span style="{{s.dot}}"></span>{{s.name}}</button>
-            </sc-for>
+
+          <!-- Pestaña: Portafolio por línea → producto -->
+          <sc-if value="{{tabPort}}">
+          <div role="tabpanel" aria-labelledby="tab-port" class="v360-scroll" style="display: flex; flex-direction: column; flex: 1; gap: 6px; min-height: 0">
+            <!-- Gráfico de torta por línea de producto + leyenda (clic abre la línea) -->
+            <div class="v360-donut" style="display: flex; flex-direction: column; flex: 1; justify-content: center; gap: 28px; align-items: center; padding: 4px 0 10px">
+              <svg sc-camel-view-box="0 0 200 200" width="300" height="300" role="img" aria-label="{{donut.aria}}" style="flex: none">
+                <circle cx="100" cy="100" r="70" fill="none" stroke="#EEF1F5" stroke-width="30"></circle>
+                <sc-for list="{{donut.segs}}" as="d" hint-placeholder-count="4">
+                  <circle cx="100" cy="100" r="70" fill="none" stroke="{{d.color}}" stroke-width="30" stroke-dasharray="{{d.dash}}" stroke-dashoffset="{{d.offset}}" transform="rotate(-90 100 100)" sc-camel-on-click="{{d.pick}}" style="cursor: pointer"><title>{{d.title}}</title></circle>
+                </sc-for>
+                <text x="100" y="98" text-anchor="middle" font-size="26" font-weight="800" fill="#003057" font-family="Open Sans, sans-serif">{{donut.total}}</text>
+                <text x="100" y="122" text-anchor="middle" font-size="15" fill="#4F5D6B" font-family="Open Sans, sans-serif">millones COP</text>
+              </svg>
+              <div class="v360-legend" style="width: 100%; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px">
+                <sc-for list="{{donut.items}}" as="i" hint-placeholder-count="4">
+                  <button type="button" sc-camel-on-click="{{i.pick}}" aria-label="{{i.aria}}" style="{{i.style}}">
+                    <span style="{{i.sw}}"></span>
+                    <span style="flex: 1; min-width: 0; display: flex; flex-direction: column"><strong style="font-size: 13px; color: #003057">{{i.nombre}}</strong><span style="font-size: 12px; color: #4F5D6B">{{i.val}}</span></span>
+                    <strong style="font-size: 14px; color: #003057">{{i.pct}}</strong>
+                  </button>
+                </sc-for>
+              </div>
+            </div>
           </div>
-          <div style="width: 100%; overflow-x: auto">
-            <svg sc-camel-view-box="0 0 760 280" role="img" aria-label="Gráfico de líneas del saldo del portafolio por alternativa de inversión" style="width: 100%; min-width: 560px; height: auto; display: block">
-              <sc-for list="{{grid}}" as="g" hint-placeholder-count="5">
+          </sc-if>
+
+          <!-- Pestaña: Evolución histórica -->
+          <sc-if value="{{tabEvo}}">
+          <div role="tabpanel" aria-labelledby="tab-evo" class="v360-scroll" style="display: flex; flex-direction: column; gap: 10px; min-height: 0">
+            <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap">
+              <span style="font-size: 12.5px; color: #4F5D6B">Saldo mensual en millones de pesos · {{evo.rangeLabel}}</span>
+              <div role="group" aria-label="Periodo" style="display: flex; padding: 3px; border-radius: 10px; background: #F2F5F9; gap: 2px">
+                <sc-for list="{{evo.periods}}" as="p" hint-placeholder-count="4">
+                  <button type="button" sc-camel-on-click="{{p.pick}}" aria-pressed="{{p.pressed}}" style="{{p.style}}">{{p.label}}</button>
+                </sc-for>
+              </div>
+            </div>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap">
+              <sc-for list="{{evo.seriesBtns}}" as="s" hint-placeholder-count="5">
+                <button type="button" sc-camel-on-click="{{s.toggle}}" aria-pressed="{{s.pressed}}" style="{{s.style}}"><span style="{{s.dot}}"></span>{{s.name}}</button>
+              </sc-for>
+            </div>
+            <svg sc-camel-view-box="0 0 760 280" role="img" aria-label="Gráfico de líneas del saldo del portafolio por línea de producto" style="width: 100%; max-height: 300px; height: auto; display: block">
+              <sc-for list="{{evo.grid}}" as="g" hint-placeholder-count="5">
                 <line x1="56" x2="744" y1="{{g.y}}" y2="{{g.y}}" stroke="#E6EBF1" stroke-width="1"></line>
                 <text x="48" y="{{g.ty}}" text-anchor="end" font-size="11" fill="#5B6876" font-family="Open Sans, sans-serif">{{g.label}}</text>
               </sc-for>
-              <sc-for list="{{xticks}}" as="x" hint-placeholder-count="6">
+              <sc-for list="{{evo.xticks}}" as="x" hint-placeholder-count="6">
                 <text x="{{x.x}}" y="270" text-anchor="middle" font-size="11" fill="#5B6876" font-family="Open Sans, sans-serif">{{x.label}}</text>
               </sc-for>
-              <path d="{{area}}" fill="#0072CE" fill-opacity="0.08"></path>
-              <sc-for list="{{lines}}" as="l" hint-placeholder-count="3">
+              <path d="{{evo.area}}" fill="#0072CE" fill-opacity="0.08"></path>
+              <sc-for list="{{evo.lines}}" as="l" hint-placeholder-count="3">
                 <path d="{{l.d}}" fill="none" stroke="{{l.color}}" stroke-width="{{l.w}}" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="{{l.dash}}"></path>
               </sc-for>
-              <circle cx="{{lastX}}" cy="{{lastY}}" r="5" fill="#003057" stroke="#FFFFFF" stroke-width="2"></circle>
+              <circle cx="{{evo.lastX}}" cy="{{evo.lastY}}" r="5" fill="#003057" stroke="#FFFFFF" stroke-width="2"></circle>
             </svg>
+            <div class="kpi-grid" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; padding-top: 10px; border-top: 1px solid #EEF1F5">
+              <div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; color: #4F5D6B">Saldo al inicio del periodo</span><strong style="font-size: 16px; color: #003057">{{evo.sumStart}}</strong></div>
+              <div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; color: #4F5D6B">Saldo actual</span><strong style="font-size: 16px; color: #003057">{{evo.sumEnd}}</strong></div>
+              <div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; color: #4F5D6B">Máximo del periodo</span><strong style="font-size: 16px; color: #003057">{{evo.sumMax}}</strong></div>
+              <div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; color: #4F5D6B">Variación del periodo</span><strong style="font-size: 16px; color: #00806B">{{evo.sumVar}}</strong></div>
+            </div>
+            <span style="font-size: 11.5px; color: #4F5D6B">Serie ilustrativa: el último punto de cada línea coincide con su saldo actual.</span>
           </div>
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; padding-top: 4px; border-top: 1px solid #EEF1F5">
-            <div style="display: flex; flex-direction: column; gap: 2px; padding-top: 12px"><span style="font-size: 12px; color: #5B6876">Saldo al inicio del periodo</span><strong style="font-size: 17px; color: #003057">{{sumStart}}</strong></div>
-            <div style="display: flex; flex-direction: column; gap: 2px; padding-top: 12px"><span style="font-size: 12px; color: #5B6876">Saldo actual</span><strong style="font-size: 17px; color: #003057">{{sumEnd}}</strong></div>
-            <div style="display: flex; flex-direction: column; gap: 2px; padding-top: 12px"><span style="font-size: 12px; color: #5B6876">Máximo del periodo</span><strong style="font-size: 17px; color: #003057">{{sumMax}}</strong></div>
-            <div style="display: flex; flex-direction: column; gap: 2px; padding-top: 12px"><span style="font-size: 12px; color: #5B6876">Variación del periodo</span><strong style="font-size: 17px; color: #00806B">{{sumVar}}</strong></div>
-          </div>
-        </section>
+          </sc-if>
 
-        <section style="flex: 1 1 320px; background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 18px">
-          <div style="display: flex; flex-direction: column; gap: 4px">
-            <h2 style="margin: 0; font-size: 18px; color: #003057">Composición del portafolio</h2>
-            <span style="font-size: 13px; color: #4F5D6B">Por clase de activo · {{scopeLabel}}</span>
-          </div>
-          <div style="display: flex; justify-content: center">
-            <svg sc-camel-view-box="0 0 200 200" width="210" height="210" role="img" aria-label="Gráfico de torta de la composición por clase de activo">
-              <circle cx="100" cy="100" r="70" fill="none" stroke="#EEF1F5" stroke-width="28"></circle>
-              <sc-for list="{{donut}}" as="d" hint-placeholder-count="5">
-                <circle cx="100" cy="100" r="70" fill="none" stroke="{{d.color}}" stroke-width="28" stroke-dasharray="{{d.dash}}" stroke-dashoffset="{{d.offset}}" transform="rotate(-90 100 100)"></circle>
-              </sc-for>
-              <text x="100" y="96" text-anchor="middle" font-size="22" font-weight="800" fill="#003057" font-family="Open Sans, sans-serif">{{k.aumShort}}</text>
-              <text x="100" y="116" text-anchor="middle" font-size="11" fill="#5B6876" font-family="Open Sans, sans-serif">millones COP</text>
-            </svg>
-          </div>
-          <div style="display: flex; flex-direction: column; gap: 10px">
-            <sc-for list="{{donut}}" as="d" hint-placeholder-count="5">
-              <div style="display: flex; align-items: center; gap: 10px; font-size: 14px">
-                <span style="{{d.sw}}"></span>
-                <span style="flex: 1; color: #1B2A3A">{{d.name}}</span>
-                <span style="color: #5B6876; font-size: 13px">{{d.val}}</span>
-                <strong style="width: 44px; text-align: right; color: #003057">{{d.pct}}</strong>
+          <!-- Pestaña: Pensiones (FPV, permanencia y solicitudes) -->
+          <sc-if value="{{tabPens}}">
+          <div role="tabpanel" aria-labelledby="tab-pens" class="v360-scroll" style="display: flex; flex-direction: column; gap: 10px; min-height: 0">
+            <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap">
+              <h3 style="margin: 0; font-size: 14px; color: #003057">Planes de pensión voluntaria<sc-if value="{{pens.hayPlanes}}"> · {{pens.total}}</sc-if></h3>
+              <button type="button" sc-camel-on-click="{{pens.verConsolidado}}" aria-haspopup="dialog" style="min-height: 44px; padding: 0 14px; border-radius: 10px; border: 1px solid #C9D2DC; background: #FFFFFF; color: #003057; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer">Ver consolidado de pensiones</button>
+            </div>
+            <sc-if value="{{pens.sinPlanes}}"><span style="font-size: 13px; color: #4F5D6B">No tiene planes de pensión voluntaria en Alianza.</span></sc-if>
+            <sc-for list="{{pens.planes}}" as="p" hint-placeholder-count="1">
+              <article style="border: 1px solid #E1E7EE; border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 10px">
+                <div style="display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; align-items: flex-start">
+                  <span style="display: flex; flex-direction: column; gap: 2px"><strong style="font-size: 14.5px; color: #003057">{{p.nombre}}</strong><span style="font-size: 12px; color: #4F5D6B">{{p.plan}} · desde {{p.apertura}}<sc-if value="{{p.quien}}"> · {{p.quien}}</sc-if></span></span>
+                  <button type="button" sc-camel-on-click="{{p.abrir}}" aria-haspopup="dialog" aria-label="{{p.aria}}" style="min-height: 44px; padding: 0 12px; border-radius: 10px; border: 1px solid #C9D2DC; background: #FFFFFF; color: #003057; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer">Ver detalle</button>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px">
+                  <div style="padding: 8px 10px; border-radius: 10px; background: #F2F5F9; display: flex; flex-direction: column"><span style="font-size: 11.5px; color: #4F5D6B">Saldo</span><strong style="font-size: 15px; color: #003057">{{p.saldo}}</strong></div>
+                  <div style="padding: 8px 10px; border-radius: 10px; background: #F2F5F9; display: flex; flex-direction: column; align-items: flex-start; gap: 2px"><span style="font-size: 11.5px; color: #4F5D6B">Rentabilidad</span><span style="{{p.rentChip}}">{{p.rent}}</span></div>
+                  <div style="padding: 8px 10px; border-radius: 10px; background: #F2F5F9; display: flex; flex-direction: column"><span style="font-size: 11.5px; color: #4F5D6B">Aportes en 2026</span><strong style="font-size: 15px; color: #003057">{{p.aportes}}</strong></div>
+                  <div style="padding: 8px 10px; border-radius: 10px; background: #F2F5F9; display: flex; flex-direction: column; align-items: flex-start; gap: 2px"><span style="font-size: 11.5px; color: #4F5D6B">Permanencia hasta {{p.permanencia}}</span><span style="{{p.permStyle}}">{{p.permLabel}}</span><span style="font-size: 11.5px; color: #3D4C5B">{{p.dias}}</span></div>
+                </div>
+                <span style="font-size: 12px; color: #4F5D6B">Beneficio tributario: {{p.beneficio}}. Retirar antes de cumplir la permanencia hace perder el beneficio.</span>
+                <sc-if value="{{p.aviso}}"><div role="note" style="padding: 8px 12px; border-radius: 10px; background: #FDE8E6; color: #7A1A1E; font-size: 12.5px; font-weight: 600">La permanencia se cumple en menos de 30 días: si el cliente pide un retiro, conviene esperar a esa fecha.</div></sc-if>
+              </article>
+            </sc-for>
+            <h3 style="margin: 6px 0 0; font-size: 14px; color: #003057">Solicitudes en curso</h3>
+            <sc-if value="{{pens.sinSol}}"><span style="font-size: 13px; color: #4F5D6B">Sin solicitudes de pensiones en curso.</span></sc-if>
+            <sc-for list="{{pens.solicitudes}}" as="q" hint-placeholder-count="1">
+              <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap; padding: 10px 12px; border: 1px solid #EEF1F5; border-radius: 10px">
+                <span style="flex: 1 1 220px; display: flex; flex-direction: column; gap: 2px"><strong style="font-size: 13.5px; color: #003057">{{q.tipo}}</strong><span style="font-size: 12px; color: #4F5D6B">{{q.plan}}<sc-if value="{{q.quien}}"> · {{q.quien}}</sc-if><sc-if value="{{q.detalle}}"> · {{q.detalle}}</sc-if></span></span>
+                <span style="{{q.estadoStyle}}">{{q.estado}}</span>
+                <span style="{{q.venceStyle}}">{{q.vence}}</span>
               </div>
             </sc-for>
           </div>
+          </sc-if>
+
+          <!-- Pestaña: Señales de churn (módulo Alertas) -->
+          <sc-if value="{{tabChurn}}">
+          <div role="tabpanel" aria-labelledby="tab-churn" class="v360-scroll" style="display: flex; flex-direction: column; gap: 10px; min-height: 0">
+            <div role="note" style="display: flex; gap: 8px; align-items: center; padding: 8px 12px; border-radius: 10px; background: #FFF4DE; color: #5C3A00; font-size: 12.5px"><span style="width: 8px; height: 8px; border-radius: 50%; background: #999B30; flex: none"></span>Criterios del modelo en definición con el área comercial. Puntajes y señales ilustrativos.</div>
+            <sc-if value="{{churn.uno}}">
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px">
+                <div style="padding: 12px 14px; border-radius: 12px; background: #F7F9FB; border: 1px solid #EEF1F5; display: flex; flex-direction: column; gap: 8px">
+                  <div style="display: flex; justify-content: space-between; align-items: center"><span style="font-size: 12.5px; font-weight: 600; color: #4F5D6B">{{churn.uno.m30.label}}</span><span style="{{churn.uno.m30.chip}}">{{churn.uno.m30.nivel}}</span></div>
+                  <div style="display: flex; align-items: center; gap: 10px"><strong style="font-size: 24px; font-weight: 800; color: #003057; min-width: 36px">{{churn.uno.m30.v}}</strong><div role="img" aria-label="{{churn.uno.m30.label}}: {{churn.uno.m30.v}} sobre 100" style="position: relative; flex: 1; height: 12px; border-radius: 6px; background: linear-gradient(90deg, #E1F5EF 0 40%, #FFF4DE 40% 65%, #FDE8E6 65% 100%)"><div style="{{churn.uno.m30.fill}}"></div></div><span style="font-size: 11.5px; color: #4F5D6B">/100</span></div>
+                </div>
+                <div style="padding: 12px 14px; border-radius: 12px; background: #F7F9FB; border: 1px solid #EEF1F5; display: flex; flex-direction: column; gap: 8px">
+                  <div style="display: flex; justify-content: space-between; align-items: center"><span style="font-size: 12.5px; font-weight: 600; color: #4F5D6B">{{churn.uno.m60.label}}</span><span style="{{churn.uno.m60.chip}}">{{churn.uno.m60.nivel}}</span></div>
+                  <div style="display: flex; align-items: center; gap: 10px"><strong style="font-size: 24px; font-weight: 800; color: #003057; min-width: 36px">{{churn.uno.m60.v}}</strong><div role="img" aria-label="{{churn.uno.m60.label}}: {{churn.uno.m60.v}} sobre 100" style="position: relative; flex: 1; height: 12px; border-radius: 6px; background: linear-gradient(90deg, #E1F5EF 0 40%, #FFF4DE 40% 65%, #FDE8E6 65% 100%)"><div style="{{churn.uno.m60.fill}}"></div></div><span style="font-size: 11.5px; color: #4F5D6B">/100</span></div>
+                </div>
+              </div>
+              <span style="font-size: 12.5px; color: #4F5D6B">Saldo en riesgo estimado: <strong style="color: #1B2A3A">{{churn.uno.enRiesgo}}</strong></span>
+              <div style="display: flex; flex-direction: column">
+                <h3 style="margin: 0 0 4px; font-size: 14px; color: #003057">Factores que explican la alerta</h3>
+                <sc-for list="{{churn.uno.factores}}" as="f" hint-placeholder-count="4">
+                  <div style="display: grid; grid-template-columns: minmax(0, 1fr) minmax(60px, 140px) 40px; gap: 10px; align-items: center; padding: 7px 0; border-bottom: 1px solid #F0F3F7; font-size: 13px">
+                    <span>{{f.name}}</span>
+                    <div style="position: relative; height: 8px; background: #F2F5F9; border-radius: 4px"><div style="{{f.bar}}"></div></div>
+                    <strong style="{{f.valStyle}}">{{f.val}}</strong>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 6px">
+                <h3 style="margin: 0; font-size: 14px; color: #003057">Señales anticipadas que aplican</h3>
+                <sc-if value="{{churn.uno.sinSenales}}"><span style="font-size: 13px; color: #4F5D6B">Ninguna señal anticipada activa para este cliente.</span></sc-if>
+                <sc-for list="{{churn.uno.senales}}" as="x" hint-placeholder-count="1">
+                  <div style="padding: 10px 12px; border-radius: 10px; background: #FDE8E6; display: flex; flex-direction: column; gap: 2px"><strong style="font-size: 13px; color: #9A1F24">{{x.nombre}}</strong><span style="font-size: 12.5px; color: #3D4C5B">{{x.regla}}</span></div>
+                </sc-for>
+              </div>
+            </sc-if>
+            <sc-if value="{{churn.varios}}">
+              <sc-for list="{{churn.varios}}" as="m" hint-placeholder-count="5">
+                <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap; padding: 10px 12px; border: 1px solid #EEF1F5; border-radius: 10px">
+                  <span style="flex: 1 1 200px; display: flex; flex-direction: column; gap: 1px"><strong style="font-size: 13.5px; color: #003057">{{m.nombre}}</strong><span style="font-size: 12px; color: #4F5D6B">{{m.rel}} · {{m.factor}}</span></span>
+                  <span style="{{m.s30}}">30 d: {{m.c30}}</span><span style="{{m.s60}}">60 d: {{m.c60}}</span>
+                  <button type="button" sc-camel-on-click="{{m.ver}}" aria-label="{{m.aria}}" style="min-height: 44px; padding: 0 12px; border-radius: 10px; border: 1px solid #C9D2DC; background: #FFFFFF; color: #003057; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer">Ver detalle</button>
+                </div>
+              </sc-for>
+            </sc-if>
+            <button type="button" sc-camel-on-click="{{abrirAlertas}}" aria-haspopup="dialog" style="align-self: flex-start; min-height: 44px; padding: 0 14px; border-radius: 10px; border: 1px solid #C9D2DC; background: #FFFFFF; color: #003057; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer">Ver alertas de toda la cartera</button>
+          </div>
+          </sc-if>
+
+          <!-- Pestaña: Next best action (módulo Siguiente mejor acción) -->
+          <sc-if value="{{tabNba}}">
+          <div role="tabpanel" aria-labelledby="tab-nba" class="v360-scroll" style="display: flex; flex-direction: column; gap: 8px; min-height: 0">
+            <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap">
+              <span style="font-size: 12.5px; color: #4F5D6B">Priorizadas por el copiloto · tú validas o descartas · {{nba.resumen}}</span>
+              <button type="button" sc-camel-on-click="{{abrirNba}}" aria-haspopup="dialog" style="min-height: 44px; padding: 0 14px; border-radius: 10px; border: 1px solid #C9D2DC; background: #FFFFFF; color: #003057; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer">Ver todos los clientes</button>
+            </div>
+            <sc-for list="{{nba.cards}}" as="n" hint-placeholder-count="3">
+              <article style="{{n.card}}">
+                <div style="display: flex; gap: 12px; align-items: flex-start">
+                  <span style="{{n.rankStyle}}">{{n.rank}}</span>
+                  <div style="flex: 1; display: flex; flex-direction: column; gap: 4px; min-width: 0">
+                    <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap"><strong style="font-size: 14.5px; color: #003057">{{n.titulo}}</strong><span style="{{n.tagStyle}}">{{n.tag}}</span><sc-if value="{{n.quien}}"><span style="font-size: 12px; font-weight: 600; color: #004E8C">{{n.quien}}</span></sc-if></div>
+                    <span style="font-size: 13px; line-height: 1.5; color: #3D4C5B">{{n.porque}}</span>
+                    <span style="font-size: 12px; color: #4F5D6B">{{n.meta}}</span>
+                  </div>
+                </div>
+                <div style="display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap">
+                  <sc-if value="{{n.pending}}">
+                    <button type="button" sc-camel-on-click="{{n.discard}}" style="min-height: 44px; padding: 0 14px; border-radius: 10px; border: 1px solid #C9D2DC; background: #FFFFFF; color: #3D4C5B; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer">Descartar</button>
+                    <button type="button" sc-camel-on-click="{{n.accept}}" style="min-height: 44px; padding: 0 16px; border-radius: 10px; border: none; background: #0072CE; color: #FFFFFF; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer">Aceptar y agendar</button>
+                  </sc-if>
+                  <sc-if value="{{n.decided}}"><span role="status" style="{{n.statusStyle}}">{{n.status}}</span></sc-if>
+                </div>
+              </article>
+            </sc-for>
+          </div>
+          </sc-if>
+
+          <!-- Pestaña: Setup (qué documentos o firmas le faltan al cliente) -->
+          <sc-if value="{{tabSetup}}">
+          <div role="tabpanel" aria-labelledby="tab-setup" class="v360-scroll" style="display: flex; flex-direction: column; gap: 10px; min-height: 0">
+            <sc-for list="{{setup.items}}" as="p" hint-placeholder-count="1">
+              <div style="display: flex; flex-direction: column; gap: 8px; padding: 12px 14px; border: 1px solid #EEF1F5; border-radius: 12px">
+                <div style="display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; align-items: baseline"><strong style="font-size: 14px; color: #003057">{{p.nombre}}</strong><sc-if value="{{p.conProceso}}"><span style="font-size: 12px; color: #4F5D6B">{{p.proceso}}</span></sc-if></div>
+                <sc-if value="{{p.sinProceso}}"><span style="font-size: 13px; color: #4F5D6B">Sin proceso de vinculación o actualización activo.</span></sc-if>
+                <sc-if value="{{p.conProceso}}">
+                  <div style="display: flex; flex-direction: column; gap: 4px">
+                    <span style="display: flex; gap: 4px" role="img" aria-label="{{p.etapa}}"><sc-for list="{{p.segs}}" as="g" hint-placeholder-count="5"><span title="{{g.title}}" style="{{g.style}}"></span></sc-for></span>
+                    <span style="font-size: 12px; font-weight: 600; color: #3D4C5B">{{p.etapa}}</span>
+                  </div>
+                  <span style="{{p.resumenStyle}}; align-self: flex-start; white-space: normal">{{p.resumen}}</span>
+                  <sc-for list="{{p.falta}}" as="d" hint-placeholder-count="3">
+                    <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap; padding: 8px 0; border-bottom: 1px solid #F0F3F7">
+                      <span style="flex: 1 1 220px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap"><strong style="font-size: 13px; color: #1B2A3A">{{d.nombre}}</strong><sc-if value="{{d.firma}}"><span style="font-size: 11px; font-weight: 700; padding: 1px 7px; border-radius: 999px; background: #E3F1FB; color: #004E8C">Firma</span></sc-if></span>
+                      <span style="font-size: 12px; color: #3D4C5B">{{d.fecha}}</span>
+                      <span style="{{d.estadoStyle}}">{{d.estado}}</span>
+                    </div>
+                  </sc-for>
+                  <sc-if value="{{p.alianza}}"><span style="font-size: 12px; color: #4F5D6B">{{p.alianza}}</span></sc-if>
+                </sc-if>
+              </div>
+            </sc-for>
+            <button type="button" sc-camel-on-click="{{abrirSetup}}" aria-haspopup="dialog" style="align-self: flex-start; min-height: 44px; padding: 0 14px; border-radius: 10px; border: 1px solid #C9D2DC; background: #FFFFFF; color: #003057; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer">Ver setup de toda la cartera</button>
+          </div>
+          </sc-if>
         </section>
       </div>
+    </main>
+  </div>
 
-      <!-- INSTRUMENT COMPOSITION -->
-      <section id="instrumentos" style="background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 20px">
-        <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap">
-          <div style="display: flex; flex-direction: column; gap: 4px">
-            <h2 style="margin: 0; font-size: 18px; color: #003057">Composición por instrumento</h2>
-            <span style="font-size: 13px; color: #4F5D6B">Cada acción, CDT, bono y fondo con su saldo y su peso en el portafolio · {{inst.count}} instrumentos</span>
+  <!-- MODAL: detalle de producto (esquema en js/data/detalle-schema.js) -->
+  <sc-if value="{{prodModal}}">
+    <div style="position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 24px; box-sizing: border-box">
+      <div sc-camel-on-click="{{close}}" aria-hidden="true" style="position: absolute; inset: 0; background: rgba(0, 28, 51, 0.55)"></div>
+      <div data-modal="" role="dialog" aria-modal="true" aria-labelledby="modal-prod-titulo" sc-camel-tab-index="-1" style="position: relative; width: 100%; max-width: 980px; max-height: calc(100vh - 48px); overflow: auto; background: #FFFFFF; border-radius: 16px; box-shadow: 0 24px 64px rgba(0,0,0,.3); display: flex; flex-direction: column; outline: none">
+        <div style="position: relative; overflow: hidden; flex: none; padding: 18px 22px; border-bottom: 1px solid #E1E7EE; display: flex; gap: 14px; align-items: flex-start; justify-content: space-between">
+          <div aria-hidden="true" style="position: absolute; top: 0; right: 0; width: 200px; height: 100%; background: #EEF4FA; clip-path: polygon(45% 0%, 100% 0%, 100% 100%, 0% 100%)"></div>
+          <div style="position: relative; display: flex; gap: 12px; align-items: center; min-width: 0">
+            <span style="{{prodModal.tagStyle}}">{{prodModal.tag}}</span>
+            <div style="display: flex; flex-direction: column; gap: 2px; min-width: 0">
+              <span style="font-size: 12px; font-weight: 600; color: #4F5D6B">{{prodModal.ruta}}</span>
+              <h2 id="modal-prod-titulo" style="margin: 0; font-size: 20px; color: #003057">{{prodModal.nombre}}</h2>
+              <span style="font-size: 12.5px; color: #4F5D6B">{{prodModal.desc}}</span>
+            </div>
           </div>
-          <div role="group" aria-label="Ordenar instrumentos" style="display: flex; padding: 4px; border-radius: 10px; background: #F2F5F9; gap: 2px">
-            <sc-for list="{{inst.sorts}}" as="o" hint-placeholder-count="2">
-              <button type="button" sc-camel-on-click="{{o.pick}}" aria-pressed="{{o.pressed}}" style="{{o.style}}">{{o.label}}</button>
-            </sc-for>
-          </div>
+          <button type="button" sc-camel-on-click="{{close}}" aria-label="Cerrar detalle" style="position: relative; flex: none; width: 44px; height: 44px; border-radius: 10px; border: 1px solid #E1E7EE; background: #FFFFFF; color: #003057; font-size: 16px; cursor: pointer">✕</button>
         </div>
-
-        <div style="display: flex; flex-direction: column; gap: 10px">
-          <div role="img" aria-label="Barra de composición del portafolio por instrumento" style="display: flex; width: 100%; height: 34px; border-radius: 8px; overflow: hidden; background: #EEF1F5">
-            <sc-for list="{{inst.stack}}" as="s" hint-placeholder-count="14">
-              <span title="{{s.title}}" style="{{s.style}}"></span>
+        <div style="padding: 18px 22px 22px; display: flex; flex-direction: column; gap: 16px">
+          <sc-if value="{{prodModal.pendiente}}">
+            <div style="display: flex; gap: 10px; align-items: center; padding: 12px 14px; border-radius: 10px; background: #FFF4DE; color: #5C3A00; font-size: 13.5px; font-weight: 600">
+              <svg width="18" height="18" sc-camel-view-box="0 0 24 24" fill="none" stroke="#8A5300" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="flex: none"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v5"></path><path d="M12 16h.01"></path></svg>
+              Variables de detalle en definición. Por ahora se muestran los campos básicos.
+            </div>
+          </sc-if>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px">
+            <sc-for list="{{prodModal.campos}}" as="f" hint-placeholder-count="4">
+              <div style="padding: 12px 14px; border-radius: 12px; background: #F2F5F9; display: flex; flex-direction: column; gap: 2px">
+                <span style="font-size: 12px; color: #4F5D6B">{{f.label}}</span>
+                <strong style="{{f.style}}">{{f.val}}</strong>
+              </div>
             </sc-for>
           </div>
-          <div style="display: flex; gap: 8px; flex-wrap: wrap">
-            <sc-for list="{{inst.chips}}" as="c" hint-placeholder-count="6">
-              <button type="button" sc-camel-on-click="{{c.pick}}" aria-pressed="{{c.pressed}}" style="{{c.style}}">
-                <span style="{{c.dot}}"></span>
-                <span style="font-weight: 700">{{c.name}}</span>
-                <span style="color: inherit; opacity: 0.85">{{c.val}} · {{c.pct}}</span>
+
+          <sc-if value="{{prodModal.hasTabla}}">
+            <div style="display: flex; flex-direction: column; gap: 6px; overflow-x: auto">
+              <h3 style="margin: 0 0 4px; font-size: 15px; color: #003057">{{prodModal.tabla.titulo}}</h3>
+              <sc-if value="{{prodModal.selectable}}"><span style="font-size: 12px; color: #4F5D6B; margin-top: -4px">Selecciona un emisor para ver sus compras.</span></sc-if>
+              <div style="min-width: 760px; display: flex; flex-direction: column; gap: 4px">
+                <div style="{{prodModal.tabla.headStyle}}">
+                  <sc-for list="{{prodModal.tabla.head}}" as="h" hint-placeholder-count="6"><span style="{{h.style}}">{{h.label}}</span></sc-for>
+                </div>
+                <sc-for list="{{prodModal.tabla.rows}}" as="r" hint-placeholder-count="6">
+                  <sc-if value="{{prodModal.selectable}}">
+                    <button type="button" sc-camel-on-click="{{r.pick}}" aria-pressed="{{r.pressed}}" aria-label="{{r.aria}}" style="{{r.style}}">
+                      <sc-for list="{{r.cells}}" as="c" hint-placeholder-count="6"><span style="{{c.wrap}}"><span style="{{c.style}}">{{c.val}}</span><sc-if value="{{c.sub}}"><span style="font-size: 11.5px; color: #4F5D6B">{{c.sub}}</span></sc-if></span></sc-for>
+                    </button>
+                  </sc-if>
+                  <sc-if value="{{prodModal.plain}}">
+                    <div style="{{r.style}}">
+                      <sc-for list="{{r.cells}}" as="c" hint-placeholder-count="6"><span style="{{c.wrap}}"><span style="{{c.style}}">{{c.val}}</span><sc-if value="{{c.sub}}"><span style="font-size: 11.5px; color: #4F5D6B">{{c.sub}}</span></sc-if></span></sc-for>
+                    </div>
+                  </sc-if>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{prodModal.hasSub}}">
+            <div style="display: flex; flex-direction: column; gap: 6px; padding: 14px; border-radius: 12px; background: #F7F9FB; border: 1px solid #EEF1F5; overflow-x: auto">
+              <h3 style="margin: 0 0 4px; font-size: 14px; color: #003057">{{prodModal.sub.titulo}}</h3>
+              <div style="min-width: 520px; display: flex; flex-direction: column">
+                <div style="{{prodModal.sub.headStyle}}">
+                  <sc-for list="{{prodModal.sub.head}}" as="h" hint-placeholder-count="4"><span style="{{h.style}}">{{h.label}}</span></sc-for>
+                </div>
+                <sc-for list="{{prodModal.sub.rows}}" as="r" hint-placeholder-count="3">
+                  <div style="{{r.style}}">
+                    <sc-for list="{{r.cells}}" as="c" hint-placeholder-count="4"><span style="{{c.wrap}}"><span style="{{c.style}}">{{c.val}}</span></span></sc-for>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{prodModal.nota}}"><span style="font-size: 12px; line-height: 1.5; color: #4F5D6B">{{prodModal.nota}}</span></sc-if>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- MODAL: detalle de línea (clic en el gráfico o su leyenda) — misma
+       información que la fila expandida de la línea en la tabla. -->
+  <sc-if value="{{lineaModal}}">
+    <div style="position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 24px; box-sizing: border-box">
+      <div sc-camel-on-click="{{close}}" aria-hidden="true" style="position: absolute; inset: 0; background: rgba(0, 28, 51, 0.55)"></div>
+      <div data-modal="" role="dialog" aria-modal="true" aria-labelledby="modal-linea-titulo" sc-camel-tab-index="-1" style="position: relative; width: 100%; max-width: 760px; max-height: calc(100vh - 48px); overflow: auto; background: #FFFFFF; border-radius: 16px; box-shadow: 0 24px 64px rgba(0,0,0,.3); display: flex; flex-direction: column; outline: none">
+        <div style="padding: 18px 22px; border-bottom: 1px solid #E1E7EE; display: flex; gap: 12px; align-items: center; justify-content: space-between">
+          <div style="display: flex; gap: 10px; align-items: center; min-width: 0">
+            <span style="{{lineaModal.sw}}"></span>
+            <h2 id="modal-linea-titulo" style="margin: 0; font-size: 18px; color: #003057">{{lineaModal.nombre}}</h2>
+          </div>
+          <button type="button" sc-camel-on-click="{{close}}" aria-label="Cerrar detalle" style="flex: none; width: 40px; height: 40px; border-radius: 10px; border: 1px solid #E1E7EE; background: #FFFFFF; color: #003057; font-size: 16px; cursor: pointer">✕</button>
+        </div>
+        <div style="padding: 18px 22px 22px; overflow-x: auto">
+          <div style="min-width: 640px; display: flex; flex-direction: column; gap: 3px">
+            <div class="v360-row v360-head" style="display: grid; grid-template-columns: minmax(0, 1fr) 110px 70px 80px 120px; gap: 12px; padding: 2px 12px 0; font-size: 12px; font-weight: 700; color: #4F5D6B">
+              <span>Producto</span><span style="text-align: right">Saldo</span><span style="text-align: right">% total</span><span style="text-align: right">% de su línea</span><span style="text-align: right">Rentabilidad</span>
+            </div>
+            <div class="v360-row" style="{{lineaModal.rowStyle}}">
+              <span style="display: flex; align-items: center; gap: 10px; min-width: 0">
+                <span style="{{lineaModal.sw}}"></span>
+                <span style="display: flex; flex-direction: column; min-width: 0"><strong style="font-size: 14.5px; color: #003057">{{lineaModal.nombre}}</strong><span style="font-size: 11.5px; color: #4F5D6B">{{lineaModal.count}} · {{lineaModal.desc}}</span></span>
+              </span>
+              <strong style="text-align: right; font-size: 14px">{{lineaModal.saldo}}</strong>
+              <strong style="text-align: right; font-size: 13.5px; color: #003057">{{lineaModal.pct}}</strong>
+              <span></span>
+              <span style="display: flex; justify-content: flex-end"><span style="{{lineaModal.rentChip}}">{{lineaModal.rent}}</span></span>
+            </div>
+            <sc-for list="{{lineaModal.productos}}" as="p" hint-placeholder-count="3">
+              <button type="button" sc-camel-on-click="{{p.open}}" aria-haspopup="dialog" aria-label="{{p.aria}}" class="v360-prod v360-row" style="display: grid; grid-template-columns: minmax(0, 1fr) 110px 70px 80px 120px; gap: 12px; align-items: center; width: 100%; min-height: 44px; padding: 4px 12px; box-sizing: border-box; border: 1px solid #EEF1F5; border-radius: 10px; background: #FFFFFF; font-family: inherit; text-align: left; color: #1B2A3A; cursor: pointer">
+                <span style="display: flex; gap: 10px; align-items: center; min-width: 0">
+                  <span style="{{p.tagStyle}}">{{p.tag}}</span>
+                  <span style="display: flex; flex-direction: column; gap: 1px; min-width: 0">
+                    <strong style="font-size: 13.5px; color: #003057">{{p.nombre}}</strong>
+                    <span style="font-size: 11.5px; color: #4F5D6B">{{p.desc}}</span>
+                  </span>
+                </span>
+                <strong style="text-align: right; font-size: 13.5px">{{p.saldo}}</strong>
+                <strong style="text-align: right; font-size: 13px; color: #003057">{{p.pct}}</strong>
+                <span style="text-align: right; font-size: 12.5px; color: #4F5D6B">{{p.inLine}}</span>
+                <span style="display: flex; align-items: center; justify-content: flex-end; gap: 8px">
+                  <span style="display: flex; flex-direction: column; align-items: flex-end; gap: 2px"><span style="{{p.rentChip}}">{{p.rent}}</span><span style="{{p.rentValStyle}}">{{p.rentVal}}</span></span>
+                  <svg width="16" height="16" sc-camel-view-box="0 0 24 24" fill="none" stroke="#0072CE" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg>
+                </span>
               </button>
             </sc-for>
           </div>
         </div>
+      </div>
+    </div>
+  </sc-if>
 
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px">
-          <div style="padding: 14px 16px; border-radius: 12px; background: #F2F5F9; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; color: #4F5D6B">Mayor posición</span><strong style="font-size: 15px; color: #003057">{{inst.top}}</strong></div>
-          <div style="padding: 14px 16px; border-radius: 12px; background: #F2F5F9; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; color: #4F5D6B">Concentración en 5 instrumentos</span><strong style="font-size: 15px; color: #003057">{{inst.top5}}</strong></div>
-          <div style="padding: 14px 16px; border-radius: 12px; background: #F2F5F9; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; color: #4F5D6B">Próximo vencimiento</span><strong style="font-size: 15px; color: #003057">CDT Banco A · 14 mar 2027</strong></div>
-          <div style="padding: 14px 16px; border-radius: 12px; background: #F2F5F9; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; color: #4F5D6B">Liquidez inmediata (a la vista)</span><strong style="font-size: 15px; color: #003057">$868 M · 18 %</strong></div>
-          <div style="padding: 14px 16px; border-radius: 12px; background: #F2F5F9; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; color: #4F5D6B">{{inst.retLabel}}</span><strong style="{{inst.footRetStyle}}">{{inst.footRetPct}} · {{inst.footRetVal}}</strong></div>
-          <div style="padding: 14px 16px; border-radius: 12px; background: #F2F5F9; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; color: #4F5D6B">Mejor y peor posición</span><strong style="font-size: 15px; color: #003057">{{inst.bestWorst}}</strong></div>
+  <!-- MODAL: consolidado de pensiones (misma información que pages/Pensiones.dc.html; lógica en js/pensiones.js) -->
+  <sc-if value="{{pensCons}}">
+    <div style="position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 24px; box-sizing: border-box">
+      <div sc-camel-on-click="{{close}}" aria-hidden="true" style="position: absolute; inset: 0; background: rgba(0, 28, 51, 0.55)"></div>
+      <div data-modal="" role="dialog" aria-modal="true" aria-labelledby="modal-pens-titulo" sc-camel-tab-index="-1" style="position: relative; width: 100%; max-width: 1120px; max-height: calc(100vh - 48px); overflow: auto; background: #F2F5F9; border-radius: 16px; box-shadow: 0 24px 64px rgba(0,0,0,.3); display: flex; flex-direction: column; outline: none">
+        <div style="position: sticky; top: 0; z-index: 1; overflow: hidden; flex: none; padding: 16px 22px; background: #FFFFFF; border-bottom: 1px solid #E1E7EE; display: flex; gap: 14px; align-items: flex-start; justify-content: space-between">
+          <div aria-hidden="true" style="position: absolute; top: 0; right: 0; width: 200px; height: 100%; background: #EEF4FA; clip-path: polygon(45% 0%, 100% 0%, 100% 100%, 0% 100%)"></div>
+          <div style="position: relative; display: flex; flex-direction: column; gap: 2px">
+            <h2 id="modal-pens-titulo" style="margin: 0; font-size: 20px; color: #003057">Consolidado de pensiones</h2>
+            <span style="font-size: 12.5px; color: #4F5D6B">FPV individual, FPV institucional y patrimonios autónomos de pensión (PAP) · bandeja de solicitudes y permanencias</span>
+          </div>
+          <button type="button" sc-camel-on-click="{{close}}" aria-label="Cerrar consolidado de pensiones" style="position: relative; flex: none; width: 44px; height: 44px; border-radius: 10px; border: 1px solid #E1E7EE; background: #FFFFFF; color: #003057; font-size: 16px; cursor: pointer">✕</button>
         </div>
-
-        <div style="overflow-x: auto">
-          <div style="min-width: 900px; display: flex; flex-direction: column">
-            <div style="display: grid; grid-template-columns: minmax(0, 2.2fr) minmax(0, 2.4fr) 100px 72px 84px 128px; gap: 16px; padding: 0 8px 10px; border-bottom: 1px solid #E1E7EE; font-size: 12.5px; font-weight: 700; color: #4F5D6B">
-              <span>Instrumento</span><span>Peso en el portafolio</span><span style="text-align: right">Saldo</span><span style="text-align: right">% total</span><span style="text-align: right">% de su clase</span><span style="text-align: right">Rentabilidad</span>
+        <div style="padding: 18px 22px 22px; display: flex; flex-direction: column; gap: 18px">
+          <section aria-label="Resumen de pensiones" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px">
+            <div style="background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 6px"><span style="font-size: 13px; font-weight: 600; color: #4F5D6B">Afiliados / vinculados</span><strong style="font-size: 28px; font-weight: 800; color: #003057">{{pensCons.afiliados}}</strong><span style="font-size: 12.5px; color: #4F5D6B">FPV individual + institucional + PAP</span></div>
+            <div style="background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 6px"><span style="font-size: 13px; font-weight: 600; color: #4F5D6B">Saldo total administrado</span><strong style="font-size: 28px; font-weight: 800; color: #003057">{{pensCons.saldoTotal}}</strong><span style="font-size: 12.5px; color: #4F5D6B">+2,1 % frente al mes anterior</span></div>
+            <div style="background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 6px"><span style="font-size: 13px; font-weight: 600; color: #4F5D6B">Aportes del mes</span><strong style="font-size: 28px; font-weight: 800; color: #003057">{{pensCons.aportesMes}}</strong><span style="font-size: 12.5px; color: #4F5D6B">{{pensCons.aportesSub}}</span></div>
+            <div style="position: relative; overflow: hidden; background: #003057; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 6px; color: #FFFFFF">
+              <div aria-hidden="true" style="position: absolute; inset: 0; background: #B3272D; clip-path: polygon(66% 100%, 100% 36%, 100% 100%)"></div>
+              <span style="position: relative; font-size: 13px; font-weight: 600; color: #D6E4F0">Solicitudes pendientes</span>
+              <strong style="position: relative; font-size: 28px; font-weight: 800">{{pensCons.solicitudesPendientes}}</strong>
+              <span style="position: relative; font-size: 12.5px; color: #D6E4F0">{{pensCons.vencenHoy}}</span>
             </div>
-            <sc-for list="{{inst.rows}}" as="r" hint-placeholder-count="14">
-              <div style="display: grid; grid-template-columns: minmax(0, 2.2fr) minmax(0, 2.4fr) 100px 72px 84px 128px; gap: 16px; align-items: center; padding: 12px 8px; border-bottom: 1px solid #F0F3F7">
-                <div style="display: flex; gap: 10px; align-items: center; min-width: 0">
-                  <span style="{{r.badge}}">{{r.tag}}</span>
-                  <div style="display: flex; flex-direction: column; gap: 2px; min-width: 0">
-                    <strong style="font-size: 14px; color: #003057">{{r.name}}</strong>
-                    <span style="font-size: 12px; color: #4F5D6B">{{r.detail}}</span>
-                  </div>
-                </div>
-                <div style="height: 14px; border-radius: 4px; background: #F2F5F9"><div style="{{r.bar}}"></div></div>
-                <strong style="text-align: right; font-size: 14px">{{r.val}}</strong>
-                <strong style="text-align: right; font-size: 14px; color: #003057">{{r.pct}}</strong>
-                <span style="text-align: right; font-size: 13px; color: #4F5D6B">{{r.inClass}}</span>
-                <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 3px">
-                  <span style="{{r.retChip}}">{{r.retPct}}</span>
-                  <span style="{{r.retValStyle}}">{{r.retVal}}</span>
+          </section>
+
+          <div style="display: flex; flex-wrap: wrap; gap: 24px">
+            <section style="flex: 999 1 560px; min-width: 0; background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 16px">
+              <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap">
+                <h2 style="margin: 0; font-size: 18px; color: #003057">Bandeja de solicitudes</h2>
+                <div role="group" aria-label="Filtrar" style="display: flex; gap: 6px; flex-wrap: wrap">
+                  <sc-for list="{{pensCons.filters}}" as="f" hint-placeholder-count="5">
+                    <button type="button" sc-camel-on-click="{{f.pick}}" aria-pressed="{{f.pressed}}" style="{{f.style}}">{{f.label}}</button>
+                  </sc-for>
                 </div>
               </div>
-            </sc-for>
-            <div style="display: grid; grid-template-columns: minmax(0, 2.2fr) minmax(0, 2.4fr) 100px 72px 84px 128px; gap: 16px; align-items: center; padding: 14px 8px; background: #F2F5F9; border-radius: 0 0 10px 10px; font-size: 14px; font-weight: 800">
-              <span>{{inst.footName}}</span><span></span><span style="text-align: right">{{inst.footVal}}</span><span style="text-align: right">{{inst.footPct}}</span><span></span>
-              <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 3px"><span style="{{inst.footRetStyle}}">{{inst.footRetPct}}</span><span style="font-size: 12px; font-weight: 600; color: #4F5D6B">{{inst.footRetVal}}</span></div>
-            </div>
-          </div>
-        </div>
-        <span style="font-size: 12px; line-height: 1.5; color: #5B6876">Rentabilidad = (saldo actual − valor invertido) ÷ valor invertido, acumulada desde la compra y no anualizada. En CDT incluye intereses causados; en acciones, TES y bonos refleja la valoración a precio de mercado y aún no está realizada.</span>
-      </section>
+              <div style="overflow-x: auto">
+                <sc-raw-table style="width: 100%; min-width: 760px; border-collapse: collapse; font-size: 14px">
+                  <sc-raw-thead>
+                    <sc-raw-tr style="color: #4F5D6B; font-size: 12.5px; text-align: left">
+                      <sc-raw-th style="padding: 10px 12px; border-bottom: 1px solid #E1E7EE">Afiliado / empresa</sc-raw-th>
+                      <sc-raw-th style="padding: 10px 12px; border-bottom: 1px solid #E1E7EE">Línea</sc-raw-th>
+                      <sc-raw-th style="padding: 10px 12px; border-bottom: 1px solid #E1E7EE">Tipo de solicitud</sc-raw-th>
+                      <sc-raw-th style="padding: 10px 12px; border-bottom: 1px solid #E1E7EE">Estado</sc-raw-th>
+                      <sc-raw-th style="padding: 10px 12px; border-bottom: 1px solid #E1E7EE">Vence</sc-raw-th>
+                      <sc-raw-th style="padding: 10px 12px; border-bottom: 1px solid #E1E7EE"><span style="position: absolute; left: -9999px">Gestionar</span></sc-raw-th>
+                    </sc-raw-tr>
+                  </sc-raw-thead>
+                  <sc-raw-tbody>
+                    <sc-for list="{{pensCons.queue}}" as="q" hint-placeholder-count="6">
+                      <sc-raw-tr>
+                        <sc-raw-td style="padding: 12px; border-bottom: 1px solid #F0F3F7"><strong style="color: #003057">{{q.nombre}}</strong></sc-raw-td>
+                        <sc-raw-td style="padding: 12px; border-bottom: 1px solid #F0F3F7; font-size: 13px; color: #3D4C5B">{{q.lineaTag}}</sc-raw-td>
+                        <sc-raw-td style="padding: 12px; border-bottom: 1px solid #F0F3F7; font-size: 13px; color: #3D4C5B">{{q.tipo}}</sc-raw-td>
+                        <sc-raw-td style="padding: 12px; border-bottom: 1px solid #F0F3F7"><span style="{{q.estadoStyle}}">{{q.estado}}</span></sc-raw-td>
+                        <sc-raw-td style="padding: 12px; border-bottom: 1px solid #F0F3F7"><span style="{{q.venceStyle}}">{{q.vence}}</span></sc-raw-td>
+                        <sc-raw-td style="padding: 12px; border-bottom: 1px solid #F0F3F7"><button type="button" style="min-height: 44px; padding: 0 14px; border-radius: 10px; border: 1px solid #C9D2DC; background: #FFFFFF; color: #003057; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer; white-space: nowrap">Gestionar</button></sc-raw-td>
+                      </sc-raw-tr>
+                    </sc-for>
+                  </sc-raw-tbody>
+                </sc-raw-table>
+              </div>
+            </section>
 
-      <!-- ALIGNMENT + CHURN -->
-      <div style="display: flex; flex-wrap: wrap; gap: 24px">
-        <section style="flex: 1 1 460px; min-width: 0; background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 18px">
-          <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap">
+            <section style="flex: 1 1 300px; background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 16px">
+              <div style="display: flex; flex-direction: column; gap: 4px">
+                <h2 style="margin: 0; font-size: 18px; color: #003057">Por línea de producto</h2>
+                <span style="font-size: 13px; color: #4F5D6B">Saldo administrado por tipo de vehículo</span>
+              </div>
+              <sc-for list="{{pensCons.lines}}" as="l" hint-placeholder-count="3">
+                <div style="display: flex; flex-direction: column; gap: 6px">
+                  <div style="display: flex; align-items: center; gap: 8px; font-size: 13.5px"><span style="{{l.dot}}"></span><span style="flex: 1">{{l.name}}</span><strong>{{l.saldo}}</strong></div>
+                  <div style="height: 8px; border-radius: 4px; background: #EEF1F5"><div style="{{l.bar}}"></div></div>
+                  <span style="font-size: 12px; color: #5B6876">{{l.count}} vinculados · {{l.pct}} del saldo total</span>
+                </div>
+              </sc-for>
+            </section>
+          </div>
+
+          <section style="background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 16px">
             <div style="display: flex; flex-direction: column; gap: 4px">
-              <h2 style="margin: 0; font-size: 18px; color: #003057">Alineación frente al perfil de riesgo</h2>
-              <span style="font-size: 13px; color: #4F5D6B">Perfil oficial Moderado vs. mezcla real del portafolio</span>
+              <h2 style="margin: 0; font-size: 18px; color: #003057">Permanencia y beneficio tributario (FPV)</h2>
+              <span style="font-size: 13px; color: #4F5D6B">Retirar antes del plazo de permanencia hace perder el beneficio tributario y genera retención</span>
             </div>
-            <span style="display: flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 700; padding: 6px 10px; border-radius: 999px; background: #FDE8E6; color: #9A1F24">
-              <svg width="14" height="14" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M12 8v5"></path><path d="M12 17h.01"></path><circle cx="12" cy="12" r="10"></circle></svg>Desalineado</span>
-          </div>
+            <div style="overflow-x: auto">
+              <sc-raw-table style="width: 100%; min-width: 760px; border-collapse: collapse; font-size: 14px">
+                <sc-raw-thead>
+                  <sc-raw-tr style="color: #4F5D6B; font-size: 12.5px; text-align: left">
+                    <sc-raw-th style="padding: 10px 12px; border-bottom: 1px solid #E1E7EE">Afiliado</sc-raw-th>
+                    <sc-raw-th style="padding: 10px 12px; border-bottom: 1px solid #E1E7EE">Línea</sc-raw-th>
+                    <sc-raw-th style="padding: 10px 12px; border-bottom: 1px solid #E1E7EE; text-align: right">Saldo</sc-raw-th>
+                    <sc-raw-th style="padding: 10px 12px; border-bottom: 1px solid #E1E7EE">Vinculado desde</sc-raw-th>
+                    <sc-raw-th style="padding: 10px 12px; border-bottom: 1px solid #E1E7EE">Vence en</sc-raw-th>
+                    <sc-raw-th style="padding: 10px 12px; border-bottom: 1px solid #E1E7EE">Estado</sc-raw-th>
+                  </sc-raw-tr>
+                </sc-raw-thead>
+                <sc-raw-tbody>
+                  <sc-for list="{{pensCons.vencimientos}}" as="v" hint-placeholder-count="5">
+                    <sc-raw-tr>
+                      <sc-raw-td style="padding: 12px; border-bottom: 1px solid #F0F3F7"><strong style="color: #003057">{{v.nombre}}</strong></sc-raw-td>
+                      <sc-raw-td style="padding: 12px; border-bottom: 1px solid #F0F3F7; font-size: 13px; color: #3D4C5B">{{v.lineaTag}}</sc-raw-td>
+                      <sc-raw-td style="padding: 12px; border-bottom: 1px solid #F0F3F7; text-align: right; font-weight: 700">{{v.saldo}}</sc-raw-td>
+                      <sc-raw-td style="padding: 12px; border-bottom: 1px solid #F0F3F7; font-size: 13px; color: #3D4C5B">{{v.desde}}</sc-raw-td>
+                      <sc-raw-td style="padding: 12px; border-bottom: 1px solid #F0F3F7; font-size: 13px; color: #3D4C5B">{{v.diasLabel}}</sc-raw-td>
+                      <sc-raw-td style="padding: 12px; border-bottom: 1px solid #F0F3F7"><span style="{{v.estadoStyle}}">{{v.estadoLabel}}</span></sc-raw-td>
+                    </sc-raw-tr>
+                  </sc-for>
+                </sc-raw-tbody>
+              </sc-raw-table>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </sc-if>
 
-          <div style="display: flex; flex-direction: column; gap: 18px">
-            <sc-for list="{{align}}" as="a" hint-placeholder-count="3">
-              <div style="display: flex; flex-direction: column; gap: 8px">
-                <div style="display: flex; justify-content: space-between; font-size: 14px">
-                  <span style="font-weight: 600">{{a.name}}</span>
-                  <span style="color: #4F5D6B">Real <strong style="{{a.valStyle}}">{{a.actual}} %</strong> · rango {{a.range}}</span>
-                </div>
-                <div style="position: relative; height: 16px; border-radius: 8px; background: #EEF1F5">
-                  <div style="{{a.bandStyle}}"></div>
-                  <div style="{{a.barStyle}}"></div>
-                  <div style="{{a.markStyle}}"></div>
-                </div>
-              </div>
-            </sc-for>
+  <!-- MODAL: Alertas de riesgo de fuga (antes página propia; lógica en js/vistas-modulos.js) -->
+  <sc-if value="{{alv}}">
+    <div style="position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 24px; box-sizing: border-box">
+      <div sc-camel-on-click="{{close}}" aria-hidden="true" style="position: absolute; inset: 0; background: rgba(0, 28, 51, 0.55)"></div>
+      <div id="modal-alertas" data-modal="" role="dialog" aria-modal="true" aria-labelledby="modal-alertas-titulo" sc-camel-tab-index="-1" style="position: relative; width: 100%; max-width: 1180px; max-height: calc(100vh - 48px); overflow: auto; background: #F2F5F9; border-radius: 16px; box-shadow: 0 24px 64px rgba(0,0,0,.3); display: flex; flex-direction: column; outline: none">
+        <div style="position: sticky; top: 0; z-index: 2; overflow: hidden; flex: none; padding: 16px 22px; background: #FFFFFF; border-bottom: 1px solid #E1E7EE; display: flex; gap: 14px; align-items: flex-start; justify-content: space-between">
+          <div aria-hidden="true" style="position: absolute; top: 0; right: 0; width: 200px; height: 100%; background: #EEF4FA; clip-path: polygon(45% 0%, 100% 0%, 100% 100%, 0% 100%)"></div>
+          <div style="position: relative; display: flex; flex-direction: column; gap: 4px">
+            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap"><h2 id="modal-alertas-titulo" style="margin: 0; font-size: 20px; color: #003057">Alertas de riesgo de fuga</h2><span style="font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 999px; background: #EEF0D2; color: #3F410C">En definición</span></div>
+            <span style="font-size: 12.5px; color: #4F5D6B">Termómetro a 30 y 60 días, señales anticipadas, mapa de prioridad y clientes priorizados de tu cartera</span>
           </div>
-          <div style="display: flex; gap: 16px; font-size: 12px; color: #4F5D6B; flex-wrap: wrap">
-            <span style="display: flex; align-items: center; gap: 6px"><span style="width: 18px; height: 10px; border-radius: 3px; background: #C9E3F6; border: 1px dashed #0072CE"></span>Rango permitido</span>
-            <span style="display: flex; align-items: center; gap: 6px"><span style="width: 18px; height: 10px; border-radius: 3px; background: #003057"></span>Dentro de rango</span>
-            <span style="display: flex; align-items: center; gap: 6px"><span style="width: 18px; height: 10px; border-radius: 3px; background: #D57E00"></span>Fuera de rango</span>
-          </div>
-          <div style="display: flex; gap: 12px; padding: 14px 16px; border-radius: 12px; background: #FFF4DE; font-size: 14px; line-height: 1.55; color: #5C3A00">
+          <button type="button" sc-camel-on-click="{{close}}" aria-label="Cerrar alertas de riesgo de fuga" style="position: relative; flex: none; width: 44px; height: 44px; border-radius: 10px; border: 1px solid #E1E7EE; background: #FFFFFF; color: #003057; font-size: 16px; cursor: pointer">✕</button>
+        </div>
+        <div style="padding: 18px 22px 22px; display: flex; flex-direction: column; gap: 18px">
+
+          <div role="note" style="display: flex; gap: 12px; align-items: flex-start; padding: 14px 18px; border-radius: 12px; background: #FFF4DE; border: 1px solid #F1D9A6; color: #5C3A00; font-size: 14px; line-height: 1.55">
             <svg width="20" height="20" sc-camel-view-box="0 0 24 24" fill="none" stroke="#8A5300" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none; margin-top: 2px"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>
-            <span>Mayor riesgo en 34 %, 9 puntos sobre el máximo del perfil. Conservador por debajo del mínimo. <strong>Revisión de idoneidad sugerida</strong>; la decisión y su registro son del asesor.</span>
+            <span><strong>Criterios del modelo en definición con el área comercial.</strong> Los puntajes, factores y señales de esta pantalla son ilustrativos. Hoy Alianza solo ve alertas de lo que ya pasó; el objetivo de este módulo es anticipar la fuga.</span>
           </div>
-          <a href="#" style="align-self: flex-start; display: flex; align-items: center; height: 44px; padding: 0 18px; border-radius: 10px; background: #003057; color: #FFFFFF; text-decoration: none; font-size: 14px; font-weight: 700">Abrir suitability asistida</a>
-        </section>
 
-        <section id="fuga" style="flex: 1 1 460px; min-width: 0; background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 18px">
-          <div style="display: flex; flex-direction: column; gap: 4px">
-            <h2 style="margin: 0; font-size: 18px; color: #003057">Termómetro de riesgo de fuga</h2>
-            <span style="font-size: 13px; color: #4F5D6B">Probabilidad de desinversión estimada por el modelo · actualizado hoy</span>
-          </div>
-          <div style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap">
-            <svg sc-camel-view-box="0 0 220 130" width="240" height="142" role="img" aria-label="Indicador semicircular: riesgo de fuga 72 sobre 100 a 60 días">
-              <path d="M 20 110 A 90 90 0 0 1 200 110" fill="none" stroke="#EEF1F5" stroke-width="18" stroke-linecap="round"></path>
-              <path d="{{gauge.low}}" fill="none" stroke="#00A98E" stroke-width="18"></path>
-              <path d="{{gauge.mid}}" fill="none" stroke="#FFA300" stroke-width="18"></path>
-              <path d="{{gauge.high}}" fill="none" stroke="#B3272D" stroke-width="18"></path>
-              <line x1="110" y1="110" x2="{{gauge.nx}}" y2="{{gauge.ny}}" stroke="#003057" stroke-width="4" stroke-linecap="round"></line>
-              <circle cx="110" cy="110" r="8" fill="#003057"></circle>
-              <text x="20" y="128" text-anchor="middle" font-size="10" fill="#5B6876" font-family="Open Sans, sans-serif">0</text>
-              <text x="200" y="128" text-anchor="middle" font-size="10" fill="#5B6876" font-family="Open Sans, sans-serif">100</text>
-            </svg>
-            <div style="display: flex; flex-direction: column; gap: 10px">
-              <div style="display: flex; align-items: baseline; gap: 8px"><strong style="font-size: 40px; font-weight: 800; color: #9A1F24">72</strong><span style="font-size: 14px; color: #4F5D6B">/ 100 a 60 días</span></div>
-              <div style="display: flex; gap: 8px; flex-wrap: wrap">
-                <span style="font-size: 12.5px; font-weight: 600; padding: 5px 10px; border-radius: 8px; background: #FFF4DE; color: #8A5300">30 días: 58 · Medio</span>
-                <span style="font-size: 12.5px; font-weight: 600; padding: 5px 10px; border-radius: 8px; background: #FDE8E6; color: #9A1F24">60 días: 72 · Alto</span>
-              </div>
-              <span style="font-size: 13px; color: #4F5D6B">AUM en riesgo estimado: <strong style="color: #1B2A3A">$1.640 M</strong></span>
+          <section class="kpi-grid" aria-label="Resumen de alertas" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px">
+            <div style="position: relative; overflow: hidden; background: #003057; border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 4px; color: #FFFFFF">
+              <div aria-hidden="true" style="position: absolute; inset: 0; background: #B3272D; clip-path: polygon(66% 100%, 100% 36%, 100% 100%)"></div>
+              <span style="position: relative; font-size: 13px; font-weight: 600; color: #D6E4F0">Saldo en riesgo alto (60 días)</span>
+              <strong style="position: relative; font-size: 26px; font-weight: 800">{{alv.kpi.enRiesgo}}</strong>
+              <span style="position: relative; font-size: 12.5px; color: #D6E4F0">{{alv.kpi.enRiesgoSub}}</span>
             </div>
-          </div>
-          <div style="display: flex; flex-direction: column; gap: 4px">
-            <h3 style="margin: 0 0 8px; font-size: 14px; color: #1B2A3A">Factores que explican la alerta</h3>
-            <sc-for list="{{factors}}" as="f" hint-placeholder-count="5">
-              <div style="display: grid; grid-template-columns: minmax(0, 1fr) 120px 44px; gap: 12px; align-items: center; padding: 8px 0; border-bottom: 1px solid #F0F3F7; font-size: 13.5px">
-                <span style="color: #1B2A3A">{{f.name}}</span>
-                <div style="position: relative; height: 10px; background: #F2F5F9; border-radius: 5px">
-                  <div style="{{f.bar}}"></div>
-                </div>
-                <strong style="{{f.valStyle}}">{{f.val}}</strong>
-              </div>
-            </sc-for>
-            <span style="font-size: 12px; color: #5B6876; margin-top: 6px">Positivo = aumenta el riesgo · Negativo = lo reduce. Modelo de clasificación v1 con evidencia trazable.</span>
-          </div>
-        </section>
-      </div>
-
-      <!-- NBA + ALERTS + TIMELINE -->
-      <div style="display: flex; flex-wrap: wrap; gap: 24px">
-        <!-- Oculta por defecto; se activa desde el panel oculto de feature flags (showNBA). -->
-        <sc-if value="{{showNBA}}" hint-placeholder-val="{{ true }}">
-        <section style="flex: 999 1 560px; min-width: 0; background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 16px">
-          <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap">
-            <div style="display: flex; flex-direction: column; gap: 4px">
-              <h2 style="margin: 0; font-size: 18px; color: #003057">Siguiente mejor acción</h2>
-              <span style="font-size: 13px; color: #4F5D6B">Priorizadas por el copiloto · tú validas o descartas</span>
-            </div>
-            <span style="font-size: 12.5px; color: #4F5D6B">{{nbaDone}}</span>
-          </div>
-          <sc-for list="{{nba}}" as="n" hint-placeholder-count="3">
-            <article style="{{n.card}}">
-              <div style="display: flex; gap: 14px; align-items: flex-start">
-                <span style="{{n.rankStyle}}">{{n.rank}}</span>
-                <div style="flex: 1; display: flex; flex-direction: column; gap: 6px; min-width: 0">
-                  <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap">
-                    <strong style="font-size: 15.5px; color: #003057">{{n.title}}</strong>
-                    <span style="{{n.tagStyle}}">{{n.tag}}</span>
-                  </div>
-                  <span style="font-size: 14px; line-height: 1.55; color: #3D4C5B">{{n.why}}</span>
-                  <span style="font-size: 12.5px; color: #5B6876">Evidencia: {{n.ev}} · Confianza {{n.conf}}</span>
-                </div>
-              </div>
-              <div style="display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap">
-                <sc-if value="{{n.pending}}" hint-placeholder-val="{{ true }}">
-                  <button type="button" sc-camel-on-click="{{n.discard}}" style="height: 40px; padding: 0 14px; border-radius: 10px; border: 1px solid #C9D2DC; background: #FFFFFF; color: #3D4C5B; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer">Descartar</button>
-                  <button type="button" sc-camel-on-click="{{n.accept}}" style="height: 40px; padding: 0 16px; border-radius: 10px; border: none; background: #0072CE; color: #FFFFFF; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer">Aceptar y agendar</button>
-                </sc-if>
-                <sc-if value="{{n.decided}}" hint-placeholder-val="{{ false }}">
-                  <span style="{{n.statusStyle}}">{{n.status}}</span>
-                </sc-if>
-              </div>
-            </article>
-          </sc-for>
-        </section>
-        </sc-if>
-
-        <div style="flex: 1 1 320px; display: flex; flex-direction: column; gap: 24px">
-          <section style="background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 14px">
-            <h2 style="margin: 0; font-size: 18px; color: #003057">Alertas del cliente</h2>
-            <div style="display: flex; gap: 12px; align-items: flex-start"><span style="flex: none; width: 10px; height: 10px; margin-top: 6px; border-radius: 50%; background: #B3272D"></span><div style="display: flex; flex-direction: column; gap: 2px"><strong style="font-size: 14px">Retiro parcial relevante</strong><span style="font-size: 13px; color: #4F5D6B">$310 M · FIC Liquidez · 22 sep</span></div></div>
-            <div style="display: flex; gap: 12px; align-items: flex-start"><span style="flex: none; width: 10px; height: 10px; margin-top: 6px; border-radius: 50%; background: #D57E00"></span><div style="display: flex; flex-direction: column; gap: 2px"><strong style="font-size: 14px">Portafolio fuera de perfil</strong><span style="font-size: 13px; color: #4F5D6B">Mayor riesgo 34 % (máx. 25 %)</span></div></div>
-            <div style="display: flex; gap: 12px; align-items: flex-start"><span style="flex: none; width: 10px; height: 10px; margin-top: 6px; border-radius: 50%; background: #D57E00"></span><div style="display: flex; flex-direction: column; gap: 2px"><strong style="font-size: 14px">Concentración en un emisor</strong><span style="font-size: 13px; color: #4F5D6B">Un emisor pesa 22 % de las acciones</span></div></div>
-            <div style="display: flex; gap: 12px; align-items: flex-start"><span style="flex: none; width: 10px; height: 10px; margin-top: 6px; border-radius: 50%; background: #0072CE"></span><div style="display: flex; flex-direction: column; gap: 2px"><strong style="font-size: 14px">Vencimiento próximo</strong><span style="font-size: 13px; color: #4F5D6B">Encargo fiduciario SAS · 18 nov</span></div></div>
-            <div style="display: flex; gap: 12px; align-items: flex-start"><span style="flex: none; width: 10px; height: 10px; margin-top: 6px; border-radius: 50%; background: #0072CE"></span><div style="display: flex; flex-direction: column; gap: 2px"><strong style="font-size: 14px">Perfil por actualizar pronto</strong><span style="font-size: 13px; color: #4F5D6B">Vigencia hasta feb 2027</span></div></div>
+            <div style="background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 4px"><span style="font-size: 13px; font-weight: 600; color: #4F5D6B">Riesgo medio (60 días)</span><strong style="font-size: 26px; font-weight: 800; color: #8A5300">{{alv.kpi.medios}}</strong><span style="font-size: 12.5px; color: #4F5D6B">clientes entre 40 y 64 puntos</span></div>
+            <div style="background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 4px"><span style="font-size: 13px; font-weight: 600; color: #4F5D6B">Señales anticipadas</span><strong style="font-size: 26px; font-weight: 800; color: #9A1F24">{{alv.kpi.senales}}</strong><span style="font-size: 12.5px; color: #4F5D6B">{{alv.kpi.senalesSub}}</span></div>
+            <div style="background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 4px"><span style="font-size: 13px; font-weight: 600; color: #4F5D6B">Sin contacto reciente</span><strong style="font-size: 26px; font-weight: 800; color: #003057">{{alv.kpi.sinContacto}}</strong><span style="font-size: 12.5px; color: #4F5D6B">clientes sin contacto en 30 días o más</span></div>
           </section>
 
-          <section style="background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 14px">
-            <h2 style="margin: 0; font-size: 18px; color: #003057">Accesos rápidos</h2>
-            <a href="GrupoFamiliar.dc.html" style="display: flex; justify-content: space-between; align-items: center; min-height: 52px; padding: 0 16px; border-radius: 12px; background: #F2F5F9; text-decoration: none; color: #003057; font-size: 14px; font-weight: 600">Consolidado grupo familiar<span style="font-size: 13px; color: #4F5D6B; font-weight: 400">5 cuentas · $11.760 M</span></a>
-            <a href="RentaVariable.dc.html" style="display: flex; justify-content: space-between; align-items: center; min-height: 52px; padding: 0 16px; border-radius: 12px; background: #F2F5F9; text-decoration: none; color: #003057; font-size: 14px; font-weight: 600">Resumen de acciones<span style="font-size: 13px; color: #4F5D6B; font-weight: 400">6 emisores · $1.301 M</span></a>
-            <a href="#" style="display: flex; justify-content: space-between; align-items: center; min-height: 52px; padding: 0 16px; border-radius: 12px; background: #F2F5F9; text-decoration: none; color: #003057; font-size: 14px; font-weight: 600">Descargar informe 360 (PDF)<span style="font-size: 13px; color: #4F5D6B; font-weight: 400">Para el cliente</span></a>
+          <section id="termometro" aria-labelledby="h-termo" style="background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 16px; padding: 22px 24px; display: flex; flex-direction: column; gap: 14px">
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap">
+              <div style="display: flex; flex-direction: column; gap: 4px">
+                <h2 id="h-termo" style="margin: 0; font-size: 18px; color: #003057">Termómetro de riesgo de fuga</h2>
+                <span style="font-size: 13px; color: #4F5D6B">Probabilidad de desinversión estimada por el modelo a 30 y 60 días</span>
+              </div>
+              <div style="flex: 1 1 260px; max-width: 360px; display: flex; flex-direction: column; gap: 4px">
+                <label for="sel-cliente" style="font-size: 12.5px; font-weight: 700; color: #3D4C5B">Cliente</label>
+                <sc-raw-select id="sel-cliente" value="{{alv.sel}}" sc-camel-on-change="{{alv.pickSel}}" style="min-height: 44px; width: 100%; max-width: 360px; min-width: 0; padding: 0 12px; border: 1px solid #C9D2DC; border-radius: 10px; font-size: 14px; font-family: inherit; background: #F8FAFC; color: #1B2A3A">
+                  <sc-for list="{{alv.opts}}" as="o" hint-placeholder-count="12"><option value="{{o.id}}">{{o.label}}</option></sc-for>
+                </sc-raw-select>
+              </div>
+            </div>
+            <div style="display: flex; flex-wrap: wrap; gap: 28px; align-items: flex-start">
+              <div style="flex: 1 1 300px; display: flex; flex-direction: column; gap: 12px">
+                <div style="display: flex; flex-direction: column; gap: 2px">
+                  <strong style="font-size: 16px; color: #003057">{{alv.termo.nombre}}</strong>
+                  <span style="font-size: 13px; color: #4F5D6B">{{alv.termo.sub}}</span>
+                </div>
+                <div style="display: flex; gap: 16px; flex-wrap: wrap; justify-content: space-around">
+                  <div style="display: flex; flex-direction: column; align-items: center; gap: 4px">
+                    <svg sc-camel-view-box="0 0 220 130" width="220" height="130" role="img" aria-label="{{alv.termo.g30.aria}}">
+                      <path d="M 20 110 A 90 90 0 0 1 200 110" fill="none" stroke="#EEF1F5" stroke-width="18" stroke-linecap="round"></path>
+                      <path d="{{alv.termo.g30.low}}" fill="none" stroke="#00A98E" stroke-width="18"></path>
+                      <path d="{{alv.termo.g30.mid}}" fill="none" stroke="#FFA300" stroke-width="18"></path>
+                      <path d="{{alv.termo.g30.high}}" fill="none" stroke="#B3272D" stroke-width="18"></path>
+                      <line x1="110" y1="110" x2="{{alv.termo.g30.nx}}" y2="{{alv.termo.g30.ny}}" stroke="#003057" stroke-width="4" stroke-linecap="round"></line>
+                      <circle cx="110" cy="110" r="8" fill="#003057"></circle>
+                      <text x="20" y="128" text-anchor="middle" font-size="10" fill="#5B6876" font-family="Open Sans, sans-serif">0</text>
+                      <text x="200" y="128" text-anchor="middle" font-size="10" fill="#5B6876" font-family="Open Sans, sans-serif">100</text>
+                    </svg>
+                    <strong style="{{alv.termo.g30.valStyle}}">{{alv.termo.g30.v}}</strong>
+                    <span style="{{alv.termo.g30.chip}}">{{alv.termo.g30.label}}</span>
+                  </div>
+                  <div style="display: flex; flex-direction: column; align-items: center; gap: 4px">
+                    <svg sc-camel-view-box="0 0 220 130" width="220" height="130" role="img" aria-label="{{alv.termo.g60.aria}}">
+                      <path d="M 20 110 A 90 90 0 0 1 200 110" fill="none" stroke="#EEF1F5" stroke-width="18" stroke-linecap="round"></path>
+                      <path d="{{alv.termo.g60.low}}" fill="none" stroke="#00A98E" stroke-width="18"></path>
+                      <path d="{{alv.termo.g60.mid}}" fill="none" stroke="#FFA300" stroke-width="18"></path>
+                      <path d="{{alv.termo.g60.high}}" fill="none" stroke="#B3272D" stroke-width="18"></path>
+                      <line x1="110" y1="110" x2="{{alv.termo.g60.nx}}" y2="{{alv.termo.g60.ny}}" stroke="#003057" stroke-width="4" stroke-linecap="round"></line>
+                      <circle cx="110" cy="110" r="8" fill="#003057"></circle>
+                      <text x="20" y="128" text-anchor="middle" font-size="10" fill="#5B6876" font-family="Open Sans, sans-serif">0</text>
+                      <text x="200" y="128" text-anchor="middle" font-size="10" fill="#5B6876" font-family="Open Sans, sans-serif">100</text>
+                    </svg>
+                    <strong style="{{alv.termo.g60.valStyle}}">{{alv.termo.g60.v}}</strong>
+                    <span style="{{alv.termo.g60.chip}}">{{alv.termo.g60.label}}</span>
+                  </div>
+                </div>
+                <span style="font-size: 13px; color: #4F5D6B">Saldo en riesgo estimado: <strong style="color: #1B2A3A">{{alv.termo.enRiesgo}}</strong></span>
+                <a href="{{alv.termo.href}}" style="align-self: flex-start; display: flex; align-items: center; min-height: 44px; padding: 0 16px; border-radius: 10px; border: 1px solid #C9D2DC; color: #003057; text-decoration: none; font-size: 13.5px; font-weight: 700">{{alv.termo.hrefLabel}}</a>
+              </div>
+              <div style="flex: 1 1 300px; display: flex; flex-direction: column; gap: 4px">
+                <h3 style="margin: 0 0 6px; font-size: 15px; color: #1B2A3A">Factores que explican la alerta</h3>
+                <sc-for list="{{alv.termo.factores}}" as="f" hint-placeholder-count="5">
+                  <div style="display: grid; grid-template-columns: minmax(0, 1fr) minmax(60px, 140px) 44px; gap: 12px; align-items: center; padding: 9px 0; border-bottom: 1px solid #F0F3F7; font-size: 13.5px">
+                    <span style="color: #1B2A3A">{{f.name}}</span>
+                    <div style="position: relative; height: 10px; background: #F2F5F9; border-radius: 5px"><div style="{{f.bar}}"></div></div>
+                    <strong style="{{f.valStyle}}">{{f.val}}</strong>
+                  </div>
+                </sc-for>
+                <span style="font-size: 12px; color: #4F5D6B; margin-top: 6px">Positivo = aumenta el riesgo · Negativo = lo reduce. Cada factor tiene evidencia trazable (movimientos, CRM, contratos).</span>
+              </div>
+            </div>
+          </section>
+
+          <sc-if value="{{alv.fSen}}">
+          <section aria-labelledby="h-senales" style="background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 16px; padding: 22px 24px; display: flex; flex-direction: column; gap: 14px">
+            <div style="display: flex; flex-direction: column; gap: 4px">
+              <h2 id="h-senales" style="margin: 0; font-size: 18px; color: #003057">Señales anticipadas</h2>
+              <span style="font-size: 13px; color: #4F5D6B">Reglas que buscan anticipar la fuga antes de que ocurra. Ejemplo de la reunión: retiros del 30 al 50 % combinados con falta de comunicación.</span>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px">
+              <sc-for list="{{alv.senales}}" as="s" hint-placeholder-count="4">
+                <article style="border: 1px solid #E1E7EE; border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 10px">
+                  <div style="display: flex; justify-content: space-between; gap: 8px; align-items: flex-start">
+                    <strong style="font-size: 14.5px; color: #003057">{{s.nombre}}</strong>
+                    <span style="{{s.tagStyle}}">{{s.tag}}</span>
+                  </div>
+                  <span style="font-size: 13px; line-height: 1.5; color: #3D4C5B">{{s.regla}}</span>
+                  <span style="font-size: 12.5px; font-weight: 700; color: #1B2A3A">{{s.n}}</span>
+                  <div style="display: flex; gap: 6px; flex-wrap: wrap">
+                    <sc-for list="{{s.clientes}}" as="c" hint-placeholder-count="2"><button type="button" sc-camel-on-click="{{c.pick}}" style="{{c.style}}">{{c.nombre}}</button></sc-for>
+                  </div>
+                </article>
+              </sc-for>
+            </div>
+          </section>
+          </sc-if>
+
+          <sc-if value="{{alv.fMapa}}">
+          <div style="display: flex; flex-wrap: wrap; gap: 20px">
+            <section aria-labelledby="h-mapa" style="flex: 999 1 420px; min-width: 0; background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 16px; padding: 22px 24px; display: flex; flex-direction: column; gap: 14px">
+              <div style="display: flex; flex-direction: column; gap: 4px">
+                <h2 id="h-mapa" style="margin: 0; font-size: 18px; color: #003057">Mapa de prioridad: riesgo vs. saldo</h2>
+                <span style="font-size: 13px; color: #4F5D6B">Cada punto es un cliente de tu cartera · arriba a la derecha, atender primero</span>
+              </div>
+              <div style="overflow-x: auto">
+                <svg sc-camel-view-box="0 0 640 340" role="img" aria-label="Dispersión de clientes según riesgo de fuga a 60 días y saldo" style="width: 100%; min-width: 0; height: auto; display: block">
+                  <rect x="427" y="16" width="197" height="140" fill="#FDE8E6" rx="6"></rect>
+                  <text x="616" y="36" text-anchor="end" font-size="12" font-weight="700" fill="#9A1F24" font-family="Open Sans, sans-serif">Prioridad alta</text>
+                  <line x1="60" x2="624" y1="296" y2="296" stroke="#C9D2DC"></line>
+                  <line x1="60" x2="60" y1="16" y2="296" stroke="#C9D2DC"></line>
+                  <line x1="427" x2="427" y1="16" y2="296" stroke="#C9D2DC" stroke-dasharray="4 4"></line>
+                  <sc-for list="{{alv.yTicks}}" as="t" hint-placeholder-count="3"><text x="54" y="{{t.ty}}" text-anchor="end" font-size="10" fill="#5B6876" font-family="Open Sans, sans-serif">{{t.label}}</text></sc-for>
+                  <text x="60" y="316" font-size="11" fill="#5B6876" font-family="Open Sans, sans-serif">0</text>
+                  <text x="427" y="316" text-anchor="middle" font-size="11" fill="#5B6876" font-family="Open Sans, sans-serif">65</text>
+                  <text x="624" y="316" text-anchor="end" font-size="11" fill="#5B6876" font-family="Open Sans, sans-serif">100</text>
+                  <text x="342" y="334" text-anchor="middle" font-size="12" fill="#3D4C5B" font-family="Open Sans, sans-serif">Riesgo de fuga a 60 días</text>
+                  <sc-for list="{{alv.dots}}" as="p" hint-placeholder-count="12">
+                    <circle cx="{{p.x}}" cy="{{p.y}}" r="{{p.r}}" fill="{{p.c}}" fill-opacity="0.85" stroke="#FFFFFF" stroke-width="1.5"><title>{{p.title}}</title></circle>
+                  </sc-for>
+                  <circle cx="{{alv.me.x}}" cy="{{alv.me.y}}" r="14" fill="none" stroke="#003057" stroke-width="2.5"></circle>
+                  <text x="{{alv.me.tx}}" y="{{alv.me.ty}}" text-anchor="end" font-size="12" font-weight="700" fill="#003057" font-family="Open Sans, sans-serif">{{alv.me.label}}</text>
+                </svg>
+              </div>
+            </section>
+            <section aria-labelledby="h-motivos" style="flex: 1 1 280px; background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 16px; padding: 22px 24px; display: flex; flex-direction: column; gap: 14px">
+              <div style="display: flex; flex-direction: column; gap: 4px">
+                <h2 id="h-motivos" style="margin: 0; font-size: 18px; color: #003057">Motivos más frecuentes</h2>
+                <span style="font-size: 13px; color: #4F5D6B">En clientes con riesgo medio o alto</span>
+              </div>
+              <sc-for list="{{alv.motivos}}" as="m" hint-placeholder-count="5">
+                <div style="display: flex; flex-direction: column; gap: 6px">
+                  <div style="display: flex; justify-content: space-between; font-size: 13.5px"><span>{{m.name}}</span><strong>{{m.n}}</strong></div>
+                  <div style="height: 8px; border-radius: 4px; background: #EEF1F5"><div style="{{m.bar}}"></div></div>
+                </div>
+              </sc-for>
+            </section>
+          </div>
+          </sc-if>
+
+          <section aria-labelledby="h-prio" style="background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 16px; padding: 22px 24px; display: flex; flex-direction: column; gap: 14px">
+            <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap">
+              <h2 id="h-prio" style="margin: 0; font-size: 18px; color: #003057">Clientes priorizados</h2>
+              <div role="group" aria-label="Filtrar" style="display: flex; gap: 6px; flex-wrap: wrap">
+                <sc-for list="{{alv.filters}}" as="f" hint-placeholder-count="4"><button type="button" sc-camel-on-click="{{f.pick}}" aria-pressed="{{f.pressed}}" style="{{f.style}}">{{f.label}}</button></sc-for>
+              </div>
+            </div>
+            <div style="overflow-x: auto">
+              <div class="rt" style="min-width: 960px; display: flex; flex-direction: column">
+                <div class="rt-head" style="display: grid; grid-template-columns: minmax(170px, 1.5fr) 84px 96px 96px minmax(130px, 1.3fr) minmax(120px, 1.1fr) 206px; gap: 12px; padding: 0 10px 10px; border-bottom: 1px solid #E1E7EE; font-size: 12.5px; font-weight: 700; color: #4F5D6B">
+                  <span>Cliente</span><span style="text-align: right">Saldo</span><span>Riesgo 30 d</span><span>Riesgo 60 d</span><span>Factor principal</span><span>Acción sugerida</span><span><span style="position: absolute; left: -9999px">Acciones</span></span>
+                </div>
+                <sc-for list="{{alv.rows}}" as="r" hint-placeholder-count="6">
+                  <div class="rt-row" style="display: grid; grid-template-columns: minmax(170px, 1.5fr) 84px 96px 96px minmax(130px, 1.3fr) minmax(120px, 1.1fr) 206px; gap: 12px; align-items: center; padding: 10px; border-bottom: 1px solid #F0F3F7; font-size: 13.5px">
+                    <div style="display: flex; flex-direction: column; gap: 2px"><strong style="color: #003057">{{r.nombre}}</strong><span style="font-size: 12px; color: #4F5D6B">{{r.sub}}</span></div>
+                    <strong style="text-align: right">{{r.saldo}}</strong>
+                    <span><span style="{{r.s30}}">{{r.c30}}</span></span>
+                    <span><span style="{{r.s60}}">{{r.c60}}</span></span>
+                    <span class="rt-full" style="font-size: 13px; color: #3D4C5B">{{r.factor}}</span>
+                    <span class="rt-full" style="font-size: 13px; color: #3D4C5B">{{r.accion}}</span>
+                    <div class="rt-full" style="display: flex; gap: 6px; justify-content: flex-end">
+                      <button type="button" sc-camel-on-click="{{r.ver}}" aria-label="{{r.verAria}}" style="min-height: 44px; padding: 0 12px; border-radius: 10px; border: 1px solid #C9D2DC; background: #FFFFFF; color: #003057; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer; white-space: nowrap">Termómetro</button>
+                      <a href="{{r.href}}" aria-label="{{r.hrefAria}}" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 12px; border-radius: 10px; background: #0072CE; color: #FFFFFF; text-decoration: none; font-size: 13px; font-weight: 700; white-space: nowrap">Vista 360</a>
+                    </div>
+                  </div>
+                </sc-for>
+                <sc-if value="{{alv.empty}}"><p style="margin: 0; padding: 20px 10px; font-size: 14px; color: #4F5D6B">Ningún cliente cumple este filtro.</p></sc-if>
+              </div>
+            </div>
           </section>
         </div>
       </div>
+    </div>
+  </sc-if>
 
-      <!-- TIMELINE + COPILOT -->
-      <div style="display: flex; flex-wrap: wrap; gap: 24px">
-        <section style="flex: 1 1 420px; min-width: 0; background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 16px">
-          <h2 style="margin: 0; font-size: 18px; color: #003057">Historial de interacciones</h2>
-          <div style="display: flex; flex-direction: column; gap: 0">
-            <div style="display: grid; grid-template-columns: 76px 20px minmax(0, 1fr); gap: 10px; padding-bottom: 18px"><span style="font-size: 12.5px; color: #5B6876">28 sep</span><span style="width: 12px; height: 12px; margin-top: 3px; border-radius: 50%; background: #0072CE"></span><div style="display: flex; flex-direction: column; gap: 2px"><strong style="font-size: 14px">Llamada saliente · 12 min</strong><span style="font-size: 13px; line-height: 1.5; color: #4F5D6B">Preguntó por rentabilidad de renta fija frente a CDT bancarios.</span></div></div>
-            <div style="display: grid; grid-template-columns: 76px 20px minmax(0, 1fr); gap: 10px; padding-bottom: 18px"><span style="font-size: 12.5px; color: #5B6876">22 sep</span><span style="width: 12px; height: 12px; margin-top: 3px; border-radius: 50%; background: #B3272D"></span><div style="display: flex; flex-direction: column; gap: 2px"><strong style="font-size: 14px">Retiro por portal</strong><span style="font-size: 13px; line-height: 1.5; color: #4F5D6B">$310 M desde FIC Liquidez a cuenta en otra entidad.</span></div></div>
-            <div style="display: grid; grid-template-columns: 76px 20px minmax(0, 1fr); gap: 10px; padding-bottom: 18px"><span style="font-size: 12.5px; color: #5B6876">10 ago</span><span style="width: 12px; height: 12px; margin-top: 3px; border-radius: 50%; background: #00A98E"></span><div style="display: flex; flex-direction: column; gap: 2px"><strong style="font-size: 14px">Reunión presencial</strong><span style="font-size: 13px; line-height: 1.5; color: #4F5D6B">Revisión semestral. Solicitó informe consolidado del grupo.</span></div></div>
-            <div style="display: grid; grid-template-columns: 76px 20px minmax(0, 1fr); gap: 10px"><span style="font-size: 12.5px; color: #5B6876">03 feb</span><span style="width: 12px; height: 12px; margin-top: 3px; border-radius: 50%; background: #999899"></span><div style="display: flex; flex-direction: column; gap: 2px"><strong style="font-size: 14px">Actualización de perfil</strong><span style="font-size: 13px; line-height: 1.5; color: #4F5D6B">Resultado: Moderado (antes Mayor riesgo).</span></div></div>
+  <!-- MODAL: Siguiente mejor acción (antes página propia; lógica en js/vistas-modulos.js) -->
+  <sc-if value="{{nbv}}">
+    <div style="position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 24px; box-sizing: border-box">
+      <div sc-camel-on-click="{{close}}" aria-hidden="true" style="position: absolute; inset: 0; background: rgba(0, 28, 51, 0.55)"></div>
+      <div id="modal-nba" data-modal="" role="dialog" aria-modal="true" aria-labelledby="modal-nba-titulo" sc-camel-tab-index="-1" style="position: relative; width: 100%; max-width: 1180px; max-height: calc(100vh - 48px); overflow: auto; background: #F2F5F9; border-radius: 16px; box-shadow: 0 24px 64px rgba(0,0,0,.3); display: flex; flex-direction: column; outline: none">
+        <div style="position: sticky; top: 0; z-index: 2; overflow: hidden; flex: none; padding: 16px 22px; background: #FFFFFF; border-bottom: 1px solid #E1E7EE; display: flex; gap: 14px; align-items: flex-start; justify-content: space-between">
+          <div aria-hidden="true" style="position: absolute; top: 0; right: 0; width: 200px; height: 100%; background: #EEF4FA; clip-path: polygon(45% 0%, 100% 0%, 100% 100%, 0% 100%)"></div>
+          <div style="position: relative; display: flex; flex-direction: column; gap: 4px">
+            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap"><h2 id="modal-nba-titulo" style="margin: 0; font-size: 20px; color: #003057">Siguiente mejor acción</h2><span style="font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 999px; background: #EEF0D2; color: #3F410C">En definición</span></div>
+            <span style="font-size: 12.5px; color: #4F5D6B">Acción sugerida para cada cliente de tu cartera, alineación frente al perfil y recomendación de portafolio</span>
           </div>
-        </section>
+          <button type="button" sc-camel-on-click="{{close}}" aria-label="Cerrar siguiente mejor acción" style="position: relative; flex: none; width: 44px; height: 44px; border-radius: 10px; border: 1px solid #E1E7EE; background: #FFFFFF; color: #003057; font-size: 16px; cursor: pointer">✕</button>
+        </div>
+        <div style="padding: 18px 22px 22px; display: flex; flex-direction: column; gap: 18px">
 
-        <section style="flex: 1 1 420px; min-width: 0; position: relative; overflow: hidden; background: #003057; color: #FFFFFF; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 14px">
-          <div aria-hidden="true" style="position: absolute; inset: 0; background: #0B3D6B; clip-path: polygon(0% 0%, 100% 0%, 100% 18%, 0% 62%)"></div>
-          <div style="position: relative; display: flex; justify-content: space-between; align-items: center; gap: 12px">
-            <h2 style="margin: 0; font-size: 18px">Pregúntale al asistente</h2>
-            <span style="font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 999px; background: #D2D755; color: #003057">Con evidencia</span>
+          <div class="nba-grid" style="display: grid; grid-template-columns: minmax(280px, 340px) minmax(0, 1fr); gap: 20px; align-items: start">
+            <section aria-labelledby="h-lista" class="nba-list" style="background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 16px; padding: 22px 24px; display: flex; flex-direction: column; gap: 14px; padding: 18px; position: sticky; top: 0; max-height: calc(100vh - 160px); overflow: auto">
+              <div style="display: flex; flex-direction: column; gap: 2px">
+                <h2 id="h-lista" style="margin: 0; font-size: 16px; color: #003057">Clientes y acción sugerida</h2>
+                <span style="font-size: 12.5px; color: #4F5D6B">{{nbv.count}} · ordenados por prioridad</span>
+              </div>
+              <sc-for list="{{nbv.items}}" as="i" hint-placeholder-count="8">
+                <button type="button" sc-camel-on-click="{{i.pick}}" aria-pressed="{{i.pressed}}" style="{{i.style}}">
+                  <span style="display: flex; justify-content: space-between; gap: 8px; width: 100%"><strong style="font-size: 13.5px; color: #003057">{{i.nombre}}</strong><span style="{{i.tagStyle}}">{{i.tag}}</span></span>
+                  <span style="font-size: 13px; color: #1B2A3A">{{i.accion}}</span>
+                  <span style="display: flex; justify-content: space-between; width: 100%"><span style="font-size: 11.5px; color: #4F5D6B">{{i.conf}}</span><span style="{{i.estadoStyle}}">{{i.estado}}</span></span>
+                </button>
+              </sc-for>
+            </section>
+
+            <div style="display: flex; flex-direction: column; gap: 20px; min-width: 0">
+              <section style="position: relative; overflow: hidden; background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 16px; padding: 22px 24px; display: flex; flex-direction: column; gap: 14px; flex-direction: row; flex-wrap: wrap; justify-content: space-between; align-items: center">
+                <div aria-hidden="true" style="position: absolute; top: 0; right: 0; width: 200px; height: 100%; background: #EEF4FA; clip-path: polygon(45% 0%, 100% 0%, 100% 100%, 0% 100%)"></div>
+                <div style="position: relative; display: flex; flex-direction: column; gap: 2px">
+                  <h2 style="margin: 0; font-size: 20px; color: #003057">{{nbv.cli.nombre}}</h2>
+                  <span style="font-size: 13px; color: #4F5D6B">{{nbv.cli.sub}}</span>
+                </div>
+                <a href="{{nbv.cli.href}}" style="position: relative; display: flex; align-items: center; min-height: 44px; padding: 0 16px; border-radius: 10px; background: #0072CE; color: #FFFFFF; text-decoration: none; font-size: 13.5px; font-weight: 700">{{nbv.cli.hrefLabel}}</a>
+              </section>
+
+              <sc-if value="{{nbv.fBrief}}">
+              <section aria-labelledby="h-brief" style="background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 16px; padding: 22px 24px; display: flex; flex-direction: column; gap: 14px">
+                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap">
+                  <h2 id="h-brief" style="margin: 0; font-size: 18px; color: #003057">Briefing antes del contacto</h2>
+                  <span style="font-size: 11.5px; font-weight: 700; padding: 3px 9px; border-radius: 999px; background: #E3F1FB; color: #004E8C">Generado por el copiloto</span>
+                </div>
+                <ul style="margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 8px; font-size: 14px; line-height: 1.55; color: #1B2A3A">
+                  <sc-for list="{{nbv.briefing}}" as="b" hint-placeholder-count="4"><li>{{b}}</li></sc-for>
+                </ul>
+              </section>
+              </sc-if>
+
+              <section aria-labelledby="h-nba" style="background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 16px; padding: 22px 24px; display: flex; flex-direction: column; gap: 14px">
+                <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap">
+                  <div style="display: flex; flex-direction: column; gap: 4px">
+                    <h2 id="h-nba" style="margin: 0; font-size: 18px; color: #003057">Siguiente mejor acción</h2>
+                    <span style="font-size: 13px; color: #4F5D6B">Priorizadas por el copiloto · tú validas o descartas</span>
+                  </div>
+                  <span style="font-size: 12.5px; color: #4F5D6B">{{nbv.nbaDone}}</span>
+                </div>
+                <sc-for list="{{nbv.nba}}" as="n" hint-placeholder-count="3">
+                  <article style="{{n.card}}">
+                    <div style="display: flex; gap: 14px; align-items: flex-start">
+                      <span style="{{n.rankStyle}}">{{n.rank}}</span>
+                      <div style="flex: 1; display: flex; flex-direction: column; gap: 6px; min-width: 0">
+                        <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap"><strong style="font-size: 15.5px; color: #003057">{{n.titulo}}</strong><span style="{{n.tagStyle}}">{{n.tag}}</span></div>
+                        <span style="font-size: 14px; line-height: 1.55; color: #3D4C5B">{{n.porque}}</span>
+                        <span style="font-size: 12.5px; color: #4F5D6B">Evidencia: {{n.evidencia}} · Confianza {{n.conf}}</span>
+                      </div>
+                    </div>
+                    <div style="display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap">
+                      <sc-if value="{{n.pending}}">
+                        <button type="button" sc-camel-on-click="{{n.discard}}" style="min-height: 44px; padding: 0 14px; border-radius: 10px; border: 1px solid #C9D2DC; background: #FFFFFF; color: #3D4C5B; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer">Descartar</button>
+                        <button type="button" sc-camel-on-click="{{n.accept}}" style="min-height: 44px; padding: 0 16px; border-radius: 10px; border: none; background: #0072CE; color: #FFFFFF; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer">Aceptar y agendar</button>
+                      </sc-if>
+                      <sc-if value="{{n.decided}}"><span role="status" style="{{n.statusStyle}}">{{n.status}}</span></sc-if>
+                    </div>
+                  </article>
+                </sc-for>
+              </section>
+
+              <sc-if value="{{nbv.fAlign}}">
+              <section aria-labelledby="h-align" style="background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 16px; padding: 22px 24px; display: flex; flex-direction: column; gap: 14px">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap">
+                  <div style="display: flex; flex-direction: column; gap: 4px">
+                    <h2 id="h-align" style="margin: 0; font-size: 18px; color: #003057">Alineación frente al perfil de riesgo</h2>
+                    <span style="font-size: 13px; color: #4F5D6B">Perfil oficial vs. mezcla real del portafolio (calculada desde los productos)</span>
+                  </div>
+                  <sc-if value="{{nbv.desalineado}}"><span style="font-size: 12.5px; font-weight: 700; padding: 6px 10px; border-radius: 999px; background: #FDE8E6; color: #9A1F24">Desalineado</span></sc-if>
+                  <sc-if value="{{nbv.alineado}}"><span style="font-size: 12.5px; font-weight: 700; padding: 6px 10px; border-radius: 999px; background: #E1F5EF; color: #00664F">Dentro de rango</span></sc-if>
+                </div>
+                <sc-for list="{{nbv.align}}" as="a" hint-placeholder-count="3">
+                  <div style="display: flex; flex-direction: column; gap: 8px">
+                    <div style="display: flex; justify-content: space-between; font-size: 14px"><span style="font-weight: 600">{{a.name}}</span><span style="color: #4F5D6B">Real <strong style="{{a.valStyle}}">{{a.actual}}</strong> · rango {{a.range}}</span></div>
+                    <div style="position: relative; height: 16px; border-radius: 8px; background: #EEF1F5"><div style="{{a.bandStyle}}"></div><div style="{{a.barStyle}}"></div><div style="{{a.markStyle}}"></div></div>
+                  </div>
+                </sc-for>
+                <div style="display: flex; gap: 16px; font-size: 12px; color: #4F5D6B; flex-wrap: wrap">
+                  <span style="display: flex; align-items: center; gap: 6px"><span style="width: 18px; height: 10px; border-radius: 3px; background: #C9E3F6; border: 1px dashed #0072CE"></span>Rango permitido</span>
+                  <span style="display: flex; align-items: center; gap: 6px"><span style="width: 18px; height: 10px; border-radius: 3px; background: #003057"></span>Dentro de rango</span>
+                  <span style="display: flex; align-items: center; gap: 6px"><span style="width: 18px; height: 10px; border-radius: 3px; background: #D57E00"></span>Fuera de rango</span>
+                </div>
+                <span style="font-size: 13.5px; line-height: 1.55; color: #3D4C5B">{{nbv.alignMsg}}</span>
+              </section>
+              </sc-if>
+
+              <sc-if value="{{nbv.fReco}}">
+              <section aria-labelledby="h-reco" style="background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 16px; padding: 22px 24px; display: flex; flex-direction: column; gap: 14px">
+                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap">
+                  <h2 id="h-reco" style="margin: 0; font-size: 18px; color: #003057">Recomendación de portafolio según perfil</h2>
+                  <span style="font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 999px; background: #EEF0D2; color: #3F410C">En exploración</span>
+                </div>
+                <span style="font-size: 13px; color: #4F5D6B">Mezcla objetivo dentro de los rangos del perfil oficial y movimientos aproximados para llegar a ella. Orientativa: la decisión y su registro en suitability son del asesor.</span>
+                <div style="overflow-x: auto">
+                  <div class="rt" style="min-width: 640px; display: flex; flex-direction: column">
+                    <div class="rt-head" style="display: grid; grid-template-columns: 1.2fr 90px 100px 100px 1.2fr 1.6fr; gap: 12px; padding: 0 8px 8px; border-bottom: 1px solid #E1E7EE; font-size: 12.5px; font-weight: 700; color: #4F5D6B">
+                      <span>Clase de riesgo</span><span style="text-align: right">Actual</span><span style="text-align: right">Rango</span><span style="text-align: right">Objetivo</span><span>Movimiento</span><span>Vehículo sugerido</span>
+                    </div>
+                    <sc-for list="{{nbv.reco}}" as="r" hint-placeholder-count="3">
+                      <div class="rt-row" style="display: grid; grid-template-columns: 1.2fr 90px 100px 100px 1.2fr 1.6fr; gap: 12px; align-items: center; padding: 10px 8px; border-bottom: 1px solid #F0F3F7; font-size: 13.5px">
+                        <strong style="color: #003057">{{r.nombre}}</strong><span style="text-align: right">{{r.actual}}</span><span style="text-align: right; color: #4F5D6B">{{r.rango}}</span><strong style="text-align: right">{{r.objetivo}}</strong><span style="{{r.movStyle}}; white-space: nowrap">{{r.mov}}</span><span style="font-size: 13px; color: #3D4C5B">{{r.vehiculo}}</span>
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+              </section>
+              </sc-if>
+            </div>
           </div>
-          <div style="position: relative; align-self: flex-end; max-width: 85%; padding: 12px 14px; border-radius: 14px 14px 4px 14px; background: #0072CE; font-size: 14px; line-height: 1.5">¿Qué fondo de renta fija encaja con su perfil y cuánto rentó en el último año?</div>
-          <div style="position: relative; max-width: 92%; padding: 12px 14px; border-radius: 14px 14px 14px 4px; background: #FFFFFF; color: #1B2A3A; font-size: 14px; line-height: 1.55; display: flex; flex-direction: column; gap: 8px">
-            <span>Para perfil Moderado, la ficha permite fondos de renta fija de mediano plazo. La rentabilidad debe consultarse en la ficha técnica vigente del fondo.</span>
-            <span style="font-size: 12px; color: #4F5D6B">Fuentes: [Ficha técnica FIC renta fija, sep-2026] · [Política de idoneidad, v4]</span>
-          </div>
-          <div style="position: relative; display: flex; gap: 10px; margin-top: auto">
-            <label for="ask" style="position: absolute; left: -9999px">Pregunta al copiloto</label>
-            <input id="ask" type="text" placeholder="Escribe una pregunta sobre productos o políticas" style="flex: 1; min-width: 0; height: 48px; padding: 0 14px; border-radius: 10px; border: none; font-size: 14px; font-family: inherit">
-            <button type="button" aria-label="Enviar pregunta" style="width: 48px; height: 48px; border-radius: 10px; border: none; background: #D2D755; color: #003057; display: flex; align-items: center; justify-content: center; cursor: pointer">
-              <svg width="20" height="20" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="m13 6 6 6-6 6"></path></svg>
-            </button>
-          </div>
-        </section>
+        </div>
       </div>
+    </div>
+  </sc-if>
 
-    </main>
-  </div>
+  <!-- MODAL: Setup del cliente (antes página propia; lógica en js/vistas-modulos.js) -->
+  <sc-if value="{{stv}}">
+    <div style="position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 24px; box-sizing: border-box">
+      <div sc-camel-on-click="{{close}}" aria-hidden="true" style="position: absolute; inset: 0; background: rgba(0, 28, 51, 0.55)"></div>
+      <div id="modal-setup" data-modal="" role="dialog" aria-modal="true" aria-labelledby="modal-setup-titulo" sc-camel-tab-index="-1" style="position: relative; width: 100%; max-width: 1180px; max-height: calc(100vh - 48px); overflow: auto; background: #F2F5F9; border-radius: 16px; box-shadow: 0 24px 64px rgba(0,0,0,.3); display: flex; flex-direction: column; outline: none">
+        <div style="position: sticky; top: 0; z-index: 2; overflow: hidden; flex: none; padding: 16px 22px; background: #FFFFFF; border-bottom: 1px solid #E1E7EE; display: flex; gap: 14px; align-items: flex-start; justify-content: space-between">
+          <div aria-hidden="true" style="position: absolute; top: 0; right: 0; width: 200px; height: 100%; background: #EEF4FA; clip-path: polygon(45% 0%, 100% 0%, 100% 100%, 0% 100%)"></div>
+          <div style="position: relative; display: flex; flex-direction: column; gap: 4px">
+            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap"><h2 id="modal-setup-titulo" style="margin: 0; font-size: 20px; color: #003057">Setup del cliente</h2><span style="font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 999px; background: #EEF0D2; color: #3F410C">En definición</span></div>
+            <span style="font-size: 12.5px; color: #4F5D6B">Etapa de vinculación o actualización de cada cliente y documentos o firmas pendientes</span>
+          </div>
+          <button type="button" sc-camel-on-click="{{close}}" aria-label="Cerrar setup del cliente" style="position: relative; flex: none; width: 44px; height: 44px; border-radius: 10px; border: 1px solid #E1E7EE; background: #FFFFFF; color: #003057; font-size: 16px; cursor: pointer">✕</button>
+        </div>
+        <div style="padding: 18px 22px 22px; display: flex; flex-direction: column; gap: 18px">
+
+          <section class="kpi-grid" aria-label="Resumen de setup" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px">
+            <div style="background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 4px"><span style="font-size: 13px; font-weight: 600; color: #4F5D6B">Procesos en curso</span><strong style="font-size: 26px; font-weight: 800; color: #003057">{{stv.kpi.total}}</strong><span style="font-size: 12.5px; color: #4F5D6B">{{stv.kpi.nuevos}} vinculaciones nuevas</span></div>
+            <div style="background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 4px"><span style="font-size: 13px; font-weight: 600; color: #4F5D6B">Al día</span><strong style="font-size: 26px; font-weight: 800; color: #00806B">{{stv.kpi.alDia}}</strong><span style="font-size: 12.5px; color: #4F5D6B">sin documentos pendientes</span></div>
+            <div style="background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 4px"><span style="font-size: 13px; font-weight: 600; color: #4F5D6B">Con pendientes</span><strong style="font-size: 26px; font-weight: 800; color: #8A5300">{{stv.kpi.pend}}</strong><span style="font-size: 12.5px; color: #4F5D6B">requieren gestión</span></div>
+            <div style="background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 4px"><span style="font-size: 13px; font-weight: 600; color: #4F5D6B">Documentos vencidos</span><strong style="font-size: 26px; font-weight: 800; color: #9A1F24">{{stv.kpi.vencidos}}</strong><span style="font-size: 12.5px; color: #4F5D6B">en todos los procesos</span></div>
+          </section>
+
+          <section aria-labelledby="h-setup" style="background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 16px; padding: 22px 24px; display: flex; flex-direction: column; gap: 14px">
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; flex-wrap: wrap">
+              <div style="display: flex; flex-direction: column; gap: 4px">
+                <h2 id="h-setup" style="margin: 0; font-size: 18px; color: #003057">Vinculación y actualización de clientes</h2>
+                <span style="font-size: 13px; color: #4F5D6B">Etapas: {{stv.etapas}}</span>
+              </div>
+              <div role="group" aria-label="Filtrar" style="display: flex; gap: 6px; flex-wrap: wrap">
+                <sc-for list="{{stv.filters}}" as="f" hint-placeholder-count="4"><button type="button" sc-camel-on-click="{{f.pick}}" aria-pressed="{{f.pressed}}" style="{{f.style}}">{{f.label}}</button></sc-for>
+              </div>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 10px">
+              <sc-for list="{{stv.rows}}" as="r" hint-placeholder-count="6">
+                <button type="button" sc-camel-on-click="{{r.abrir}}" aria-haspopup="dialog" aria-label="{{r.aria}}" class="setup-row rt-row" style="display: grid; grid-template-columns: minmax(220px, 1.4fr) minmax(220px, 1.4fr) minmax(200px, 1fr) 20px; gap: 20px; align-items: center; width: 100%; min-height: 72px; padding: 14px 16px; box-sizing: border-box; border: 1px solid #E1E7EE; border-radius: 14px; background: #FFFFFF; font-family: inherit; text-align: left; color: #1B2A3A; cursor: pointer">
+                  <span style="display: flex; flex-direction: column; gap: 3px; min-width: 0">
+                    <span style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap"><strong style="font-size: 14.5px; color: #003057">{{r.nombre}}</strong><sc-if value="{{r.prospecto}}"><span style="font-size: 11px; font-weight: 700; padding: 1px 7px; border-radius: 999px; background: #EEF0D2; color: #3F410C">Prospecto</span></sc-if></span>
+                    <span style="font-size: 12px; color: #4F5D6B">{{r.sub}}</span>
+                  </span>
+                  <span class="rt-full" style="display: flex; flex-direction: column; gap: 6px">
+                    <span style="display: flex; gap: 4px" role="img" aria-label="{{r.etapaLabel}}"><sc-for list="{{r.segs}}" as="s" hint-placeholder-count="5"><span title="{{s.title}}" style="{{s.style}}"></span></sc-for></span>
+                    <span style="font-size: 12px; font-weight: 600; color: #3D4C5B">{{r.etapaLabel}}</span>
+                  </span>
+                  <span class="rt-full" style="display: flex; flex-direction: column; gap: 4px; align-items: flex-start"><span style="{{r.estadoStyle}}">{{r.estado}}</span><span style="font-size: 12px; color: #4F5D6B">{{r.inicio}}</span></span>
+                  <svg class="rt-hide" width="18" height="18" sc-camel-view-box="0 0 24 24" fill="none" stroke="#003057" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"></path></svg>
+                </button>
+              </sc-for>
+              <sc-if value="{{stv.empty}}"><p style="margin: 0; padding: 16px 4px; font-size: 14px; color: #4F5D6B">Ningún proceso cumple este filtro.</p></sc-if>
+            </div>
+            <div style="display: flex; gap: 16px; flex-wrap: wrap; font-size: 12px; color: #4F5D6B">
+              <span style="display: flex; align-items: center; gap: 6px"><span style="width: 18px; height: 8px; border-radius: 4px; background: #0072CE"></span>Etapa completa</span>
+              <span style="display: flex; align-items: center; gap: 6px"><span style="width: 18px; height: 8px; border-radius: 4px; background: #D2D755"></span>En curso</span>
+              <span style="display: flex; align-items: center; gap: 6px"><span style="width: 18px; height: 8px; border-radius: 4px; background: #E1E7EE"></span>Por iniciar</span>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+    <sc-if value="{{stv.modal}}">
+      <div style="position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 24px; box-sizing: border-box">
+        <div sc-camel-on-click="{{stv.close}}" aria-hidden="true" style="position: absolute; inset: 0; background: rgba(0, 28, 51, 0.55)"></div>
+        <div data-modal="" role="dialog" aria-modal="true" aria-labelledby="modal-setup-titulo" sc-camel-tab-index="-1" style="position: relative; width: 100%; max-width: 760px; max-height: calc(100vh - 48px); overflow: auto; background: #FFFFFF; border-radius: 16px; box-shadow: 0 24px 64px rgba(0,0,0,.3); padding: 20px 24px 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 14px; outline: none">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px">
+            <div style="display: flex; flex-direction: column; gap: 4px">
+              <h2 id="modal-setup-titulo" style="margin: 0; font-size: 20px; color: #003057">Checklist · {{stv.modal.nombre}}</h2>
+              <span style="font-size: 13px; color: #4F5D6B">{{stv.modal.sub}}</span>
+              <span style="{{stv.modal.estadoStyle}}; align-self: flex-start">{{stv.modal.estado}}</span>
+            </div>
+            <button type="button" sc-camel-on-click="{{stv.close}}" aria-label="Cerrar checklist" style="flex: none; width: 44px; height: 44px; border-radius: 10px; border: 1px solid #E1E7EE; background: #FFFFFF; color: #003057; font-size: 16px; cursor: pointer">✕</button>
+          </div>
+          <sc-for list="{{stv.modal.grupos}}" as="g" hint-placeholder-count="4">
+            <div style="display: flex; flex-direction: column; gap: 2px">
+              <h3 style="margin: 6px 0 4px; font-size: 13px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: #4F5D6B">{{g.etapa}}</h3>
+              <sc-for list="{{g.docs}}" as="d" hint-placeholder-count="3">
+                <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap; padding: 10px 0; border-bottom: 1px solid #F0F3F7">
+                  <span style="{{d.iconStyle}}"><svg width="16" height="16" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{d.icon}}"></path></svg></span>
+                  <span style="flex: 1 1 260px; display: flex; flex-direction: column; gap: 2px"><strong style="font-size: 13.5px; color: #1B2A3A">{{d.nombre}}</strong><span style="font-size: 12px; color: #4F5D6B">{{d.responsable}}</span></span>
+                  <span style="flex: 0 1 150px; font-size: 12.5px; color: #3D4C5B">{{d.fecha}}</span>
+                  <span style="{{d.estadoStyle}}">{{d.estado}}</span>
+                </div>
+              </sc-for>
+            </div>
+          </sc-for>
+          <span style="font-size: 12px; color: #4F5D6B">Listado de documentos y requisitos provisional, pendiente de confirmar con Alianza.</span>
+          <sc-if value="{{stv.modal.tieneVista}}"><a href="{{stv.modal.href}}" style="align-self: flex-start; display: flex; align-items: center; min-height: 44px; padding: 0 16px; border-radius: 10px; background: #0072CE; color: #FFFFFF; text-decoration: none; font-size: 13.5px; font-weight: 700">Abrir Vista 360</a></sc-if>
+        </div>
+      </div>
+    </sc-if>
+  </sc-if>
+
+  <!-- MODAL: todas las interacciones -->
+  <sc-if value="{{modalInter}}">
+    <div style="position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 24px; box-sizing: border-box">
+      <div sc-camel-on-click="{{close}}" aria-hidden="true" style="position: absolute; inset: 0; background: rgba(0, 28, 51, 0.55)"></div>
+      <div data-modal="" role="dialog" aria-modal="true" aria-labelledby="modal-inter-titulo" sc-camel-tab-index="-1" style="position: relative; width: 100%; max-width: 620px; max-height: calc(100vh - 48px); overflow: auto; background: #FFFFFF; border-radius: 16px; box-shadow: 0 24px 64px rgba(0,0,0,.3); padding: 18px 22px 22px; box-sizing: border-box; display: flex; flex-direction: column; gap: 12px; outline: none">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px">
+          <div style="display: flex; flex-direction: column; gap: 2px">
+            <h2 id="modal-inter-titulo" style="margin: 0; font-size: 19px; color: #003057">Historial de interacciones</h2>
+            <span style="font-size: 12.5px; color: #4F5D6B">{{hdr.titulo}} · {{inter.total}} registros</span>
+          </div>
+          <button type="button" sc-camel-on-click="{{close}}" aria-label="Cerrar historial" style="flex: none; width: 44px; height: 44px; border-radius: 10px; border: 1px solid #E1E7EE; background: #FFFFFF; color: #003057; font-size: 16px; cursor: pointer">✕</button>
+        </div>
+        <sc-for list="{{inter.all}}" as="x" hint-placeholder-count="5">
+          <div style="display: grid; grid-template-columns: 76px 12px minmax(0, 1fr); gap: 10px; padding: 10px 0; border-bottom: 1px solid #F0F3F7">
+            <span style="font-size: 12.5px; font-weight: 700; color: #4F5D6B">{{x.fecha}}</span>
+            <span style="width: 10px; height: 10px; margin-top: 4px; border-radius: 50%; background: #0072CE"></span>
+            <div style="display: flex; flex-direction: column; gap: 2px">
+              <strong style="font-size: 14px; color: #003057">{{x.tipo}}</strong>
+              <sc-if value="{{x.quien}}"><span style="font-size: 12px; font-weight: 600; color: #004E8C">{{x.quien}}</span></sc-if>
+              <span style="font-size: 13px; line-height: 1.5; color: #3D4C5B">{{x.nota}}</span>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </sc-if>
 </div>
 </x-dc>
 <script src="../js/Vista360.js"></script>
-<script type="text/x-dc" data-dc-script="" data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:3560}}">
+<script type="text/x-dc" data-dc-script="" data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900}}">
 const Component = window.AppLogic.Vista360(DCLogic, StreamableLogic, React);
 </script>
-
 
 </body></html>
