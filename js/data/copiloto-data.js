@@ -81,7 +81,7 @@ window.CopilotoData = {
         { id: 'cm-fic1', linea: 'fondos', tipo: 'fic', clase: 'conservador', nombre: 'FIC Alianza 1', descripcion: 'Fondo abierto · liquidez a la vista', saldo: 868, invertido: 812, apertura: '2016-03-14', datos: { tipoFondo: 'Abierto sin pacto de permanencia', perfilFondo: 'Conservador', disponibilidad: 'A la vista', unidades: 61234.18 } },
         { id: 'cm-fic2', linea: 'fondos', tipo: 'fic', nombre: 'FIC Alianza 2', descripcion: 'Fondo de renta fija · pacto 30 días', saldo: 250, invertido: 228, apertura: '2019-05-06', datos: { tipoFondo: 'Abierto con pacto de 30 días', perfilFondo: 'Moderado', disponibilidad: 'Al vencer el pacto', unidades: 18410.52 } },
         { id: 'cm-fic3', linea: 'fondos', tipo: 'fic', nombre: 'FIC Alianza 3', descripcion: 'Fondo balanceado · renta fija y variable', saldo: 455, invertido: 398, apertura: '2017-09-12', datos: { tipoFondo: 'Abierto sin pacto de permanencia', perfilFondo: 'Moderado', disponibilidad: 'T+3', unidades: 27703.9 } },
-        { id: 'cm-fpv', linea: 'fondos', tipo: 'fpv', nombre: 'FPV Alianza · Plan individual', descripcion: 'Pensión voluntaria · beneficio tributario', saldo: 220, invertido: 192, apertura: '2020-11-23' },
+        { id: 'cm-fpv', linea: 'fondos', tipo: 'fpv', nombre: 'FPV Alianza · Plan individual', descripcion: 'Pensión voluntaria · beneficio tributario', saldo: 220, invertido: 192, apertura: '2020-11-23', datos: { plan: 'FPV individual', permanenciaHasta: '2026-10-30', aportesAnio: 36, beneficio: 'Aportes voluntarios como renta exenta' } },
         { id: 'cm-enc', linea: 'fiducia', tipo: 'encargo', nombre: 'Encargo fiduciario A', descripcion: 'Encargo de inversión · vence 02 ago 2027', saldo: 380, invertido: 362, apertura: '2025-08-02', datos: { vencimiento: '2027-08-02', finalidad: 'Inversión', fideicomitente: 'Carlos Andrés Mejía' } },
         { id: 'cm-rv', linea: 'intermediacion', tipo: 'rentaVariable', nombre: 'Renta variable', descripcion: 'Acciones locales · 6 emisores', apertura: '2018-06-14',
           posiciones: [
@@ -139,7 +139,7 @@ window.CopilotoData = {
       productos: [
         { id: 'ar-fic1', linea: 'fondos', tipo: 'fic', clase: 'conservador', nombre: 'FIC Alianza 1', descripcion: 'Fondo abierto · liquidez a la vista', saldo: 300, invertido: 288, apertura: '2017-05-02' },
         { id: 'ar-fic2', linea: 'fondos', tipo: 'fic', nombre: 'FIC Alianza 2', descripcion: 'Fondo de renta fija · pacto 30 días', saldo: 420, invertido: 392, apertura: '2018-08-21' },
-        { id: 'ar-fpv', linea: 'fondos', tipo: 'fpv', nombre: 'FPV Alianza · Plan individual', descripcion: 'Pensión voluntaria · beneficio tributario', saldo: 280, invertido: 250, apertura: '2019-12-10' },
+        { id: 'ar-fpv', linea: 'fondos', tipo: 'fpv', nombre: 'FPV Alianza · Plan individual', descripcion: 'Pensión voluntaria · beneficio tributario', saldo: 280, invertido: 250, apertura: '2019-12-10', datos: { plan: 'FPV individual', permanenciaHasta: '2027-06-30', aportesAnio: 40, beneficio: 'Aportes voluntarios como renta exenta' } },
         { id: 'ar-enc', linea: 'fiducia', tipo: 'encargo', nombre: 'Encargo fiduciario B', descripcion: 'Encargo de inversión · vence 15 may 2027', saldo: 300, invertido: 291, apertura: '2025-05-15', datos: { vencimiento: '2027-05-15', finalidad: 'Inversión', fideicomitente: 'Ana María Rueda' } },
         { id: 'ar-rf', linea: 'intermediacion', tipo: 'rentaFija', nombre: 'Renta fija', descripcion: 'CDT en custodia', apertura: '2024-01-18',
           titulos: [{ nombre: 'CDT Banco C · 360 días', clase: 'CDT', tasa: '9,8 % E.A.', vencimiento: '2027-01-18', valorCompra: 262, valorMercado: 280 }] }
@@ -276,7 +276,7 @@ window.CopilotoData = {
       productos: [
         { id: 'lo-fic1', linea: 'fondos', tipo: 'fic', clase: 'conservador', nombre: 'FIC Alianza 1', descripcion: 'Fondo abierto · liquidez a la vista', saldo: 610, invertido: 590, apertura: '2018-04-23' },
         { id: 'lo-fic2', linea: 'fondos', tipo: 'fic', nombre: 'FIC Alianza 2', descripcion: 'Fondo de renta fija · pacto 30 días', saldo: 900, invertido: 845, apertura: '2019-07-30' },
-        { id: 'lo-fpv', linea: 'fondos', tipo: 'fpv', nombre: 'FPV Alianza · Plan individual', descripcion: 'Pensión voluntaria · beneficio tributario', saldo: 400, invertido: 350, apertura: '2020-12-15' },
+        { id: 'lo-fpv', linea: 'fondos', tipo: 'fpv', nombre: 'FPV Alianza · Plan individual', descripcion: 'Pensión voluntaria · beneficio tributario', saldo: 400, invertido: 350, apertura: '2020-12-15', datos: { plan: 'FPV individual', permanenciaHasta: '2026-11-27', aportesAnio: 55, beneficio: 'Aportes voluntarios como renta exenta' } },
         { id: 'lo-rf', linea: 'intermediacion', tipo: 'rentaFija', nombre: 'Renta fija', descripcion: 'Bonos en custodia', apertura: '2023-05-02',
           titulos: [{ nombre: 'Bono corporativo Emisor H 2028', clase: 'Bono AA+', tasa: 'IPC + 3,6 %', vencimiento: '2028-05-02', valorCompra: 382, valorMercado: 400 }] }
       ],
@@ -356,7 +356,7 @@ window.CopilotoData = {
       productos: [
         { id: 'ma-fic1', linea: 'fondos', tipo: 'fic', clase: 'conservador', nombre: 'FIC Alianza 1', descripcion: 'Fondo abierto · liquidez a la vista', saldo: 600, invertido: 581, apertura: '2016-11-30' },
         { id: 'ma-fic2', linea: 'fondos', tipo: 'fic', nombre: 'FIC Alianza 2', descripcion: 'Fondo de renta fija · pacto 30 días', saldo: 500, invertido: 468, apertura: '2018-03-12' },
-        { id: 'ma-fpv', linea: 'fondos', tipo: 'fpv', nombre: 'FPV Alianza · Plan individual', descripcion: 'Pensión voluntaria · beneficio tributario', saldo: 218.4, invertido: 196, apertura: '2021-10-04' },
+        { id: 'ma-fpv', linea: 'fondos', tipo: 'fpv', nombre: 'FPV Alianza · Plan individual', descripcion: 'Pensión voluntaria · beneficio tributario', saldo: 218.4, invertido: 196, apertura: '2021-10-04', datos: { plan: 'FPV individual', permanenciaHasta: '2027-02-17', aportesAnio: 24, beneficio: 'Aportes voluntarios como renta exenta' } },
         { id: 'ma-rv', linea: 'intermediacion', tipo: 'rentaVariable', nombre: 'Renta variable', descripcion: 'Acciones locales · 1 emisor', apertura: '2019-07-08',
           posiciones: [{ emisor: 'Emisor B', sector: 'Sector bancario', cantidad: 12000, precioCompra: 30500, precioMercado: 36800, compras: [['2019-07-08', 12000, 30500]] }] }
       ],
@@ -381,7 +381,7 @@ window.CopilotoData = {
       financiera: { patrimonio: 1450, ingresosMensuales: 18, actualizado: '2024-09-15', fuente: 'Formulario de conocimiento del cliente' },
       productos: [
         { id: 'af-fic1', linea: 'fondos', tipo: 'fic', clase: 'conservador', nombre: 'FIC Alianza 1', descripcion: 'Fondo abierto · liquidez a la vista', saldo: 240, invertido: 233, apertura: '2022-03-14' },
-        { id: 'af-fpv', linea: 'fondos', tipo: 'fpv', nombre: 'FPV Alianza · Plan individual', descripcion: 'Pensión voluntaria · beneficio tributario', saldo: 400, invertido: 371, apertura: '2022-03-14' }
+        { id: 'af-fpv', linea: 'fondos', tipo: 'fpv', nombre: 'FPV Alianza · Plan institucional', descripcion: 'Plan patrocinado por el empleador', saldo: 400, invertido: 371, apertura: '2022-03-14', datos: { plan: 'FPV institucional', permanenciaHasta: '2026-12-12', aportesAnio: 18, beneficio: 'Aportes voluntarios como renta exenta' } }
       ],
       interacciones: [
         { fecha: '2026-07-02', tipo: 'Correo enviado', nota: 'Recordatorio de actualización de datos y perfil.' }
@@ -412,6 +412,37 @@ window.CopilotoData = {
       riesgo: { d30: 12, d60: 18, factores: [['Relación de 12 años con Alianza', -8], ['Reuniones trimestrales al día', -5]] },
       nba: [{ id: 'a', titulo: 'Profundizar: nuevo encargo', tag: 'Profundización', porque: 'Mostró interés en un encargo para la segunda generación.', evidencia: 'CRM', confianza: 76 }]
     }
+  ],
+
+  // ────────────────────────────────────────────────────────────────────
+  // PENSIONES · solicitudes en curso (bandeja de back-office).
+  // Las que tienen `clienteId` aparecen también en la pestaña Pensiones de
+  // la Vista 360. La permanencia y el beneficio tributario de cada FPV
+  // están en productos[].datos (permanenciaHasta, aportesAnio).
+  // TODO: confirmar con Alianza — tipos de solicitud, estados y plazos.
+  // ────────────────────────────────────────────────────────────────────
+  // Cifras agregadas del consolidado de pensiones (toda la entidad, no solo
+  // la cartera del asesor). TODO: confirmar con Alianza.
+  pensionesConsolidado: {
+    lineas: [
+      { id: 'fpvi', name: 'FPV individual', color: '#0072CE', saldo: 102400, count: 3180 },
+      { id: 'fpve', name: 'FPV institucional (empresas)', color: '#00A3E0', saldo: 58900, count: 1046 },
+      { id: 'pap', name: 'Patrimonios autónomos de pensión (PAP)', color: '#9AA300', saldo: 25100, count: 86 }
+    ],
+    aportesMes: 5230, aportesSub: '1.180 aportes registrados',
+    solicitudesPendientes: 38, vencenHoy: 12
+  },
+
+  pensionesSolicitudes: [
+    { clienteId: 'cm', linea: 'fpvi', tipoKey: 'retiro', tipo: 'Retiro parcial', estado: 'Pendiente documentos', vence: '2026-10-12', detalle: 'Falta certificación bancaria de la cuenta destino.' },
+    { nombre: 'Inversiones Costa Norte SAS', linea: 'pap', tipoKey: 'otras', tipo: 'Certificado de cálculo actuarial', estado: 'En validación', vence: '2026-10-14' },
+    { clienteId: 'lo', linea: 'fpvi', tipoKey: 'perfil', tipo: 'Cambio de perfil de riesgo', estado: 'Lista para aplicar', vence: '2026-10-13', detalle: 'Del portafolio moderado al conservador del plan.' },
+    { nombre: 'Logística Pacífico SAS', linea: 'fpve', tipoKey: 'otras', tipo: 'Vinculación de nuevo beneficiario', estado: 'Pendiente documentos', vence: '2026-10-12' },
+    { clienteId: 'ar', linea: 'fpvi', tipoKey: 'certificado', tipo: 'Certificado de aportes y rendimientos', estado: 'En validación', vence: '2026-10-15', detalle: 'Para soporte de declaración de renta.' },
+    { nombre: 'Textiles Andinos SAS', linea: 'pap', tipoKey: 'otras', tipo: 'Aporte extraordinario patronal', estado: 'Lista para aplicar', vence: '2026-10-16' },
+    { clienteId: 'ma', linea: 'fpvi', tipoKey: 'certificado', tipo: 'Certificado para declaración de renta', estado: 'Vencida', vence: '2026-10-11' },
+    { clienteId: 'af', linea: 'fpve', tipoKey: 'retiro', tipo: 'Retiro parcial', estado: 'Pendiente documentos', vence: '2026-10-14', detalle: 'Requiere autorización del empleador patrocinador.' },
+    { nombre: 'Familia Jaramillo Soto', linea: 'fpvi', tipoKey: 'certificado', tipo: 'Certificado de aportes y rendimientos', estado: 'Lista para aplicar', vence: '2026-10-17' }
   ],
 
   // ────────────────────────────────────────────────────────────────────

@@ -22,9 +22,13 @@ class Component extends DCLogic {
     window.AlianzaNav.rememberClient(this.clienteId);
     this.state = {
       scope: P.param('vista') === 'grupo' ? 'grp' : 'ind',
-      tab: 'port', member: 'all', dec: {},
+      tab: 'port', member: 'all', dec: {}, pensF: 'todas',
       modal: null, row: 0, period: 'all', hidden: {}
     };
+    // Vistas de Alertas, Next best action y Setup que se abren en modal
+    // (js/vistas-modulos.js); su estado vive en alv / nbv / stv.
+    const V = window.AlianzaVistas;
+    this.vistas = { alertas: new V.Alertas(this, 'alv'), nba: new V.SiguienteAccion(this, 'nbv'), setup: new V.Setup(this, 'stv') };
   }
   componentDidMount() { this._unwatch = UI.watchFlags(this); }
   componentWillUnmount() { this._unwatch && this._unwatch(); }
@@ -32,6 +36,14 @@ class Component extends DCLogic {
   openModal(modal) {
     this.setState({ modal, row: 0 });
     window.AlianzaModal.open(() => this.setState({ modal: null }));
+  }
+
+  // Abre en modal la vista completa de un módulo, enfocada en el cliente
+  // (o integrante del grupo) que se está viendo.
+  abrirModulo(tipo) {
+    const key = { alertas: 'alv', nba: 'nbv', setup: 'stv' }[tipo];
+    this.setState({ [key]: this.vistas[tipo].initial(this._targetId) });
+    this.openModal({ type: tipo });
   }
 
   // ── Serie histórica por línea de producto (ilustrativa) ─────────────
@@ -68,7 +80,7 @@ class Component extends DCLogic {
     const canGroup = !!g && F('v360Grupo');
     const isGrp = canGroup && st.scope === 'grp';
     const fRiesgo = F('v360Riesgo'), fContacto = F('v360Contacto'), fFin = F('v360Financiera'), fInter = F('v360Interacciones'), fEvo = F('v360Evolucion');
-    const linkAlertas = window.AlianzaNav.visible('alertas');
+    const linkAlertas = F('modAlertas');
 
     // ── Encabezado ────────────────────────────────────────────────────
     const lvl = P.nivel(c.riesgo.d60);
@@ -87,9 +99,8 @@ class Component extends DCLogic {
     const riesgo = {
       show: fRiesgo && !isGrp, link: linkAlertas, noLink: !linkAlertas,
       text: 'Riesgo de fuga: ' + c.riesgo.d60 + ' · ' + lvl.label,
-      href: 'Alertas.dc.html?cliente=' + c.id,
       style: 'display: inline-flex; align-items: center; gap: 6px; min-height: 32px; padding: 0 10px; border-radius: 999px; font-size: 12.5px; font-weight: 700; text-decoration: none; white-space: nowrap; background: ' + lvl.bg + '; color: ' + lvl.fg + '; border: 1px solid ' + lvl.color,
-      linkStyle: 'display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 12px; border-radius: 999px; font-size: 12.5px; font-weight: 700; text-decoration: none; white-space: nowrap; background: ' + lvl.bg + '; color: ' + lvl.fg + '; border: 1px solid ' + lvl.color,
+      linkStyle: 'display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 12px; border-radius: 999px; font-family: inherit; cursor: pointer; font-size: 12.5px; font-weight: 700; text-decoration: none; white-space: nowrap; background: ' + lvl.bg + '; color: ' + lvl.fg + '; border: 1px solid ' + lvl.color,
       dot: 'width: 8px; height: 8px; border-radius: 50%; background: ' + lvl.color
     };
     const scope = {
@@ -201,22 +212,23 @@ class Component extends DCLogic {
     };
 
     // ── Pestañas ─────────────────────────────────────────────────────
-    // Señales de churn, Next best action y Setup aparecen solo si su módulo
-    // está visible (flags modAlertas, modNBA, modSetup) y llevan el punto
-    // de "En definición".
-    const N = window.AlianzaNav;
+    // Pensiones, Señales de churn, Next best action y Setup aparecen solo si
+    // se habilitan en el panel oculto (flags v360Pensiones, modAlertas,
+    // modNBA, modSetup); las tres últimas llevan el punto de "En definición".
     const tabDefs = [{ id: 'port', label: 'Portafolio por línea', on: true },
-      { id: 'evo', label: 'Evolución histórica', on: fEvo },
-      { id: 'churn', label: 'Señales de churn', on: N.visible('alertas'), endef: true },
-      { id: 'nba', label: 'Next best action', on: N.visible('nba'), endef: true },
-      { id: 'setup', label: 'Setup', on: N.visible('setup'), endef: true }].filter(t => t.on);
+      { id: 'evo', label: 'Evolución', on: fEvo },
+      { id: 'pens', label: 'Pensiones', on: F('v360Pensiones') },
+      { id: 'churn', label: 'Señales de churn', on: F('modAlertas'), endef: true },
+      { id: 'nba', label: 'Next best action', on: F('modNBA'), endef: true },
+      { id: 'setup', label: 'Setup', on: F('modSetup'), endef: true }].filter(t => t.on);
     const tab = tabDefs.some(t => t.id === st.tab) ? st.tab : 'port';
-    const tabs = tabDefs.map(t => { const on = t.id === tab; return { label: t.label, id: 'tab-' + t.id, endef: !!t.endef, selected: on ? 'true' : 'false', style: UI.seg(on) + ' display: inline-flex; align-items: center; gap: 6px;', pick: () => this.setState({ tab: t.id }) }; });
+    const tabs = tabDefs.map(t => { const on = t.id === tab; return { label: t.label, id: 'tab-' + t.id, endef: !!t.endef, selected: on ? 'true' : 'false', style: UI.seg(on) + ' display: inline-flex; align-items: center; gap: 6px; padding: 0 11px; font-size: 12.5px;', pick: () => this.setState({ tab: t.id }) }; });
     const tabEvo = tab === 'evo';
     const targets = memberSel ? [memberSel] : isGrp ? g.miembros : [c];
     const churn = tab === 'churn' ? this.churnTab(targets) : null;
     const nba = tab === 'nba' ? this.nbaTab(targets, isGrp) : null;
     const setup = tab === 'setup' ? this.setupTab(targets) : null;
+    const pens = tab === 'pens' ? this.pensionesTab(targets, isGrp) : null;
 
     // ── Evolución histórica ──────────────────────────────────────────
     const evo = tabEvo ? this.evolucion(lineasData, memberSel ? memberSel.vinculacion : isGrp ? g.miembros.reduce((a, m) => m.vinculacion < a ? m.vinculacion : a, '9999') : c.vinculacion) : null;
@@ -224,6 +236,12 @@ class Component extends DCLogic {
     // ── Modales ──────────────────────────────────────────────────────
     const close = () => window.AlianzaModal.close();
     const modalInter = st.modal && st.modal.type === 'inter';
+    this._targetId = (memberSel || c).id;
+    const mt = st.modal && st.modal.type;
+    const alv = mt === 'alertas' ? this.vistas.alertas.renderVals() : null;
+    const nbv = mt === 'nba' ? this.vistas.nba.renderVals() : null;
+    const stv = mt === 'setup' ? this.vistas.setup.renderVals() : null;
+    const pensCons = st.modal && st.modal.type === 'pensCons' ? window.AlianzaPensiones.vals(st.pensF, f => this.setState({ pensF: f })) : null;
     const prodModal = st.modal && st.modal.type === 'prod' ? this.detalle(base.productos.find(p => p.id === st.modal.id), isGrp) : null;
     const lineaModal = st.modal && st.modal.type === 'linea'
       ? lineas.find(x => x.id === 'linea-' + st.modal.id) || null
@@ -236,10 +254,11 @@ class Component extends DCLogic {
       kpiGrid: 'display: grid; grid-template-columns: repeat(' + (fFin ? 4 : 2) + ', minmax(0, 1fr)); gap: 12px',
       contacto, integrantes, inter, showLeft,
       bodyGrid: 'display: grid; grid-template-columns: ' + (showLeft ? '320px minmax(0, 1fr)' : 'minmax(0, 1fr)') + '; gap: 14px',
-      tabs, tabPort: tab === 'port', tabEvo, evo, tabChurn: !!churn, churn, tabNba: !!nba, nba, tabSetup: !!setup, setup,
+      tabs, tabPort: tab === 'port', tabEvo, evo, tabChurn: !!churn, churn, tabNba: !!nba, nba, tabSetup: !!setup, setup, tabPens: !!pens, pens,
       portHint: tab === 'port',
       donut, lineas, port,
-      modalInter, prodModal, lineaModal, close
+      modalInter, prodModal, lineaModal, pensCons, alv, nbv, stv, close,
+      abrirAlertas: () => this.abrirModulo('alertas'), abrirNba: () => this.abrirModulo('nba'), abrirSetup: () => this.abrirModulo('setup')
     };
   }
 
@@ -261,8 +280,7 @@ class Component extends DCLogic {
           valStyle: 'text-align: right; font-size: 13px; font-weight: 700; color: ' + (f[1] > 0 ? '#9A1F24' : '#00664F'),
           bar: 'position: absolute; top: 0; bottom: 0; border-radius: 4px; ' + (f[1] > 0 ? 'left: 50%; width: ' + (f[1] / maxAbs * 50) + '%; background: #B3272D' : 'right: 50%; width: ' + (-f[1] / maxAbs * 50) + '%; background: #00A98E') })),
         senales: D.senales.filter(x => x.prueba(c)).map(x => ({ nombre: x.nombre, regla: x.regla })),
-        sinSenales: !D.senales.some(x => x.prueba(c)),
-        href: 'Alertas.dc.html?cliente=' + c.id
+        sinSenales: !D.senales.some(x => x.prueba(c))
       };
     };
     if (targets.length === 1) return { uno: detalle(targets[0]), varios: null };
@@ -295,7 +313,7 @@ class Component extends DCLogic {
       };
     });
     const done = cards.filter(x => x.decided).length;
-    return { cards, resumen: done + ' de ' + cards.length + ' revisadas', href: 'SiguienteAccion.dc.html?cliente=' + targets[0].id };
+    return { cards, resumen: done + ' de ' + cards.length + ' revisadas' };
   }
 
   // ── Pestaña "Setup" ──────────────────────────────────────────────────
@@ -323,6 +341,41 @@ class Component extends DCLogic {
       };
     });
     return { items };
+  }
+
+  // ── Pestaña "Pensiones" ──────────────────────────────────────────────
+  // Detalle de pensiones voluntarias (antes en la página de Pensiones):
+  // planes FPV del cliente, permanencia y beneficio tributario, y
+  // solicitudes en curso en back-office.
+  pensionesTab(targets, isGrp) {
+    const NIVEL = { alto: ['#FDE8E6', '#9A1F24'], medio: ['#FFF4DE', '#8A5300'], bajo: ['#E1F5EF', '#00664F'] };
+    const PERM = { alto: 'Vence pronto', medio: 'Por vencer', bajo: 'Sin urgencia' };
+    const ESTADO = { 'Pendiente documentos': ['#FFF4DE', '#8A5300'], 'En validación': ['#E3F1FB', '#0B4A75'], 'Lista para aplicar': ['#E1F5EF', '#00664F'], 'Vencida': ['#FDE8E6', '#9A1F24'] };
+    const planes = [], solicitudes = [];
+    targets.forEach(c => {
+      const pd = P.pensionesDe(c);
+      pd.productos.forEach(p => planes.push({
+        nombre: p.nombre, quien: isGrp ? c.nombre : '', plan: p.datos.plan,
+        saldo: P.money(p.saldo), rent: P.signedPct(p.rentPct), rentChip: UI.rentChip(p.rentPct),
+        apertura: P.fecha(p.apertura), aportes: P.money(p.datos.aportesAnio),
+        permanencia: P.fecha(p.datos.permanenciaHasta),
+        dias: p.diasPermanencia >= 0 ? 'faltan ' + p.diasPermanencia + ' días' : 'cumplida',
+        permLabel: PERM[p.nivelPermanencia], permStyle: UI.chip(NIVEL[p.nivelPermanencia][0], NIVEL[p.nivelPermanencia][1]),
+        aviso: p.nivelPermanencia === 'alto', beneficio: p.datos.beneficio,
+        abrir: () => this.openModal({ type: 'prod', id: p.id }), aria: 'Ver detalle de ' + p.nombre
+      }));
+      pd.solicitudes.forEach(q => solicitudes.push({
+        tipo: q.tipo, plan: q.plan, quien: isGrp ? c.nombre : '', detalle: q.detalle || '',
+        estado: q.estado, estadoStyle: UI.chip(ESTADO[q.estado][0], ESTADO[q.estado][1]),
+        vence: q.venceLabel, venceStyle: UI.chip(NIVEL[q.nivel][0], NIVEL[q.nivel][1])
+      }));
+    });
+    return {
+      planes, solicitudes, hayPlanes: planes.length > 0, sinPlanes: planes.length === 0,
+      haySol: solicitudes.length > 0, sinSol: solicitudes.length === 0,
+      total: P.money(targets.reduce((a, c) => a + P.pensionesDe(c).productos.reduce((b, p) => b + p.saldo, 0), 0)),
+      verConsolidado: () => this.openModal({ type: 'pensCons' })
+    };
   }
 
   // Gráfico de líneas por línea de producto (reutiliza el de la versión anterior).

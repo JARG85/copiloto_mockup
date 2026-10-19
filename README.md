@@ -18,10 +18,7 @@ index.html                     Login (raíz / punto de entrada) → Mi cartera
 pages/Registro.dc.html         Solicitud de registro
 pages/Cartera.dc.html          Mi cartera: listado general de clientes
 pages/Vista360.dc.html         Vista Cliente 360 (?cliente=<id>, ?vista=grupo)
-pages/Alertas.dc.html          Alertas de riesgo de fuga (?cliente=<id>)
-pages/SiguienteAccion.dc.html  Siguiente mejor acción (?cliente=<id>)
 pages/Campanas.dc.html         Campañas comerciales
-pages/Setup.dc.html            Setup del cliente (vinculación / onboarding)
 pages/Pensiones.dc.html        Pensiones · consolidado back-office (oculto por defecto)
 
 js/data/copiloto-data.js       ÚNICO archivo de datos de ejemplo (ver abajo)
@@ -67,27 +64,37 @@ página lo pinta con `<sc-for list="{{nav.items}}">` y obtiene los ítems con
      **modal de detalle**; pestaña **Evolución histórica**;
    - selector **Cliente individual / Grupo familiar**: consolidado del
      grupo con filtro por integrante.
-   - pestañas **Señales de churn**, **Next best action** y **Setup** (qué
-     documentos o firmas le faltan al cliente). Cada una aparece solo si su
-     módulo está visible (flags `modAlertas`, `modNBA`, `modSetup`), así que
-     en *Modo presentación* no se muestran.
+   - **pestañas adicionales** (ocultas por defecto; se habilitan una a una
+     desde el panel `Ctrl+Shift+Alt+F`, grupo "Vista 360 · pestañas
+     adicionales", o todas con "Todos los módulos"):
+     - **Pensiones** (`v360Pensiones`): planes FPV del cliente con saldo,
+       rentabilidad, aportes del año, permanencia y beneficio tributario, y
+       sus solicitudes en curso. El botón **"Ver consolidado de pensiones"**
+       abre en un modal la misma información de `Pensiones.dc.html` (KPIs,
+       bandeja de solicitudes, saldo por línea y permanencias), calculada en
+       `js/pensiones.js`;
+     - **Señales de churn** (`modAlertas`), **Next best action** (`modNBA`)
+       y **Setup** (`modSetup`: qué documentos o firmas le faltan al cliente).
 3. **Campañas comerciales** — campañas activas; al abrir una, la regla en
    lenguaje natural y los clientes de la cartera que encajan.
 
-Señales de churn, Next best action y Setup ya **no están en el menú
-lateral** (`menu: false` en `MODULOS`): se consultan como pestañas de la
-Vista 360. Sus páginas completas siguen existiendo y se abren desde los
-enlaces de cada pestaña:
+Señales de churn, Next best action y Setup **no tienen página ni entrada en
+el menú lateral**: se consultan como pestañas de la Vista 360, y su vista
+completa se abre en un **modal** desde cada pestaña (lógica en
+`js/vistas-modulos.js`, plantilla al final de `pages/Vista360.dc.html`):
 
-- `Alertas.dc.html` — termómetro a 30 y 60 días con factores, señales
+- *Ver alertas de toda la cartera* (también desde el indicador de riesgo
+  del encabezado): termómetro a 30 y 60 días con factores, señales
   anticipadas, mapa de prioridad, motivos y clientes priorizados.
-- `SiguienteAccion.dc.html` — todos los clientes con su acción sugerida;
-  briefing, tarjetas NBA, alineación frente al perfil y recomendación de
-  portafolio (en exploración).
-- `Setup.dc.html` — etapa de vinculación de cada cliente y checklist de
-  documentos (completo / pendiente / vencido).
+- *Ver todos los clientes* (Next best action): acción sugerida de cada
+  cliente, briefing, tarjetas NBA, alineación frente al perfil y
+  recomendación de portafolio. Las decisiones de aceptar / descartar son
+  las mismas de la pestaña.
+- *Ver setup de toda la cartera*: etapa de vinculación de cada cliente y
+  checklist de documentos (completo / pendiente / vencido) en un segundo
+  modal.
 
-Campañas y esas tres páginas llevan el badge **"En definición"**. Pensiones
+Campañas y esas tres vistas llevan el badge **"En definición"**. Pensiones
 (back-office) sigue disponible detrás de un flag.
 
 ## Datos: `js/data/copiloto-data.js`
@@ -122,7 +129,7 @@ detalle en definición"*.
 
 El sitio no tiene build, así que no hay `.env`: el equivalente es
 `js/feature-flags.js`, un registro de flags booleanos guardados en
-`localStorage` (`alianza360:flags:v2`) que cada pantalla lee en `renderVals()`.
+`localStorage` (`alianza360:flags:v3`) que cada pantalla lee en `renderVals()`.
 
 1. En cualquier pantalla, presiona **Ctrl + Shift + Alt + F**. Se abre un
    panel en la esquina inferior izquierda, visible solo para quien conoce el
@@ -150,7 +157,7 @@ Si alguien entra por URL a un módulo oculto, ve un aviso con enlace a Mi carter
    las pantallas internas).
 
 Para un **módulo nuevo**: agrégalo a `MODULOS` en `js/ui.js` (con su `flag`
-y `enDef`) y crea su página copiando la estructura de `pages/Setup.dc.html`.
+y `enDef`) y crea su página copiando la estructura de `pages/Campanas.dc.html`.
 
 ## Responsive
 
