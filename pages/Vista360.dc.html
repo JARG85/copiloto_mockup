@@ -225,87 +225,31 @@
                 <button type="button" role="tab" id="{{t.id}}" aria-selected="{{t.selected}}" sc-camel-on-click="{{t.pick}}" style="{{t.style}}">{{t.label}}<sc-if value="{{t.endef}}"><span title="En definición" style="width: 8px; height: 8px; border-radius: 50%; background: #999B30"></span><span style="position: absolute; left: -9999px">(en definición)</span></sc-if></button>
               </sc-for>
             </div>
-            <span class="v360-tabhint" style="font-size: 12.5px; color: #4F5D6B; text-align: right"><strong style="color: #003057">{{port.scopeLabel}}</strong> · {{port.sub}}<sc-if value="{{portHint}}"> · clic en un producto para ver su detalle</sc-if></span>
+            <span class="v360-tabhint" style="font-size: 12.5px; color: #4F5D6B; text-align: right"><strong style="color: #003057">{{port.scopeLabel}}</strong> · {{port.sub}}<sc-if value="{{portHint}}"> · clic en una línea del gráfico para ver su detalle</sc-if></span>
           </div>
 
           <!-- Pestaña: Portafolio por línea → producto -->
           <sc-if value="{{tabPort}}">
-          <div role="tabpanel" aria-labelledby="tab-port" class="v360-scroll" style="display: flex; flex-direction: column; gap: 6px; min-height: 0">
+          <div role="tabpanel" aria-labelledby="tab-port" class="v360-scroll" style="display: flex; flex-direction: column; flex: 1; gap: 6px; min-height: 0">
             <!-- Gráfico de torta por línea de producto + leyenda (clic abre la línea) -->
-            <div class="v360-donut" style="display: flex; flex: none; gap: 16px; align-items: center; padding: 4px 0 6px">
-              <svg sc-camel-view-box="0 0 200 200" width="112" height="112" role="img" aria-label="{{donut.aria}}" style="flex: none">
+            <div class="v360-donut" style="display: flex; flex-direction: column; flex: 1; justify-content: center; gap: 28px; align-items: center; padding: 4px 0 10px">
+              <svg sc-camel-view-box="0 0 200 200" width="300" height="300" role="img" aria-label="{{donut.aria}}" style="flex: none">
                 <circle cx="100" cy="100" r="70" fill="none" stroke="#EEF1F5" stroke-width="30"></circle>
                 <sc-for list="{{donut.segs}}" as="d" hint-placeholder-count="4">
-                  <circle cx="100" cy="100" r="70" fill="none" stroke="{{d.color}}" stroke-width="30" stroke-dasharray="{{d.dash}}" stroke-dashoffset="{{d.offset}}" transform="rotate(-90 100 100)"><title>{{d.title}}</title></circle>
+                  <circle cx="100" cy="100" r="70" fill="none" stroke="{{d.color}}" stroke-width="30" stroke-dasharray="{{d.dash}}" stroke-dashoffset="{{d.offset}}" transform="rotate(-90 100 100)" sc-camel-on-click="{{d.pick}}" style="cursor: pointer"><title>{{d.title}}</title></circle>
                 </sc-for>
                 <text x="100" y="98" text-anchor="middle" font-size="26" font-weight="800" fill="#003057" font-family="Open Sans, sans-serif">{{donut.total}}</text>
                 <text x="100" y="122" text-anchor="middle" font-size="15" fill="#4F5D6B" font-family="Open Sans, sans-serif">millones COP</text>
               </svg>
-              <div class="v360-legend" style="flex: 1; min-width: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px">
+              <div class="v360-legend" style="width: 100%; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px">
                 <sc-for list="{{donut.items}}" as="i" hint-placeholder-count="4">
-                  <button type="button" sc-camel-on-click="{{i.pick}}" aria-pressed="{{i.pressed}}" aria-label="{{i.aria}}" style="{{i.style}}">
+                  <button type="button" sc-camel-on-click="{{i.pick}}" aria-label="{{i.aria}}" style="{{i.style}}">
                     <span style="{{i.sw}}"></span>
                     <span style="flex: 1; min-width: 0; display: flex; flex-direction: column"><strong style="font-size: 13px; color: #003057">{{i.nombre}}</strong><span style="font-size: 12px; color: #4F5D6B">{{i.val}}</span></span>
                     <strong style="font-size: 14px; color: #003057">{{i.pct}}</strong>
                   </button>
                 </sc-for>
               </div>
-            </div>
-            <div class="v360-row v360-head" style="display: grid; grid-template-columns: minmax(0, 1fr) 110px 70px 80px 120px; gap: 12px; padding: 2px 12px 0; font-size: 12px; font-weight: 700; color: #4F5D6B">
-              <span>Línea de producto / producto</span><span style="text-align: right">Saldo</span><span style="text-align: right">% total</span><span style="text-align: right">% de su línea</span><span style="text-align: right" title="Rentabilidad = (saldo − invertido) ÷ invertido, acumulada y no anualizada">Rentabilidad <span aria-hidden="true" style="color: #0072CE">ⓘ</span></span>
-            </div>
-            <sc-for list="{{lineas}}" as="l" hint-placeholder-count="4">
-              <div style="display: flex; flex-direction: column; gap: 3px">
-                <sc-if value="{{l.has}}">
-                  <button type="button" sc-camel-on-click="{{l.toggle}}" aria-expanded="{{l.expanded}}" aria-controls="{{l.id}}" class="v360-row" style="{{l.rowStyle}}">
-                    <span style="display: flex; align-items: center; gap: 10px; min-width: 0">
-                      <svg width="16" height="16" sc-camel-view-box="0 0 24 24" fill="none" stroke="#003057" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="{{l.chev}}"><path d="m9 6 6 6-6 6"></path></svg>
-                      <span style="{{l.sw}}"></span>
-                      <span style="display: flex; flex-direction: column; min-width: 0"><strong style="font-size: 14.5px; color: #003057">{{l.nombre}}</strong><span title="{{l.desc}}" style="font-size: 11.5px; color: #4F5D6B; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{l.count}} · {{l.desc}}</span></span>
-                    </span>
-                    <strong style="text-align: right; font-size: 14px">{{l.saldo}}</strong>
-                    <strong style="text-align: right; font-size: 13.5px; color: #003057">{{l.pct}}</strong>
-                    <span></span>
-                    <span style="display: flex; justify-content: flex-end"><span style="{{l.rentChip}}">{{l.rent}}</span></span>
-                  </button>
-                </sc-if>
-                <sc-if value="{{l.empty}}">
-                  <div class="v360-row" style="{{l.rowStyle}}">
-                    <span style="display: flex; align-items: center; gap: 10px; min-width: 0">
-                      <span style="width: 16px; flex: none"></span>
-                      <span style="{{l.sw}}"></span>
-                      <span style="display: flex; flex-direction: column; min-width: 0"><strong style="font-size: 14.5px; color: #3D4C5B">{{l.nombre}}</strong><span title="{{l.desc}}" style="font-size: 11.5px; color: #4F5D6B; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{l.count}} · {{l.desc}}</span></span>
-                    </span>
-                    <span style="text-align: right; color: #4F5D6B">{{l.saldo}}</span><span style="text-align: right; color: #4F5D6B">{{l.pct}}</span><span></span><span></span>
-                  </div>
-                </sc-if>
-                <sc-if value="{{l.open}}">
-                  <div id="{{l.id}}" class="v360-sub" style="display: flex; flex-direction: column; gap: 3px; padding-left: 28px">
-                    <sc-for list="{{l.productos}}" as="p" hint-placeholder-count="3">
-                      <button type="button" sc-camel-on-click="{{p.open}}" aria-haspopup="dialog" aria-label="{{p.aria}}" class="v360-prod v360-row" style="display: grid; grid-template-columns: minmax(0, 1fr) 110px 70px 80px 120px; gap: 12px; align-items: center; width: 100%; min-height: 44px; padding: 4px 12px; box-sizing: border-box; border: 1px solid #EEF1F5; border-radius: 10px; background: #FFFFFF; font-family: inherit; text-align: left; color: #1B2A3A; cursor: pointer">
-                        <span style="display: flex; gap: 10px; align-items: center; min-width: 0">
-                          <span style="{{p.tagStyle}}">{{p.tag}}</span>
-                          <span style="display: flex; flex-direction: column; gap: 1px; min-width: 0">
-                            <strong style="font-size: 13.5px; color: #003057">{{p.nombre}}</strong>
-                            <span style="font-size: 11.5px; color: #4F5D6B">{{p.desc}}</span>
-                          </span>
-                        </span>
-                        <strong style="text-align: right; font-size: 13.5px">{{p.saldo}}</strong>
-                        <strong style="text-align: right; font-size: 13px; color: #003057">{{p.pct}}</strong>
-                        <span style="text-align: right; font-size: 12.5px; color: #4F5D6B">{{p.inLine}}</span>
-                        <span style="display: flex; align-items: center; justify-content: flex-end; gap: 8px">
-                          <span style="display: flex; flex-direction: column; align-items: flex-end; gap: 2px"><span style="{{p.rentChip}}">{{p.rent}}</span><span style="{{p.rentValStyle}}">{{p.rentVal}}</span></span>
-                          <svg width="16" height="16" sc-camel-view-box="0 0 24 24" fill="none" stroke="#0072CE" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg>
-                        </span>
-                      </button>
-                    </sc-for>
-                  </div>
-                </sc-if>
-              </div>
-            </sc-for>
-            <div class="v360-row" style="display: grid; grid-template-columns: minmax(0, 1fr) 110px 70px 80px 120px; gap: 12px; align-items: center; flex: none; padding: 6px 12px; border-radius: 10px; background: #F2F5F9; font-size: 14px; font-weight: 800">
-              <span style="color: #003057">Total portafolio</span><span style="text-align: right">{{port.total}}</span><span style="text-align: right">100 %</span><span></span>
-              <span style="display: flex; flex-direction: column; align-items: flex-end; gap: 2px"><span style="{{port.totalRentChip}}">{{port.totalRent}}</span><span style="font-size: 11.5px; font-weight: 600; color: #4F5D6B">{{port.totalRentVal}}</span></span>
             </div>
           </div>
           </sc-if>
@@ -532,6 +476,58 @@
           </sc-if>
 
           <sc-if value="{{prodModal.nota}}"><span style="font-size: 12px; line-height: 1.5; color: #4F5D6B">{{prodModal.nota}}</span></sc-if>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- MODAL: detalle de línea (clic en el gráfico o su leyenda) — misma
+       información que la fila expandida de la línea en la tabla. -->
+  <sc-if value="{{lineaModal}}">
+    <div style="position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 24px; box-sizing: border-box">
+      <div sc-camel-on-click="{{close}}" aria-hidden="true" style="position: absolute; inset: 0; background: rgba(0, 28, 51, 0.55)"></div>
+      <div data-modal="" role="dialog" aria-modal="true" aria-labelledby="modal-linea-titulo" sc-camel-tab-index="-1" style="position: relative; width: 100%; max-width: 760px; max-height: calc(100vh - 48px); overflow: auto; background: #FFFFFF; border-radius: 16px; box-shadow: 0 24px 64px rgba(0,0,0,.3); display: flex; flex-direction: column; outline: none">
+        <div style="padding: 18px 22px; border-bottom: 1px solid #E1E7EE; display: flex; gap: 12px; align-items: center; justify-content: space-between">
+          <div style="display: flex; gap: 10px; align-items: center; min-width: 0">
+            <span style="{{lineaModal.sw}}"></span>
+            <h2 id="modal-linea-titulo" style="margin: 0; font-size: 18px; color: #003057">{{lineaModal.nombre}}</h2>
+          </div>
+          <button type="button" sc-camel-on-click="{{close}}" aria-label="Cerrar detalle" style="flex: none; width: 40px; height: 40px; border-radius: 10px; border: 1px solid #E1E7EE; background: #FFFFFF; color: #003057; font-size: 16px; cursor: pointer">✕</button>
+        </div>
+        <div style="padding: 18px 22px 22px; overflow-x: auto">
+          <div style="min-width: 640px; display: flex; flex-direction: column; gap: 3px">
+            <div class="v360-row v360-head" style="display: grid; grid-template-columns: minmax(0, 1fr) 110px 70px 80px 120px; gap: 12px; padding: 2px 12px 0; font-size: 12px; font-weight: 700; color: #4F5D6B">
+              <span>Producto</span><span style="text-align: right">Saldo</span><span style="text-align: right">% total</span><span style="text-align: right">% de su línea</span><span style="text-align: right">Rentabilidad</span>
+            </div>
+            <div class="v360-row" style="{{lineaModal.rowStyle}}">
+              <span style="display: flex; align-items: center; gap: 10px; min-width: 0">
+                <span style="{{lineaModal.sw}}"></span>
+                <span style="display: flex; flex-direction: column; min-width: 0"><strong style="font-size: 14.5px; color: #003057">{{lineaModal.nombre}}</strong><span style="font-size: 11.5px; color: #4F5D6B">{{lineaModal.count}} · {{lineaModal.desc}}</span></span>
+              </span>
+              <strong style="text-align: right; font-size: 14px">{{lineaModal.saldo}}</strong>
+              <strong style="text-align: right; font-size: 13.5px; color: #003057">{{lineaModal.pct}}</strong>
+              <span></span>
+              <span style="display: flex; justify-content: flex-end"><span style="{{lineaModal.rentChip}}">{{lineaModal.rent}}</span></span>
+            </div>
+            <sc-for list="{{lineaModal.productos}}" as="p" hint-placeholder-count="3">
+              <button type="button" sc-camel-on-click="{{p.open}}" aria-haspopup="dialog" aria-label="{{p.aria}}" class="v360-prod v360-row" style="display: grid; grid-template-columns: minmax(0, 1fr) 110px 70px 80px 120px; gap: 12px; align-items: center; width: 100%; min-height: 44px; padding: 4px 12px; box-sizing: border-box; border: 1px solid #EEF1F5; border-radius: 10px; background: #FFFFFF; font-family: inherit; text-align: left; color: #1B2A3A; cursor: pointer">
+                <span style="display: flex; gap: 10px; align-items: center; min-width: 0">
+                  <span style="{{p.tagStyle}}">{{p.tag}}</span>
+                  <span style="display: flex; flex-direction: column; gap: 1px; min-width: 0">
+                    <strong style="font-size: 13.5px; color: #003057">{{p.nombre}}</strong>
+                    <span style="font-size: 11.5px; color: #4F5D6B">{{p.desc}}</span>
+                  </span>
+                </span>
+                <strong style="text-align: right; font-size: 13.5px">{{p.saldo}}</strong>
+                <strong style="text-align: right; font-size: 13px; color: #003057">{{p.pct}}</strong>
+                <span style="text-align: right; font-size: 12.5px; color: #4F5D6B">{{p.inLine}}</span>
+                <span style="display: flex; align-items: center; justify-content: flex-end; gap: 8px">
+                  <span style="display: flex; flex-direction: column; align-items: flex-end; gap: 2px"><span style="{{p.rentChip}}">{{p.rent}}</span><span style="{{p.rentValStyle}}">{{p.rentVal}}</span></span>
+                  <svg width="16" height="16" sc-camel-view-box="0 0 24 24" fill="none" stroke="#0072CE" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg>
+                </span>
+              </button>
+            </sc-for>
+          </div>
         </div>
       </div>
     </div>

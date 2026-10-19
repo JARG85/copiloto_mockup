@@ -20,6 +20,7 @@ input:focus,button:focus-visible,a:focus-visible,[data-modal]:focus-visible{outl
    producto · saldo · rentabilidad (el % total y % de su línea se ocultan). */
 @media (max-width: 1023px){
   .v360-body{grid-template-columns:minmax(0,1fr) !important}
+  .v360-legend{grid-template-columns:repeat(2, minmax(0,1fr)) !important}
 }
 @media (min-width: 768px) and (max-width: 1279px){
   .v360-row{grid-template-columns:minmax(0,1fr) 100px 64px 112px !important}
@@ -31,13 +32,13 @@ input:focus,button:focus-visible,a:focus-visible,[data-modal]:focus-visible{outl
   .v360-row > :first-child{grid-column:1 / -1}
   .v360-row > :nth-child(2){text-align:left !important;padding-left:2px}
   .v360-row > :nth-child(3),.v360-row > :nth-child(4){display:none !important}
-  .v360-sub{padding-left:12px !important}
   .v360-tabhint{text-align:left !important}
 }
 
-/* Gráfico de torta del portafolio: en teléfono la leyenda va debajo. */
+/* Gráfico de torta del portafolio: en teléfono los botones de la leyenda
+   ocupan todo el ancho, en una sola columna. */
 @media (max-width: 560px){
-  .v360-donut{flex-direction:column;align-items:stretch !important}
+  .v360-donut{align-items:stretch !important}
   .v360-donut svg{align-self:center}
   .v360-legend{grid-template-columns:minmax(0,1fr) !important}
 }

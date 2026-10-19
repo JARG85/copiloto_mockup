@@ -22,7 +22,7 @@ class Component extends DCLogic {
     window.AlianzaNav.rememberClient(this.clienteId);
     this.state = {
       scope: P.param('vista') === 'grupo' ? 'grp' : 'ind',
-      tab: 'port', openLine: null, member: 'all', dec: {},
+      tab: 'port', member: 'all', dec: {},
       modal: null, row: 0, period: 'all', hidden: {}
     };
   }
@@ -163,27 +163,25 @@ class Component extends DCLogic {
       total: svgText(Math.round(total).toLocaleString('es-CO')),
       aria: 'Gráfico de torta del portafolio por línea de producto: ' + conSaldo.map(l => l.nombre + ' ' + P.pct(l.pctTotal)).join(', '),
       segs: conSaldo.map(l => { const len = l.saldo / total * C; const o = { color: l.color, title: svgText(l.nombre + ': ' + P.money(l.saldo) + ' (' + P.pct(l.pctTotal) + ')'),
-        dash: Math.max(0, len - (conSaldo.length > 1 ? 2 : 0)).toFixed(1) + ' ' + (C - len + (conSaldo.length > 1 ? 2 : 0)).toFixed(1), offset: (-acc).toFixed(1) }; acc += len; return o; }),
-      items: lineasData.map(l => { const has = l.productos.length > 0, open = has && st.openLine === l.id; return {
+        dash: Math.max(0, len - (conSaldo.length > 1 ? 2 : 0)).toFixed(1) + ' ' + (C - len + (conSaldo.length > 1 ? 2 : 0)).toFixed(1), offset: (-acc).toFixed(1),
+        pick: () => this.openModal({ type: 'linea', id: l.id }) }; acc += len; return o; }),
+      items: lineasData.map(l => { const has = l.productos.length > 0; return {
         nombre: l.nombre, val: has ? P.money(l.saldo) : 'Sin productos', pct: has ? P.pct(l.pctTotal, 0) : '—',
-        pressed: open ? 'true' : 'false', disabled: !has, pick: () => has && this.setState({ openLine: open ? null : l.id }),
-        aria: has ? (open ? 'Ocultar productos de ' : 'Ver productos de ') + l.nombre : l.nombre + ': sin productos',
+        disabled: !has, pick: () => has && this.openModal({ type: 'linea', id: l.id }),
+        aria: has ? 'Ver detalle de ' + l.nombre : l.nombre + ': sin productos',
         sw: 'width: 12px; height: 12px; border-radius: 3px; flex: none; background: ' + (has ? l.color : '#D5DDE6'),
         style: 'display: flex; align-items: center; gap: 8px; width: 100%; min-height: 44px; padding: 4px 10px; box-sizing: border-box; border-radius: 10px; font-family: inherit; text-align: left; color: #1B2A3A; ' +
-          (open ? 'border: 2px solid #0072CE; background: #F2F8FD; cursor: pointer' : has ? 'border: 1px solid #EEF1F5; background: #FFFFFF; cursor: pointer' : 'border: 1px dashed #E1E7EE; background: #FAFBFC; cursor: default; opacity: 0.75') }; })
+          (has ? 'border: 1px solid #EEF1F5; background: #FFFFFF; cursor: pointer' : 'border: 1px dashed #E1E7EE; background: #FAFBFC; cursor: default; opacity: 0.75') }; })
     };
     const lineas = lineasData.map(l => {
-      const has = l.productos.length > 0, open = has && st.openLine === l.id;
+      const has = l.productos.length > 0;
       return {
-        id: 'linea-' + l.id, nombre: l.nombre, desc: l.desc, has, empty: !has, open,
-        expanded: open ? 'true' : 'false',
+        id: 'linea-' + l.id, nombre: l.nombre, desc: l.desc,
         count: has ? l.productos.length + (l.productos.length === 1 ? ' producto' : ' productos') : 'Sin productos',
         saldo: has ? P.money(l.saldo) : '—', pct: has ? P.pct(l.pctTotal) : '—',
         rent: has ? P.signedPct(l.rentPct) : '', rentChip: UI.rentChip(l.rentPct),
-        toggle: () => this.setState({ openLine: open ? null : l.id }),
         sw: 'width: 12px; height: 28px; border-radius: 4px; flex: none; background: ' + (has ? l.color : '#D5DDE6'),
-        chev: 'flex: none; transition: transform .15s; transform: rotate(' + (open ? '90' : '0') + 'deg)',
-        rowStyle: 'display: grid; grid-template-columns: minmax(0, 1fr) 110px 70px 80px 120px; gap: 12px; align-items: center; width: 100%; min-height: 44px; padding: 4px 12px; box-sizing: border-box; border: none; border-radius: 10px; font-family: inherit; text-align: left; color: #1B2A3A; ' + (has ? 'cursor: pointer; background: ' + (open ? '#EEF4FA' : '#F7F9FB') : 'cursor: default; background: #FAFBFC; opacity: 0.75'),
+        rowStyle: 'display: grid; grid-template-columns: minmax(0, 1fr) 110px 70px 80px 120px; gap: 12px; align-items: center; width: 100%; min-height: 44px; padding: 4px 12px; box-sizing: border-box; border: none; border-radius: 10px; font-family: inherit; text-align: left; color: #1B2A3A; ' + (has ? 'background: #F7F9FB' : 'background: #FAFBFC; opacity: 0.75'),
         productos: l.productos.map(p => ({
           nombre: p.nombre, desc: p.descripcion + (isGrp ? ' · ' + p.titular : ''), tag: p.tag,
           tagStyle: 'flex: none; width: 40px; height: 26px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 10.5px; font-weight: 800; letter-spacing: 0.04em; ' + (l.id === 'corp' ? 'background: #EEF0D2; color: #3F410C' : 'background: ' + l.color + '; color: ' + (l.id === 'fondos' ? '#002340' : '#FFFFFF')),
@@ -227,6 +225,9 @@ class Component extends DCLogic {
     const close = () => window.AlianzaModal.close();
     const modalInter = st.modal && st.modal.type === 'inter';
     const prodModal = st.modal && st.modal.type === 'prod' ? this.detalle(base.productos.find(p => p.id === st.modal.id), isGrp) : null;
+    const lineaModal = st.modal && st.modal.type === 'linea'
+      ? lineas.find(x => x.id === 'linea-' + st.modal.id) || null
+      : null;
 
     return {
       nav: window.AlianzaNav.build('v360'),
@@ -238,7 +239,7 @@ class Component extends DCLogic {
       tabs, tabPort: tab === 'port', tabEvo, evo, tabChurn: !!churn, churn, tabNba: !!nba, nba, tabSetup: !!setup, setup,
       portHint: tab === 'port',
       donut, lineas, port,
-      modalInter, prodModal, close
+      modalInter, prodModal, lineaModal, close
     };
   }
 
