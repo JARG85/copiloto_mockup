@@ -34,3 +34,10 @@ input:focus,button:focus-visible,a:focus-visible,[data-modal]:focus-visible{outl
   .v360-sub{padding-left:12px !important}
   .v360-tabhint{text-align:left !important}
 }
+
+/* Gráfico de torta del portafolio: en teléfono la leyenda va debajo. */
+@media (max-width: 560px){
+  .v360-donut{flex-direction:column;align-items:stretch !important}
+  .v360-donut svg{align-self:center}
+  .v360-legend{grid-template-columns:minmax(0,1fr) !important}
+}

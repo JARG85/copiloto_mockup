@@ -61,7 +61,8 @@ página lo pinta con `<sc-for list="{{nav.items}}">` y obtiene los ítems con
    - totales (saldo y rentabilidad), patrimonio e ingresos;
    - contactabilidad (teléfonos, correos, dirección) y últimas 3
      interacciones, con "Ver todo" en un modal;
-   - pestaña **Portafolio por línea**: acordeón Línea → Producto con saldo,
+   - pestaña **Portafolio por línea**: gráfico de torta por línea de
+     producto (su leyenda abre la línea) y acordeón Línea → Producto con saldo,
      % total, % de su línea y rentabilidad; clic en un producto abre su
      **modal de detalle**; pestaña **Evolución histórica**;
    - selector **Cliente individual / Grupo familiar**: consolidado del

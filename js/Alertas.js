@@ -8,6 +8,8 @@ window.AppLogic = window.AppLogic || {};
 window.AppLogic.Alertas = function (DCLogic, StreamableLogic, React) {
 
 const P = window.Portafolio, UI = window.AlianzaUI, F = id => window.AlianzaFlags.get(id);
+// Texto dentro de <text>/<title> SVG: un <tspan> sí se muestra (el runtime usa <span>).
+const svgText = v => React.createElement('tspan', null, String(v));
 
 // Agrupa los factores explicativos en motivos. TODO: confirmar con el área comercial.
 const MOTIVOS = [
@@ -88,9 +90,9 @@ class Component extends DCLogic {
     const maxS = Math.max(...all.map(x => x.saldo)) * 1.1;
     const X = s => 60 + s / 100 * 564, Y = a => 296 - a / maxS * 280;
     const dots = all.map(x => ({ x: X(x.riesgo.d60).toFixed(1), y: Y(x.saldo).toFixed(1), r: (6 + x.saldo / 700).toFixed(1), c: x.nivel.color,
-      title: x.nombre + ' · riesgo ' + x.riesgo.d60 + ' · ' + P.money(x.saldo) }));
-    const me = { x: X(c.riesgo.d60).toFixed(1), y: Y(c.saldo).toFixed(1), tx: (X(c.riesgo.d60) - 16).toFixed(1), ty: (Y(c.saldo) + 4).toFixed(1), label: c.iniciales };
-    const yTicks = [0, 0.5, 1].map(k => ({ y: Y(maxS * k).toFixed(1), ty: (Y(maxS * k) + 4).toFixed(1), label: P.money(Math.round(maxS * k / 100) * 100) }));
+      title: svgText(x.nombre + ' · riesgo ' + x.riesgo.d60 + ' · ' + P.money(x.saldo)) }));
+    const me = { x: X(c.riesgo.d60).toFixed(1), y: Y(c.saldo).toFixed(1), tx: (X(c.riesgo.d60) - 16).toFixed(1), ty: (Y(c.saldo) + 4).toFixed(1), label: svgText(c.iniciales) };
+    const yTicks = [0, 0.5, 1].map(k => ({ y: Y(maxS * k).toFixed(1), ty: (Y(maxS * k) + 4).toFixed(1), label: svgText(P.money(Math.round(maxS * k / 100) * 100)) }));
     const enRiesgoMedio = all.filter(x => x.riesgo.d60 >= 40);
     const motivos = MOTIVOS.map(m => ({ name: m.name, n: enRiesgoMedio.filter(x => x.riesgo.factores.some(f => f[1] > 0 && m.re.test(f[0]))).length }))
       .filter(m => m.n > 0).sort((a, b) => b.n - a.n);

@@ -10,6 +10,9 @@ window.AppLogic.Vista360 = function (DCLogic, StreamableLogic, React) {
 
 const P = window.Portafolio, UI = window.AlianzaUI, F = id => window.AlianzaFlags.get(id);
 const SVG_W = 760;
+// Texto dentro de <text> SVG: el runtime envuelve el texto interpolado en un
+// <span> HTML (que el SVG no dibuja); un <tspan> sí se muestra.
+const svgText = v => React.createElement('tspan', null, String(v));
 
 class Component extends DCLogic {
   constructor(p) {
@@ -19,7 +22,7 @@ class Component extends DCLogic {
     window.AlianzaNav.rememberClient(this.clienteId);
     this.state = {
       scope: P.param('vista') === 'grupo' ? 'grp' : 'ind',
-      tab: 'port', openLine: 'intermediacion', member: 'all', dec: {},
+      tab: 'port', openLine: null, member: 'all', dec: {},
       modal: null, row: 0, period: 'all', hidden: {}
     };
   }
@@ -152,7 +155,23 @@ class Component extends DCLogic {
     const showLeft = contacto.show || integrantes.show || inter.show;
 
     // ── Composición jerárquica: línea → producto ─────────────────────
-    const stack = lineasData.filter(l => l.saldo > 0).map(l => ({ title: l.nombre + ': ' + P.money(l.saldo) + ' (' + P.pct(l.pctTotal) + ')', style: 'display: block; height: 100%; width: ' + l.pctTotal.toFixed(2) + '%; background: ' + l.color + '; box-shadow: inset -2px 0 0 #FFFFFF' }));
+    // Gráfico de torta: composición del portafolio por línea de producto
+    // (recupera la dona de la primera versión, ahora por línea).
+    const C = 2 * Math.PI * 70, conSaldo = lineasData.filter(l => l.saldo > 0);
+    let acc = 0;
+    const donut = {
+      total: svgText(Math.round(total).toLocaleString('es-CO')),
+      aria: 'Gráfico de torta del portafolio por línea de producto: ' + conSaldo.map(l => l.nombre + ' ' + P.pct(l.pctTotal)).join(', '),
+      segs: conSaldo.map(l => { const len = l.saldo / total * C; const o = { color: l.color, title: svgText(l.nombre + ': ' + P.money(l.saldo) + ' (' + P.pct(l.pctTotal) + ')'),
+        dash: Math.max(0, len - (conSaldo.length > 1 ? 2 : 0)).toFixed(1) + ' ' + (C - len + (conSaldo.length > 1 ? 2 : 0)).toFixed(1), offset: (-acc).toFixed(1) }; acc += len; return o; }),
+      items: lineasData.map(l => { const has = l.productos.length > 0, open = has && st.openLine === l.id; return {
+        nombre: l.nombre, val: has ? P.money(l.saldo) : 'Sin productos', pct: has ? P.pct(l.pctTotal, 0) : '—',
+        pressed: open ? 'true' : 'false', disabled: !has, pick: () => has && this.setState({ openLine: open ? null : l.id }),
+        aria: has ? (open ? 'Ocultar productos de ' : 'Ver productos de ') + l.nombre : l.nombre + ': sin productos',
+        sw: 'width: 12px; height: 12px; border-radius: 3px; flex: none; background: ' + (has ? l.color : '#D5DDE6'),
+        style: 'display: flex; align-items: center; gap: 8px; width: 100%; min-height: 44px; padding: 4px 10px; box-sizing: border-box; border-radius: 10px; font-family: inherit; text-align: left; color: #1B2A3A; ' +
+          (open ? 'border: 2px solid #0072CE; background: #F2F8FD; cursor: pointer' : has ? 'border: 1px solid #EEF1F5; background: #FFFFFF; cursor: pointer' : 'border: 1px dashed #E1E7EE; background: #FAFBFC; cursor: default; opacity: 0.75') }; })
+    };
     const lineas = lineasData.map(l => {
       const has = l.productos.length > 0, open = has && st.openLine === l.id;
       return {
@@ -218,7 +237,7 @@ class Component extends DCLogic {
       bodyGrid: 'display: grid; grid-template-columns: ' + (showLeft ? '320px minmax(0, 1fr)' : 'minmax(0, 1fr)') + '; gap: 14px',
       tabs, tabPort: tab === 'port', tabEvo, evo, tabChurn: !!churn, churn, tabNba: !!nba, nba, tabSetup: !!setup, setup,
       portHint: tab === 'port',
-      stack, lineas, port,
+      donut, lineas, port,
       modalInter, prodModal, close
     };
   }
@@ -331,13 +350,13 @@ class Component extends DCLogic {
     const lines = vis.slice().reverse().map(s => ({ d: pathOf(S[s.id]), color: s.color, w: s.w, dash: s.id === 'corp' ? '5 4' : 'none' }));
     let area = 'M 0 0';
     if (!st.hidden.total) area = pathOf(S.total) + ' L ' + xs(N - 1).toFixed(1) + ' ' + (Y0 + PH) + ' L ' + xs(from).toFixed(1) + ' ' + (Y0 + PH) + ' Z';
-    const grid = [0, 1, 2, 3, 4].map(k => { const v = ymax * k / 4, y = ys(v); return { y: y.toFixed(1), ty: (y + 4).toFixed(1), label: Math.round(v).toLocaleString('es-CO') }; });
+    const grid = [0, 1, 2, 3, 4].map(k => { const v = ymax * k / 4, y = ys(v); return { y: y.toFixed(1), ty: (y + 4).toFixed(1), label: svgText(Math.round(v).toLocaleString('es-CO')) }; });
     const span = N - 1 - from, xticks = [];
     for (let i = from; i < N; i++) {
       const m = sh.months[i];
-      if (span <= 12) { if ((i - from) % 2 === 0) xticks.push({ x: xs(i).toFixed(1), label: m.label + ' ' + String(m.y).slice(2) }); }
-      else if (span <= 36) { if (m.m === 0 || m.m === 6) xticks.push({ x: xs(i).toFixed(1), label: m.label + ' ' + String(m.y).slice(2) }); }
-      else if (m.m === 0) xticks.push({ x: xs(i).toFixed(1), label: String(m.y) });
+      if (span <= 12) { if ((i - from) % 2 === 0) xticks.push({ x: xs(i).toFixed(1), label: svgText(m.label + ' ' + String(m.y).slice(2)) }); }
+      else if (span <= 36) { if (m.m === 0 || m.m === 6) xticks.push({ x: xs(i).toFixed(1), label: svgText(m.label + ' ' + String(m.y).slice(2)) }); }
+      else if (m.m === 0) xticks.push({ x: xs(i).toFixed(1), label: svgText(String(m.y)) });
     }
     const T = S.total;
     let mx = 0; for (let i = from; i < N; i++) mx = Math.max(mx, T[i]);
