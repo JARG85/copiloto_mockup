@@ -10,13 +10,15 @@ window.AlianzaNav = (function () {
   // Orden y definición de los módulos del Copiloto.
   // flag: id en js/feature-flags.js que lo muestra u oculta (sin flag = siempre visible).
   // enDef: el módulo aún no tiene definición cerrada con Alianza → badge "En definición".
+  // menu: false → no aparece en el menú lateral; se consulta como pestaña de la
+  // Vista 360 (su página sigue disponible desde los enlaces de esa pestaña).
   var MODULOS = [
     { id: 'cartera', label: 'Mi cartera', href: 'Cartera.dc.html', icon: 'M3 7h18v13H3z M8 7V4h8v3' },
     { id: 'v360', label: 'Vista 360', href: 'Vista360.dc.html', icon: circle(12, 8, 4) + ' M4 21a8 8 0 0 1 16 0' },
-    { id: 'alertas', label: 'Alertas de riesgo de fuga', href: 'Alertas.dc.html', flag: 'modAlertas', enDef: true, icon: 'M6 8a6 6 0 0 1 12 0c0 7 3 8 3 8H3s3-1 3-8 M10 20a2 2 0 0 0 4 0' },
-    { id: 'nba', label: 'Siguiente mejor acción', href: 'SiguienteAccion.dc.html', flag: 'modNBA', enDef: true, icon: 'M4 12h14 M12 6l6 6-6 6' },
+    { id: 'alertas', label: 'Alertas de riesgo de fuga', href: 'Alertas.dc.html', flag: 'modAlertas', enDef: true, menu: false, icon: 'M6 8a6 6 0 0 1 12 0c0 7 3 8 3 8H3s3-1 3-8 M10 20a2 2 0 0 0 4 0' },
+    { id: 'nba', label: 'Siguiente mejor acción', href: 'SiguienteAccion.dc.html', flag: 'modNBA', enDef: true, menu: false, icon: 'M4 12h14 M12 6l6 6-6 6' },
     { id: 'campanas', label: 'Campañas comerciales', href: 'Campanas.dc.html', flag: 'modCampanas', enDef: true, icon: 'M3 10v4h3l6 4V6L6 10z M16 9a4 4 0 0 1 0 6 M19 6a8 8 0 0 1 0 12' },
-    { id: 'setup', label: 'Setup del cliente', href: 'Setup.dc.html', flag: 'modSetup', enDef: true, icon: 'M9 3h6v3H9z M7 4H5v17h14V4h-2 M9 13l2 2 4-4' },
+    { id: 'setup', label: 'Setup del cliente', href: 'Setup.dc.html', flag: 'modSetup', enDef: true, menu: false, icon: 'M9 3h6v3H9z M7 4H5v17h14V4h-2 M9 13l2 2 4-4' },
     { id: 'pensiones', label: 'Pensiones', href: 'Pensiones.dc.html', flag: 'modPensiones', icon: 'M3 10h18 M12 2 3 7h18z M5 10v9 M9 10v9 M15 10v9 M19 10v9 M3 21h18' }
   ];
 
@@ -36,7 +38,7 @@ window.AlianzaNav = (function () {
     var P = window.Portafolio;
     var altas = P ? P.clientes().filter(function (c) { return c.riesgo.d60 >= 65; }).length : 0;
     var last = lastClient();
-    var items = MODULOS.filter(function (m) { return visible(m.id); }).map(function (m) {
+    var items = MODULOS.filter(function (m) { return m.menu !== false && visible(m.id); }).map(function (m) {
       var on = m.id === current;
       var href = m.id === 'v360' && last ? m.href + '?cliente=' + encodeURIComponent(last) : m.href;
       return {

@@ -21,10 +21,10 @@ window.AlianzaFlags = (function () {
   // defecto). En "Todos los módulos" todas quedan en true.
   // Agregar una fila aquí la hace aparecer automáticamente en el panel.
   var REGISTRY = {
-    modAlertas: { group: 'Módulos del menú', label: 'Alertas de riesgo de fuga', presentacion: false },
-    modNBA: { group: 'Módulos del menú', label: 'Siguiente mejor acción', presentacion: false },
+    modAlertas: { group: 'Módulos del menú', label: 'Señales de churn (pestaña en Vista 360)', presentacion: false },
+    modNBA: { group: 'Módulos del menú', label: 'Next best action (pestaña en Vista 360)', presentacion: false },
     modCampanas: { group: 'Módulos del menú', label: 'Campañas comerciales', presentacion: false },
-    modSetup: { group: 'Módulos del menú', label: 'Setup del cliente', presentacion: false },
+    modSetup: { group: 'Módulos del menú', label: 'Setup (pestaña en Vista 360)', presentacion: false },
     modPensiones: { group: 'Módulos del menú', label: 'Pensiones (consolidado back-office)', presentacion: false },
 
     showAsistente: { group: 'Global', label: 'Botón flotante "Asistente Alianza"', presentacion: true },

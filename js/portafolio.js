@@ -147,6 +147,30 @@ window.Portafolio = (function () {
     return { clientes: cs, saldo: sum(cs, 'saldo'), invertido: sum(cs, 'invertido') };
   }
 
+  // Procesos de setup (vinculación / actualización) con etapa actual y
+  // pendientes calculados a partir de los documentos. Lo usan el módulo
+  // Setup y la pestaña Setup de la Vista 360.
+  function setupProcesos() {
+    var etapas = D.setupEtapas;
+    return D.setup.map(function (s) {
+      var c = s.clienteId ? cliente(s.clienteId) : null;
+      var tipo = c ? c.tipoPersona : s.tipoPersona;
+      var docs = D.setupDocumentos.filter(function (d) { return d.aplica.indexOf(tipo) >= 0; }).map(function (d) {
+        var r = s.docs[d.id] || ['pendiente', s.inicio];
+        return Object.assign({}, d, { estado: r[0], fecha: r[1] });
+      });
+      var abiertos = docs.filter(function (d) { return d.estado !== 'completo'; });
+      var etapa = abiertos.length ? Math.min.apply(null, abiertos.map(function (d) { return d.etapa; })) : etapas.length;
+      return Object.assign({}, s, {
+        cliente: c, nombre: c ? c.nombre : s.nombre, tipoPersona: tipo, segmento: c ? c.segmento : s.segmento,
+        docs: docs, pendientes: abiertos.length, vencidos: abiertos.filter(function (d) { return d.estado === 'vencido'; }).length, etapa: etapa
+      });
+    });
+  }
+  function setupDe(clienteId) {
+    return setupProcesos().find(function (p) { return p.clienteId === clienteId; }) || null;
+  }
+
   function param(name) {
     try { return new URLSearchParams(location.search).get(name); } catch (e) { return null; }
   }
@@ -156,6 +180,6 @@ window.Portafolio = (function () {
     dias: dias, fecha: fecha, fechaCorta: fechaCorta, num: num, money: money, signedMoney: signedMoney,
     pct: pct, signedPct: signedPct, price: price, fmt: fmt, nivel: nivel, rent: rent, sum: sum,
     producto: producto, lineas: lineas, alineacion: alineacion,
-    cliente: cliente, clientes: clientes, grupo: grupo, cartera: cartera, param: param
+    cliente: cliente, clientes: clientes, grupo: grupo, cartera: cartera, setupProcesos: setupProcesos, setupDe: setupDe, param: param
   };
 })();

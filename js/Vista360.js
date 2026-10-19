@@ -19,7 +19,7 @@ class Component extends DCLogic {
     window.AlianzaNav.rememberClient(this.clienteId);
     this.state = {
       scope: P.param('vista') === 'grupo' ? 'grp' : 'ind',
-      tab: 'port', openLine: 'intermediacion', member: 'all',
+      tab: 'port', openLine: 'intermediacion', member: 'all', dec: {},
       modal: null, row: 0, period: 'all', hidden: {}
     };
   }
@@ -109,7 +109,7 @@ class Component extends DCLogic {
     const ingresos = isGrp ? g.ingresosMensuales : c.financiera.ingresosMensuales;
     const kpi = {
       saldo: P.money(base.saldo),
-      saldoSub: base.productos.length + ' productos · ' + P.lineas(base.productos).filter(l => l.productos.length).length + ' líneas',
+      saldoSub: (n => base.productos.length + (base.productos.length === 1 ? ' producto · ' : ' productos · ') + n + (n === 1 ? ' línea' : ' líneas'))(P.lineas(base.productos).filter(l => l.productos.length).length),
       rent: P.signedPct(base.rentPct),
       rentStyle: 'font-size: 22px; font-weight: 800; line-height: 1.25; color: ' + (base.rentPct >= 0 ? '#00806B' : '#9A1F24'),
       rentSub: P.signedMoney(base.ganancia) + ' sobre ' + P.money(base.invertido) + ' invertidos',
@@ -179,14 +179,27 @@ class Component extends DCLogic {
     const totalInv = P.sum(prods, 'invertido'), totalRent = P.rent(total, totalInv);
     const port = {
       scopeLabel: memberSel ? memberSel.nombre : isGrp ? 'Consolidado del grupo familiar' : 'Cliente individual',
-      sub: prods.length + ' productos · ' + nLineas + ' líneas' + (st.tab === 'evo' && F('v360Evolucion') ? '' : ' · clic en un producto para ver su detalle'),
+      sub: prods.length + (prods.length === 1 ? ' producto · ' : ' productos · ') + nLineas + (nLineas === 1 ? ' línea' : ' líneas'),
       total: P.money(total), totalRent: P.signedPct(totalRent), totalRentChip: UI.rentChip(totalRent), totalRentVal: P.signedMoney(total - totalInv)
     };
 
     // ── Pestañas ─────────────────────────────────────────────────────
-    const tabEvo = fEvo && st.tab === 'evo';
-    const tabs = [{ id: 'port', label: 'Portafolio por línea' }].concat(fEvo ? [{ id: 'evo', label: 'Evolución histórica' }] : [])
-      .map(t => { const on = (t.id === 'evo') === tabEvo; return { label: t.label, id: 'tab-' + t.id, selected: on ? 'true' : 'false', tabindex: on ? 0 : -1, style: UI.seg(on), pick: () => this.setState({ tab: t.id }) }; });
+    // Señales de churn, Next best action y Setup aparecen solo si su módulo
+    // está visible (flags modAlertas, modNBA, modSetup) y llevan el punto
+    // de "En definición".
+    const N = window.AlianzaNav;
+    const tabDefs = [{ id: 'port', label: 'Portafolio por línea', on: true },
+      { id: 'evo', label: 'Evolución histórica', on: fEvo },
+      { id: 'churn', label: 'Señales de churn', on: N.visible('alertas'), endef: true },
+      { id: 'nba', label: 'Next best action', on: N.visible('nba'), endef: true },
+      { id: 'setup', label: 'Setup', on: N.visible('setup'), endef: true }].filter(t => t.on);
+    const tab = tabDefs.some(t => t.id === st.tab) ? st.tab : 'port';
+    const tabs = tabDefs.map(t => { const on = t.id === tab; return { label: t.label, id: 'tab-' + t.id, endef: !!t.endef, selected: on ? 'true' : 'false', style: UI.seg(on) + ' display: inline-flex; align-items: center; gap: 6px;', pick: () => this.setState({ tab: t.id }) }; });
+    const tabEvo = tab === 'evo';
+    const targets = memberSel ? [memberSel] : isGrp ? g.miembros : [c];
+    const churn = tab === 'churn' ? this.churnTab(targets) : null;
+    const nba = tab === 'nba' ? this.nbaTab(targets, isGrp) : null;
+    const setup = tab === 'setup' ? this.setupTab(targets) : null;
 
     // ── Evolución histórica ──────────────────────────────────────────
     const evo = tabEvo ? this.evolucion(lineasData, memberSel ? memberSel.vinculacion : isGrp ? g.miembros.reduce((a, m) => m.vinculacion < a ? m.vinculacion : a, '9999') : c.vinculacion) : null;
@@ -203,10 +216,93 @@ class Component extends DCLogic {
       kpiGrid: 'display: grid; grid-template-columns: repeat(' + (fFin ? 4 : 2) + ', minmax(0, 1fr)); gap: 12px',
       contacto, integrantes, inter, showLeft,
       bodyGrid: 'display: grid; grid-template-columns: ' + (showLeft ? '320px minmax(0, 1fr)' : 'minmax(0, 1fr)') + '; gap: 14px',
-      tabs, tabPort: !tabEvo, tabEvo, evo,
+      tabs, tabPort: tab === 'port', tabEvo, evo, tabChurn: !!churn, churn, tabNba: !!nba, nba, tabSetup: !!setup, setup,
+      portHint: tab === 'port',
       stack, lineas, port,
       modalInter, prodModal, close
     };
+  }
+
+  // ── Pestaña "Señales de churn" ───────────────────────────────────────
+  // Un cliente: medidores a 30 y 60 días, factores y señales anticipadas
+  // que le aplican. Grupo sin integrante elegido: resumen por integrante.
+  churnTab(targets) {
+    const D = window.CopilotoData;
+    const meter = (v, label) => { const n = P.nivel(v); return {
+      label, v: String(v), nivel: n.label, chip: UI.chip(n.bg, n.fg),
+      fill: 'position: absolute; left: 0; top: 0; bottom: 0; border-radius: 6px; width: ' + v + '%; background: ' + n.color }; };
+    const detalle = c => {
+      const maxAbs = Math.max(20, ...c.riesgo.factores.map(f => Math.abs(f[1])));
+      return {
+        nombre: c.nombre,
+        m30: meter(c.riesgo.d30, 'A 30 días'), m60: meter(c.riesgo.d60, 'A 60 días'),
+        enRiesgo: P.money(c.riesgo.enRiesgo || c.saldo * c.riesgo.d60 / 100),
+        factores: c.riesgo.factores.map(f => ({ name: f[0], val: (f[1] > 0 ? '+' : '−') + Math.abs(f[1]),
+          valStyle: 'text-align: right; font-size: 13px; font-weight: 700; color: ' + (f[1] > 0 ? '#9A1F24' : '#00664F'),
+          bar: 'position: absolute; top: 0; bottom: 0; border-radius: 4px; ' + (f[1] > 0 ? 'left: 50%; width: ' + (f[1] / maxAbs * 50) + '%; background: #B3272D' : 'right: 50%; width: ' + (-f[1] / maxAbs * 50) + '%; background: #00A98E') })),
+        senales: D.senales.filter(x => x.prueba(c)).map(x => ({ nombre: x.nombre, regla: x.regla })),
+        sinSenales: !D.senales.some(x => x.prueba(c)),
+        href: 'Alertas.dc.html?cliente=' + c.id
+      };
+    };
+    if (targets.length === 1) return { uno: detalle(targets[0]), varios: null };
+    return { uno: null, varios: targets.slice().sort((a, b) => b.riesgo.d60 - a.riesgo.d60).map(m => ({
+      nombre: m.nombre, rel: m.relacion,
+      c30: m.riesgo.d30 + ' · ' + P.nivel(m.riesgo.d30).label, s30: UI.riesgoChip(m.riesgo.d30),
+      c60: m.riesgo.d60 + ' · ' + m.nivel.label, s60: UI.riesgoChip(m.riesgo.d60),
+      factor: (m.riesgo.factores.find(f => f[1] > 0) || ['Sin señales relevantes'])[0],
+      ver: () => this.setState({ member: m.id }), aria: 'Ver señales de ' + m.nombre
+    })) };
+  }
+
+  // ── Pestaña "Next best action" ───────────────────────────────────────
+  nbaTab(targets, isGrp) {
+    const TAG = { 'Retención': ['#FDE8E6', '#9A1F24'], 'Idoneidad': ['#FFF4DE', '#8A5300'], 'Profundización': ['#E3F1FB', '#004E8C'] };
+    const dec = this.state.dec;
+    const cards = [].concat(...targets.map(c => c.nba.map(n => ({ c, n })))).sort((a, b) => b.n.confianza - a.n.confianza).map(({ c, n }, i) => {
+      const key = c.id + ':' + n.id, s = dec[key], col = TAG[n.tag] || ['#F2F5F9', '#3D4C5B'];
+      return {
+        titulo: n.titulo, tag: n.tag, tagStyle: UI.chip(col[0], col[1], 'font-size: 11.5px; border-radius: 6px'),
+        porque: n.porque, meta: 'Evidencia: ' + n.evidencia + ' · Confianza ' + n.confianza + ' %',
+        quien: isGrp ? c.nombre : '', pending: !s, decided: !!s,
+        status: s === 'ok' ? 'Aceptada · registrada en bitácora' : 'Descartada · motivo registrado',
+        statusStyle: 'font-size: 12.5px; font-weight: 700; padding: 8px 12px; border-radius: 8px; ' + (s === 'ok' ? 'background: #E1F5EF; color: #00664F' : 'background: #F2F5F9; color: #4F5D6B'),
+        card: 'border: 1px solid ' + (s ? '#E6EBF1' : '#D5DDE6') + '; border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; background: ' + (s ? '#FAFBFC' : '#FFFFFF'),
+        rank: String(i + 1),
+        rankStyle: 'flex: none; width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 13px; ' + (i === 0 ? 'background: #003057; color: #FFFFFF' : 'background: #EEF4FA; color: #003057'),
+        accept: () => this.setState({ dec: { ...this.state.dec, [key]: 'ok' } }),
+        discard: () => this.setState({ dec: { ...this.state.dec, [key]: 'no' } })
+      };
+    });
+    const done = cards.filter(x => x.decided).length;
+    return { cards, resumen: done + ' de ' + cards.length + ' revisadas', href: 'SiguienteAccion.dc.html?cliente=' + targets[0].id };
+  }
+
+  // ── Pestaña "Setup" ──────────────────────────────────────────────────
+  // Qué documentos o firmas le faltan al cliente (responsable: Cliente);
+  // lo que depende de Alianza se resume aparte.
+  setupTab(targets) {
+    const etapas = window.CopilotoData.setupEtapas;
+    const EST = { pendiente: ['Pendiente', '#FFF4DE', '#8A5300'], vencido: ['Vencido', '#FDE8E6', '#9A1F24'] };
+    const items = targets.map(c => {
+      const p = P.setupDe(c.id);
+      if (!p) return { nombre: c.nombre, sinProceso: true, conProceso: false };
+      const falta = p.docs.filter(d => d.estado !== 'completo' && d.responsable === 'Cliente').sort((a, b) => (a.estado === 'vencido' ? -1 : 1) - (b.estado === 'vencido' ? -1 : 1));
+      const alianza = p.docs.filter(d => d.estado !== 'completo' && d.responsable === 'Alianza');
+      return {
+        nombre: c.nombre, sinProceso: false, conProceso: true,
+        proceso: p.proceso + ' · inicio ' + P.fecha(p.inicio),
+        etapa: p.etapa >= etapas.length ? 'Proceso completo' : 'Etapa ' + (p.etapa + 1) + ' de ' + etapas.length + ': ' + etapas[p.etapa],
+        segs: etapas.map((n, i) => ({ title: n, style: 'flex: 1; height: 8px; border-radius: 4px; background: ' + (i < p.etapa ? '#0072CE' : i === p.etapa ? '#D2D755' : '#E1E7EE') })),
+        alDia: falta.length === 0, conFaltantes: falta.length > 0,
+        resumen: falta.length ? 'Faltan ' + falta.length + (falta.length === 1 ? ' documento o firma' : ' documentos o firmas') + ' por parte del cliente' : 'El cliente no tiene documentos ni firmas pendientes',
+        resumenStyle: UI.chip(falta.length ? (falta.some(d => d.estado === 'vencido') ? '#FDE8E6' : '#FFF4DE') : '#E1F5EF', falta.length ? (falta.some(d => d.estado === 'vencido') ? '#9A1F24' : '#8A5300') : '#00664F'),
+        falta: falta.map(d => ({ nombre: d.nombre, firma: d.etapa === 3, fecha: 'Límite ' + P.fecha(d.fecha),
+          estado: EST[d.estado][0], estadoStyle: UI.chip(EST[d.estado][1], EST[d.estado][2], 'min-width: 76px; justify-content: center') })),
+        alianza: alianza.length ? 'Pendiente por parte de Alianza: ' + alianza.map(d => d.nombre.toLowerCase()).join(', ') : ''
+      };
+    });
+    return { items };
   }
 
   // Gráfico de líneas por línea de producto (reutiliza el de la versión anterior).

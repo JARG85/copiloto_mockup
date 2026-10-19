@@ -18,29 +18,9 @@ class Component extends DCLogic {
   componentDidMount() { this._unwatch = UI.watchFlags(this); }
   componentWillUnmount() { this._unwatch && this._unwatch(); }
 
-  // Une el registro de setup con el cliente de la cartera (si existe) y
-  // calcula etapa actual y pendientes a partir de los documentos.
-  procesos() {
-    const D = window.CopilotoData, etapas = D.setupEtapas;
-    return D.setup.map(s => {
-      const c = s.clienteId ? P.cliente(s.clienteId) : null;
-      const tipo = c ? c.tipoPersona : s.tipoPersona;
-      const docs = D.setupDocumentos.filter(d => d.aplica.includes(tipo)).map(d => {
-        const r = s.docs[d.id] || ['pendiente', s.inicio];
-        return { ...d, estado: r[0], fecha: r[1] };
-      });
-      const abiertos = docs.filter(d => d.estado !== 'completo');
-      const etapa = abiertos.length ? Math.min(...abiertos.map(d => d.etapa)) : etapas.length;
-      return {
-        ...s, cliente: c, nombre: c ? c.nombre : s.nombre, tipoPersona: tipo, segmento: c ? c.segmento : s.segmento,
-        docs, pendientes: abiertos.length, vencidos: abiertos.filter(d => d.estado === 'vencido').length, etapa
-      };
-    });
-  }
-
   renderVals() {
     const st = this.state, etapas = window.CopilotoData.setupEtapas;
-    const all = this.procesos();
+    const all = P.setupProcesos();
     const keep = p => st.f === 'all' ? true : st.f === 'pend' ? p.pendientes > 0 : st.f === 'ok' ? p.pendientes === 0 : p.proceso === 'Vinculación nueva';
     const filters = [{ id: 'all', label: 'Todos' }, { id: 'pend', label: 'Con pendientes' }, { id: 'ok', label: 'Al día' }, { id: 'new', label: 'Vinculaciones nuevas' }]
       .map(d => ({ label: d.label, pressed: d.id === st.f ? 'true' : 'false', style: UI.pill(d.id === st.f), pick: () => this.setState({ f: d.id }) }));

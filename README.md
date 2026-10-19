@@ -66,17 +66,27 @@ página lo pinta con `<sc-for list="{{nav.items}}">` y obtiene los ítems con
      **modal de detalle**; pestaña **Evolución histórica**;
    - selector **Cliente individual / Grupo familiar**: consolidado del
      grupo con filtro por integrante.
-3. **Alertas de riesgo de fuga** — termómetro a 30 y 60 días con factores,
-   señales anticipadas, mapa de prioridad, motivos y clientes priorizados.
-4. **Siguiente mejor acción** — todos los clientes con su acción sugerida;
-   briefing, tarjetas NBA (aceptar / descartar), alineación frente al perfil
-   y recomendación de portafolio (en exploración).
-5. **Campañas comerciales** — campañas activas; al abrir una, la regla en
+   - pestañas **Señales de churn**, **Next best action** y **Setup** (qué
+     documentos o firmas le faltan al cliente). Cada una aparece solo si su
+     módulo está visible (flags `modAlertas`, `modNBA`, `modSetup`), así que
+     en *Modo presentación* no se muestran.
+3. **Campañas comerciales** — campañas activas; al abrir una, la regla en
    lenguaje natural y los clientes de la cartera que encajan.
-6. **Setup del cliente** — etapa de vinculación de cada cliente y checklist
-   de documentos (completo / pendiente / vencido).
 
-Los módulos 3 a 6 llevan el badge **"En definición"**. Pensiones
+Señales de churn, Next best action y Setup ya **no están en el menú
+lateral** (`menu: false` en `MODULOS`): se consultan como pestañas de la
+Vista 360. Sus páginas completas siguen existiendo y se abren desde los
+enlaces de cada pestaña:
+
+- `Alertas.dc.html` — termómetro a 30 y 60 días con factores, señales
+  anticipadas, mapa de prioridad, motivos y clientes priorizados.
+- `SiguienteAccion.dc.html` — todos los clientes con su acción sugerida;
+  briefing, tarjetas NBA, alineación frente al perfil y recomendación de
+  portafolio (en exploración).
+- `Setup.dc.html` — etapa de vinculación de cada cliente y checklist de
+  documentos (completo / pendiente / vencido).
+
+Campañas y esas tres páginas llevan el badge **"En definición"**. Pensiones
 (back-office) sigue disponible detrás de un flag.
 
 ## Datos: `js/data/copiloto-data.js`
