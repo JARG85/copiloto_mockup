@@ -27,8 +27,9 @@ window.AlianzaFlags = (function () {
     modPensiones: { group: 'Módulos del menú', label: 'Pensiones (consolidado back-office)', presentacion: false },
 
     // Pestañas adicionales de la Vista 360: ocultas por defecto, se habilitan
-    // solo desde este panel (Ctrl+Shift+Alt+F). modAlertas / modNBA / modSetup
-    // también habilitan las páginas completas que se abren desde cada pestaña.
+    // solo desde este panel (Ctrl+Shift+Alt+F). Sus vistas completas (alertas de
+    // toda la cartera, todos los clientes con NBA, setup de la cartera) se abren
+    // en modal desde cada pestaña.
     v360Pensiones: { group: 'Vista 360 · pestañas adicionales', label: 'Pensiones', presentacion: false },
     modAlertas: { group: 'Vista 360 · pestañas adicionales', label: 'Señales de churn', presentacion: false },
     modNBA: { group: 'Vista 360 · pestañas adicionales', label: 'Next best action', presentacion: false },
