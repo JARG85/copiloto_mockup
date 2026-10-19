@@ -88,6 +88,20 @@ window.DetalleSchema = {
     ]
   },
 
+  // TODO: confirmar con Alianza — variables de pensiones voluntarias.
+  fpv: {
+    definido: true,
+    campos: [
+      { key: 'saldo', label: 'Saldo', fmt: 'money' },
+      { key: 'rentPct', label: 'Rentabilidad', fmt: 'signedPct' },
+      { key: 'apertura', label: 'Fecha de apertura', fmt: 'date' },
+      { key: 'plan', label: 'Plan', fmt: 'text' },
+      { key: 'permanenciaHasta', label: 'Permanencia mínima hasta', fmt: 'date' },
+      { key: 'aportesAnio', label: 'Aportes en 2026', fmt: 'money' }
+    ],
+    nota: 'Retirar antes de cumplir la permanencia hace perder el beneficio tributario de los aportes.'
+  },
+
   // TODO: confirmar con Alianza — variables de encargos fiduciarios.
   encargo: {
     definido: true,
@@ -102,7 +116,6 @@ window.DetalleSchema = {
   },
 
   // Sin variables definidas todavía → usan `default`.
-  fpv: { definido: false },
   fideicomiso: { definido: false },
   divisas: { definido: false },
   fcp: { definido: false },

@@ -10,6 +10,7 @@
 <script src="../js/data/copiloto-data.js"></script>
 <script src="../js/data/detalle-schema.js"></script>
 <script src="../js/portafolio.js"></script>
+<script src="../js/pensiones.js"></script>
 <script src="../js/ui.js"></script>
 <script src="../js/modal.js"></script>
 <script src="../js/asistente.js"></script>
@@ -350,6 +351,42 @@
           </div>
           </sc-if>
 
+          <!-- Pestaña: Pensiones (FPV, permanencia y solicitudes) -->
+          <sc-if value="{{tabPens}}">
+          <div role="tabpanel" aria-labelledby="tab-pens" class="v360-scroll" style="display: flex; flex-direction: column; gap: 10px; min-height: 0">
+            <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap">
+              <h3 style="margin: 0; font-size: 14px; color: #003057">Planes de pensión voluntaria<sc-if value="{{pens.hayPlanes}}"> · {{pens.total}}</sc-if></h3>
+              <button type="button" sc-camel-on-click="{{pens.verConsolidado}}" aria-haspopup="dialog" style="min-height: 44px; padding: 0 14px; border-radius: 10px; border: 1px solid #C9D2DC; background: #FFFFFF; color: #003057; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer">Ver consolidado de pensiones</button>
+            </div>
+            <sc-if value="{{pens.sinPlanes}}"><span style="font-size: 13px; color: #4F5D6B">No tiene planes de pensión voluntaria en Alianza.</span></sc-if>
+            <sc-for list="{{pens.planes}}" as="p" hint-placeholder-count="1">
+              <article style="border: 1px solid #E1E7EE; border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 10px">
+                <div style="display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; align-items: flex-start">
+                  <span style="display: flex; flex-direction: column; gap: 2px"><strong style="font-size: 14.5px; color: #003057">{{p.nombre}}</strong><span style="font-size: 12px; color: #4F5D6B">{{p.plan}} · desde {{p.apertura}}<sc-if value="{{p.quien}}"> · {{p.quien}}</sc-if></span></span>
+                  <button type="button" sc-camel-on-click="{{p.abrir}}" aria-haspopup="dialog" aria-label="{{p.aria}}" style="min-height: 44px; padding: 0 12px; border-radius: 10px; border: 1px solid #C9D2DC; background: #FFFFFF; color: #003057; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer">Ver detalle</button>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px">
+                  <div style="padding: 8px 10px; border-radius: 10px; background: #F2F5F9; display: flex; flex-direction: column"><span style="font-size: 11.5px; color: #4F5D6B">Saldo</span><strong style="font-size: 15px; color: #003057">{{p.saldo}}</strong></div>
+                  <div style="padding: 8px 10px; border-radius: 10px; background: #F2F5F9; display: flex; flex-direction: column; align-items: flex-start; gap: 2px"><span style="font-size: 11.5px; color: #4F5D6B">Rentabilidad</span><span style="{{p.rentChip}}">{{p.rent}}</span></div>
+                  <div style="padding: 8px 10px; border-radius: 10px; background: #F2F5F9; display: flex; flex-direction: column"><span style="font-size: 11.5px; color: #4F5D6B">Aportes en 2026</span><strong style="font-size: 15px; color: #003057">{{p.aportes}}</strong></div>
+                  <div style="padding: 8px 10px; border-radius: 10px; background: #F2F5F9; display: flex; flex-direction: column; align-items: flex-start; gap: 2px"><span style="font-size: 11.5px; color: #4F5D6B">Permanencia hasta {{p.permanencia}}</span><span style="{{p.permStyle}}">{{p.permLabel}}</span><span style="font-size: 11.5px; color: #3D4C5B">{{p.dias}}</span></div>
+                </div>
+                <span style="font-size: 12px; color: #4F5D6B">Beneficio tributario: {{p.beneficio}}. Retirar antes de cumplir la permanencia hace perder el beneficio.</span>
+                <sc-if value="{{p.aviso}}"><div role="note" style="padding: 8px 12px; border-radius: 10px; background: #FDE8E6; color: #7A1A1E; font-size: 12.5px; font-weight: 600">La permanencia se cumple en menos de 30 días: si el cliente pide un retiro, conviene esperar a esa fecha.</div></sc-if>
+              </article>
+            </sc-for>
+            <h3 style="margin: 6px 0 0; font-size: 14px; color: #003057">Solicitudes en curso</h3>
+            <sc-if value="{{pens.sinSol}}"><span style="font-size: 13px; color: #4F5D6B">Sin solicitudes de pensiones en curso.</span></sc-if>
+            <sc-for list="{{pens.solicitudes}}" as="q" hint-placeholder-count="1">
+              <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap; padding: 10px 12px; border: 1px solid #EEF1F5; border-radius: 10px">
+                <span style="flex: 1 1 220px; display: flex; flex-direction: column; gap: 2px"><strong style="font-size: 13.5px; color: #003057">{{q.tipo}}</strong><span style="font-size: 12px; color: #4F5D6B">{{q.plan}}<sc-if value="{{q.quien}}"> · {{q.quien}}</sc-if><sc-if value="{{q.detalle}}"> · {{q.detalle}}</sc-if></span></span>
+                <span style="{{q.estadoStyle}}">{{q.estado}}</span>
+                <span style="{{q.venceStyle}}">{{q.vence}}</span>
+              </div>
+            </sc-for>
+          </div>
+          </sc-if>
+
           <!-- Pestaña: Señales de churn (módulo Alertas) -->
           <sc-if value="{{tabChurn}}">
           <div role="tabpanel" aria-labelledby="tab-churn" class="v360-scroll" style="display: flex; flex-direction: column; gap: 10px; min-height: 0">
@@ -532,6 +569,122 @@
           </sc-if>
 
           <sc-if value="{{prodModal.nota}}"><span style="font-size: 12px; line-height: 1.5; color: #4F5D6B">{{prodModal.nota}}</span></sc-if>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- MODAL: consolidado de pensiones (misma información que pages/Pensiones.dc.html; lógica en js/pensiones.js) -->
+  <sc-if value="{{pensCons}}">
+    <div style="position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 24px; box-sizing: border-box">
+      <div sc-camel-on-click="{{close}}" aria-hidden="true" style="position: absolute; inset: 0; background: rgba(0, 28, 51, 0.55)"></div>
+      <div data-modal="" role="dialog" aria-modal="true" aria-labelledby="modal-pens-titulo" sc-camel-tab-index="-1" style="position: relative; width: 100%; max-width: 1120px; max-height: calc(100vh - 48px); overflow: auto; background: #F2F5F9; border-radius: 16px; box-shadow: 0 24px 64px rgba(0,0,0,.3); display: flex; flex-direction: column; outline: none">
+        <div style="position: sticky; top: 0; z-index: 1; overflow: hidden; flex: none; padding: 16px 22px; background: #FFFFFF; border-bottom: 1px solid #E1E7EE; display: flex; gap: 14px; align-items: flex-start; justify-content: space-between">
+          <div aria-hidden="true" style="position: absolute; top: 0; right: 0; width: 200px; height: 100%; background: #EEF4FA; clip-path: polygon(45% 0%, 100% 0%, 100% 100%, 0% 100%)"></div>
+          <div style="position: relative; display: flex; flex-direction: column; gap: 2px">
+            <h2 id="modal-pens-titulo" style="margin: 0; font-size: 20px; color: #003057">Consolidado de pensiones</h2>
+            <span style="font-size: 12.5px; color: #4F5D6B">FPV individual, FPV institucional y patrimonios autónomos de pensión (PAP) · bandeja de solicitudes y permanencias</span>
+          </div>
+          <button type="button" sc-camel-on-click="{{close}}" aria-label="Cerrar consolidado de pensiones" style="position: relative; flex: none; width: 44px; height: 44px; border-radius: 10px; border: 1px solid #E1E7EE; background: #FFFFFF; color: #003057; font-size: 16px; cursor: pointer">✕</button>
+        </div>
+        <div style="padding: 18px 22px 22px; display: flex; flex-direction: column; gap: 18px">
+          <section aria-label="Resumen de pensiones" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px">
+            <div style="background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 6px"><span style="font-size: 13px; font-weight: 600; color: #4F5D6B">Afiliados / vinculados</span><strong style="font-size: 28px; font-weight: 800; color: #003057">{{pensCons.afiliados}}</strong><span style="font-size: 12.5px; color: #4F5D6B">FPV individual + institucional + PAP</span></div>
+            <div style="background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 6px"><span style="font-size: 13px; font-weight: 600; color: #4F5D6B">Saldo total administrado</span><strong style="font-size: 28px; font-weight: 800; color: #003057">{{pensCons.saldoTotal}}</strong><span style="font-size: 12.5px; color: #4F5D6B">+2,1 % frente al mes anterior</span></div>
+            <div style="background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 6px"><span style="font-size: 13px; font-weight: 600; color: #4F5D6B">Aportes del mes</span><strong style="font-size: 28px; font-weight: 800; color: #003057">{{pensCons.aportesMes}}</strong><span style="font-size: 12.5px; color: #4F5D6B">{{pensCons.aportesSub}}</span></div>
+            <div style="position: relative; overflow: hidden; background: #003057; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 6px; color: #FFFFFF">
+              <div aria-hidden="true" style="position: absolute; inset: 0; background: #B3272D; clip-path: polygon(66% 100%, 100% 36%, 100% 100%)"></div>
+              <span style="position: relative; font-size: 13px; font-weight: 600; color: #D6E4F0">Solicitudes pendientes</span>
+              <strong style="position: relative; font-size: 28px; font-weight: 800">{{pensCons.solicitudesPendientes}}</strong>
+              <span style="position: relative; font-size: 12.5px; color: #D6E4F0">{{pensCons.vencenHoy}}</span>
+            </div>
+          </section>
+
+          <div style="display: flex; flex-wrap: wrap; gap: 24px">
+            <section style="flex: 999 1 560px; min-width: 0; background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 16px">
+              <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap">
+                <h2 style="margin: 0; font-size: 18px; color: #003057">Bandeja de solicitudes</h2>
+                <div role="group" aria-label="Filtrar" style="display: flex; gap: 6px; flex-wrap: wrap">
+                  <sc-for list="{{pensCons.filters}}" as="f" hint-placeholder-count="5">
+                    <button type="button" sc-camel-on-click="{{f.pick}}" aria-pressed="{{f.pressed}}" style="{{f.style}}">{{f.label}}</button>
+                  </sc-for>
+                </div>
+              </div>
+              <div style="overflow-x: auto">
+                <sc-raw-table style="width: 100%; min-width: 760px; border-collapse: collapse; font-size: 14px">
+                  <sc-raw-thead>
+                    <sc-raw-tr style="color: #4F5D6B; font-size: 12.5px; text-align: left">
+                      <sc-raw-th style="padding: 10px 12px; border-bottom: 1px solid #E1E7EE">Afiliado / empresa</sc-raw-th>
+                      <sc-raw-th style="padding: 10px 12px; border-bottom: 1px solid #E1E7EE">Línea</sc-raw-th>
+                      <sc-raw-th style="padding: 10px 12px; border-bottom: 1px solid #E1E7EE">Tipo de solicitud</sc-raw-th>
+                      <sc-raw-th style="padding: 10px 12px; border-bottom: 1px solid #E1E7EE">Estado</sc-raw-th>
+                      <sc-raw-th style="padding: 10px 12px; border-bottom: 1px solid #E1E7EE">Vence</sc-raw-th>
+                      <sc-raw-th style="padding: 10px 12px; border-bottom: 1px solid #E1E7EE"><span style="position: absolute; left: -9999px">Gestionar</span></sc-raw-th>
+                    </sc-raw-tr>
+                  </sc-raw-thead>
+                  <sc-raw-tbody>
+                    <sc-for list="{{pensCons.queue}}" as="q" hint-placeholder-count="6">
+                      <sc-raw-tr>
+                        <sc-raw-td style="padding: 12px; border-bottom: 1px solid #F0F3F7"><strong style="color: #003057">{{q.nombre}}</strong></sc-raw-td>
+                        <sc-raw-td style="padding: 12px; border-bottom: 1px solid #F0F3F7; font-size: 13px; color: #3D4C5B">{{q.lineaTag}}</sc-raw-td>
+                        <sc-raw-td style="padding: 12px; border-bottom: 1px solid #F0F3F7; font-size: 13px; color: #3D4C5B">{{q.tipo}}</sc-raw-td>
+                        <sc-raw-td style="padding: 12px; border-bottom: 1px solid #F0F3F7"><span style="{{q.estadoStyle}}">{{q.estado}}</span></sc-raw-td>
+                        <sc-raw-td style="padding: 12px; border-bottom: 1px solid #F0F3F7"><span style="{{q.venceStyle}}">{{q.vence}}</span></sc-raw-td>
+                        <sc-raw-td style="padding: 12px; border-bottom: 1px solid #F0F3F7"><button type="button" style="min-height: 44px; padding: 0 14px; border-radius: 10px; border: 1px solid #C9D2DC; background: #FFFFFF; color: #003057; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer; white-space: nowrap">Gestionar</button></sc-raw-td>
+                      </sc-raw-tr>
+                    </sc-for>
+                  </sc-raw-tbody>
+                </sc-raw-table>
+              </div>
+            </section>
+
+            <section style="flex: 1 1 300px; background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 16px">
+              <div style="display: flex; flex-direction: column; gap: 4px">
+                <h2 style="margin: 0; font-size: 18px; color: #003057">Por línea de producto</h2>
+                <span style="font-size: 13px; color: #4F5D6B">Saldo administrado por tipo de vehículo</span>
+              </div>
+              <sc-for list="{{pensCons.lines}}" as="l" hint-placeholder-count="3">
+                <div style="display: flex; flex-direction: column; gap: 6px">
+                  <div style="display: flex; align-items: center; gap: 8px; font-size: 13.5px"><span style="{{l.dot}}"></span><span style="flex: 1">{{l.name}}</span><strong>{{l.saldo}}</strong></div>
+                  <div style="height: 8px; border-radius: 4px; background: #EEF1F5"><div style="{{l.bar}}"></div></div>
+                  <span style="font-size: 12px; color: #5B6876">{{l.count}} vinculados · {{l.pct}} del saldo total</span>
+                </div>
+              </sc-for>
+            </section>
+          </div>
+
+          <section style="background: #FFFFFF; border: 1px solid #E1E7EE; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 16px">
+            <div style="display: flex; flex-direction: column; gap: 4px">
+              <h2 style="margin: 0; font-size: 18px; color: #003057">Permanencia y beneficio tributario (FPV)</h2>
+              <span style="font-size: 13px; color: #4F5D6B">Retirar antes del plazo de permanencia hace perder el beneficio tributario y genera retención</span>
+            </div>
+            <div style="overflow-x: auto">
+              <sc-raw-table style="width: 100%; min-width: 760px; border-collapse: collapse; font-size: 14px">
+                <sc-raw-thead>
+                  <sc-raw-tr style="color: #4F5D6B; font-size: 12.5px; text-align: left">
+                    <sc-raw-th style="padding: 10px 12px; border-bottom: 1px solid #E1E7EE">Afiliado</sc-raw-th>
+                    <sc-raw-th style="padding: 10px 12px; border-bottom: 1px solid #E1E7EE">Línea</sc-raw-th>
+                    <sc-raw-th style="padding: 10px 12px; border-bottom: 1px solid #E1E7EE; text-align: right">Saldo</sc-raw-th>
+                    <sc-raw-th style="padding: 10px 12px; border-bottom: 1px solid #E1E7EE">Vinculado desde</sc-raw-th>
+                    <sc-raw-th style="padding: 10px 12px; border-bottom: 1px solid #E1E7EE">Vence en</sc-raw-th>
+                    <sc-raw-th style="padding: 10px 12px; border-bottom: 1px solid #E1E7EE">Estado</sc-raw-th>
+                  </sc-raw-tr>
+                </sc-raw-thead>
+                <sc-raw-tbody>
+                  <sc-for list="{{pensCons.vencimientos}}" as="v" hint-placeholder-count="5">
+                    <sc-raw-tr>
+                      <sc-raw-td style="padding: 12px; border-bottom: 1px solid #F0F3F7"><strong style="color: #003057">{{v.nombre}}</strong></sc-raw-td>
+                      <sc-raw-td style="padding: 12px; border-bottom: 1px solid #F0F3F7; font-size: 13px; color: #3D4C5B">{{v.lineaTag}}</sc-raw-td>
+                      <sc-raw-td style="padding: 12px; border-bottom: 1px solid #F0F3F7; text-align: right; font-weight: 700">{{v.saldo}}</sc-raw-td>
+                      <sc-raw-td style="padding: 12px; border-bottom: 1px solid #F0F3F7; font-size: 13px; color: #3D4C5B">{{v.desde}}</sc-raw-td>
+                      <sc-raw-td style="padding: 12px; border-bottom: 1px solid #F0F3F7; font-size: 13px; color: #3D4C5B">{{v.diasLabel}}</sc-raw-td>
+                      <sc-raw-td style="padding: 12px; border-bottom: 1px solid #F0F3F7"><span style="{{v.estadoStyle}}">{{v.estadoLabel}}</span></sc-raw-td>
+                    </sc-raw-tr>
+                  </sc-for>
+                </sc-raw-tbody>
+              </sc-raw-table>
+            </div>
+          </section>
         </div>
       </div>
     </div>

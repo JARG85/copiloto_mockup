@@ -171,6 +171,26 @@ window.Portafolio = (function () {
     return setupProcesos().find(function (p) { return p.clienteId === clienteId; }) || null;
   }
 
+  // ── Pensiones ─────────────────────────────────────────────────────
+  // Productos FPV con su permanencia (días al corte) y solicitudes en curso.
+  var PLAN_TAG = { fpvi: 'FPV individual', fpve: 'FPV institucional', pap: 'PAP' };
+  function nivelDias(d, alto, medio) { return d <= alto ? 'alto' : d <= medio ? 'medio' : 'bajo'; }
+  function venceLabel(d) { return d < 0 ? 'Venció hace ' + (-d) + (d === -1 ? ' día' : ' días') : d === 0 ? 'Vence hoy' : 'Vence en ' + d + (d === 1 ? ' día' : ' días'); }
+  function pensionesSolicitudes() {
+    return D.pensionesSolicitudes.map(function (q) {
+      var c = q.clienteId ? cliente(q.clienteId) : null, d = dias(D.corte, q.vence);
+      return Object.assign({}, q, { nombre: c ? c.nombre : q.nombre, plan: PLAN_TAG[q.linea], dias: d, venceLabel: venceLabel(d), nivel: d < 0 ? 'alto' : nivelDias(d, 1, 3) });
+    });
+  }
+  function pensionesDe(c) {
+    var productos = c.productos.filter(function (p) { return p.tipo === 'fpv'; }).map(function (p) {
+      var d = dias(D.corte, p.datos.permanenciaHasta);
+      return Object.assign({}, p, { diasPermanencia: d, nivelPermanencia: nivelDias(d, 30, 90) });
+    });
+    var solicitudes = pensionesSolicitudes().filter(function (q) { return q.clienteId === c.id; });
+    return { productos: productos, solicitudes: solicitudes };
+  }
+
   function param(name) {
     try { return new URLSearchParams(location.search).get(name); } catch (e) { return null; }
   }
@@ -180,6 +200,6 @@ window.Portafolio = (function () {
     dias: dias, fecha: fecha, fechaCorta: fechaCorta, num: num, money: money, signedMoney: signedMoney,
     pct: pct, signedPct: signedPct, price: price, fmt: fmt, nivel: nivel, rent: rent, sum: sum,
     producto: producto, lineas: lineas, alineacion: alineacion,
-    cliente: cliente, clientes: clientes, grupo: grupo, cartera: cartera, setupProcesos: setupProcesos, setupDe: setupDe, param: param
+    cliente: cliente, clientes: clientes, grupo: grupo, cartera: cartera, setupProcesos: setupProcesos, setupDe: setupDe, pensionesSolicitudes: pensionesSolicitudes, pensionesDe: pensionesDe, param: param
   };
 })();

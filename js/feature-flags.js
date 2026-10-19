@@ -13,7 +13,9 @@
        badge "En definición".
    Sin nada guardado en el navegador se aplica "presentacion". */
 window.AlianzaFlags = (function () {
-  var STORAGE_KEY = 'alianza360:flags:v2';
+  // v3: las pestañas adicionales de la Vista 360 arrancan ocultas aunque el
+  // navegador tuviera guardado un ajuste anterior.
+  var STORAGE_KEY = 'alianza360:flags:v3';
   var CHANGE_EVENT = 'alianza:flags-changed';
 
   // Catálogo único de flags: id -> { group, label, presentacion }.
@@ -21,11 +23,16 @@ window.AlianzaFlags = (function () {
   // defecto). En "Todos los módulos" todas quedan en true.
   // Agregar una fila aquí la hace aparecer automáticamente en el panel.
   var REGISTRY = {
-    modAlertas: { group: 'Módulos del menú', label: 'Señales de churn (pestaña en Vista 360)', presentacion: false },
-    modNBA: { group: 'Módulos del menú', label: 'Next best action (pestaña en Vista 360)', presentacion: false },
     modCampanas: { group: 'Módulos del menú', label: 'Campañas comerciales', presentacion: false },
-    modSetup: { group: 'Módulos del menú', label: 'Setup (pestaña en Vista 360)', presentacion: false },
     modPensiones: { group: 'Módulos del menú', label: 'Pensiones (consolidado back-office)', presentacion: false },
+
+    // Pestañas adicionales de la Vista 360: ocultas por defecto, se habilitan
+    // solo desde este panel (Ctrl+Shift+Alt+F). modAlertas / modNBA / modSetup
+    // también habilitan las páginas completas que se abren desde cada pestaña.
+    v360Pensiones: { group: 'Vista 360 · pestañas adicionales', label: 'Pensiones', presentacion: false },
+    modAlertas: { group: 'Vista 360 · pestañas adicionales', label: 'Señales de churn', presentacion: false },
+    modNBA: { group: 'Vista 360 · pestañas adicionales', label: 'Next best action', presentacion: false },
+    modSetup: { group: 'Vista 360 · pestañas adicionales', label: 'Setup (documentos y firmas pendientes)', presentacion: false },
 
     showAsistente: { group: 'Global', label: 'Botón flotante "Asistente Alianza"', presentacion: true },
 
@@ -34,7 +41,7 @@ window.AlianzaFlags = (function () {
     v360Contacto: { group: 'Vista 360', label: 'Datos de contactabilidad', presentacion: true },
     v360Financiera: { group: 'Vista 360', label: 'Información financiera (patrimonio e ingresos)', presentacion: true },
     v360Interacciones: { group: 'Vista 360', label: 'Historial de interacciones', presentacion: true },
-    v360Evolucion: { group: 'Vista 360', label: 'Pestaña "Evolución histórica"', presentacion: true },
+    v360Evolucion: { group: 'Vista 360', label: 'Pestaña "Evolución"', presentacion: true },
 
     carteraRiesgo: { group: 'Mi cartera', label: 'Columna de riesgo de fuga', presentacion: true },
 

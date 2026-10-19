@@ -22,7 +22,7 @@ class Component extends DCLogic {
     window.AlianzaNav.rememberClient(this.clienteId);
     this.state = {
       scope: P.param('vista') === 'grupo' ? 'grp' : 'ind',
-      tab: 'port', openLine: null, member: 'all', dec: {},
+      tab: 'port', openLine: null, member: 'all', dec: {}, pensF: 'todas',
       modal: null, row: 0, period: 'all', hidden: {}
     };
   }
@@ -208,17 +208,19 @@ class Component extends DCLogic {
     // de "En definición".
     const N = window.AlianzaNav;
     const tabDefs = [{ id: 'port', label: 'Portafolio por línea', on: true },
-      { id: 'evo', label: 'Evolución histórica', on: fEvo },
+      { id: 'evo', label: 'Evolución', on: fEvo },
+      { id: 'pens', label: 'Pensiones', on: F('v360Pensiones') },
       { id: 'churn', label: 'Señales de churn', on: N.visible('alertas'), endef: true },
       { id: 'nba', label: 'Next best action', on: N.visible('nba'), endef: true },
       { id: 'setup', label: 'Setup', on: N.visible('setup'), endef: true }].filter(t => t.on);
     const tab = tabDefs.some(t => t.id === st.tab) ? st.tab : 'port';
-    const tabs = tabDefs.map(t => { const on = t.id === tab; return { label: t.label, id: 'tab-' + t.id, endef: !!t.endef, selected: on ? 'true' : 'false', style: UI.seg(on) + ' display: inline-flex; align-items: center; gap: 6px;', pick: () => this.setState({ tab: t.id }) }; });
+    const tabs = tabDefs.map(t => { const on = t.id === tab; return { label: t.label, id: 'tab-' + t.id, endef: !!t.endef, selected: on ? 'true' : 'false', style: UI.seg(on) + ' display: inline-flex; align-items: center; gap: 6px; padding: 0 11px; font-size: 12.5px;', pick: () => this.setState({ tab: t.id }) }; });
     const tabEvo = tab === 'evo';
     const targets = memberSel ? [memberSel] : isGrp ? g.miembros : [c];
     const churn = tab === 'churn' ? this.churnTab(targets) : null;
     const nba = tab === 'nba' ? this.nbaTab(targets, isGrp) : null;
     const setup = tab === 'setup' ? this.setupTab(targets) : null;
+    const pens = tab === 'pens' ? this.pensionesTab(targets, isGrp) : null;
 
     // ── Evolución histórica ──────────────────────────────────────────
     const evo = tabEvo ? this.evolucion(lineasData, memberSel ? memberSel.vinculacion : isGrp ? g.miembros.reduce((a, m) => m.vinculacion < a ? m.vinculacion : a, '9999') : c.vinculacion) : null;
@@ -226,6 +228,7 @@ class Component extends DCLogic {
     // ── Modales ──────────────────────────────────────────────────────
     const close = () => window.AlianzaModal.close();
     const modalInter = st.modal && st.modal.type === 'inter';
+    const pensCons = st.modal && st.modal.type === 'pensCons' ? window.AlianzaPensiones.vals(st.pensF, f => this.setState({ pensF: f })) : null;
     const prodModal = st.modal && st.modal.type === 'prod' ? this.detalle(base.productos.find(p => p.id === st.modal.id), isGrp) : null;
 
     return {
@@ -235,10 +238,10 @@ class Component extends DCLogic {
       kpiGrid: 'display: grid; grid-template-columns: repeat(' + (fFin ? 4 : 2) + ', minmax(0, 1fr)); gap: 12px',
       contacto, integrantes, inter, showLeft,
       bodyGrid: 'display: grid; grid-template-columns: ' + (showLeft ? '320px minmax(0, 1fr)' : 'minmax(0, 1fr)') + '; gap: 14px',
-      tabs, tabPort: tab === 'port', tabEvo, evo, tabChurn: !!churn, churn, tabNba: !!nba, nba, tabSetup: !!setup, setup,
+      tabs, tabPort: tab === 'port', tabEvo, evo, tabChurn: !!churn, churn, tabNba: !!nba, nba, tabSetup: !!setup, setup, tabPens: !!pens, pens,
       portHint: tab === 'port',
       donut, lineas, port,
-      modalInter, prodModal, close
+      modalInter, prodModal, pensCons, close
     };
   }
 
@@ -322,6 +325,41 @@ class Component extends DCLogic {
       };
     });
     return { items };
+  }
+
+  // ── Pestaña "Pensiones" ──────────────────────────────────────────────
+  // Detalle de pensiones voluntarias (antes en la página de Pensiones):
+  // planes FPV del cliente, permanencia y beneficio tributario, y
+  // solicitudes en curso en back-office.
+  pensionesTab(targets, isGrp) {
+    const NIVEL = { alto: ['#FDE8E6', '#9A1F24'], medio: ['#FFF4DE', '#8A5300'], bajo: ['#E1F5EF', '#00664F'] };
+    const PERM = { alto: 'Vence pronto', medio: 'Por vencer', bajo: 'Sin urgencia' };
+    const ESTADO = { 'Pendiente documentos': ['#FFF4DE', '#8A5300'], 'En validación': ['#E3F1FB', '#0B4A75'], 'Lista para aplicar': ['#E1F5EF', '#00664F'], 'Vencida': ['#FDE8E6', '#9A1F24'] };
+    const planes = [], solicitudes = [];
+    targets.forEach(c => {
+      const pd = P.pensionesDe(c);
+      pd.productos.forEach(p => planes.push({
+        nombre: p.nombre, quien: isGrp ? c.nombre : '', plan: p.datos.plan,
+        saldo: P.money(p.saldo), rent: P.signedPct(p.rentPct), rentChip: UI.rentChip(p.rentPct),
+        apertura: P.fecha(p.apertura), aportes: P.money(p.datos.aportesAnio),
+        permanencia: P.fecha(p.datos.permanenciaHasta),
+        dias: p.diasPermanencia >= 0 ? 'faltan ' + p.diasPermanencia + ' días' : 'cumplida',
+        permLabel: PERM[p.nivelPermanencia], permStyle: UI.chip(NIVEL[p.nivelPermanencia][0], NIVEL[p.nivelPermanencia][1]),
+        aviso: p.nivelPermanencia === 'alto', beneficio: p.datos.beneficio,
+        abrir: () => this.openModal({ type: 'prod', id: p.id }), aria: 'Ver detalle de ' + p.nombre
+      }));
+      pd.solicitudes.forEach(q => solicitudes.push({
+        tipo: q.tipo, plan: q.plan, quien: isGrp ? c.nombre : '', detalle: q.detalle || '',
+        estado: q.estado, estadoStyle: UI.chip(ESTADO[q.estado][0], ESTADO[q.estado][1]),
+        vence: q.venceLabel, venceStyle: UI.chip(NIVEL[q.nivel][0], NIVEL[q.nivel][1])
+      }));
+    });
+    return {
+      planes, solicitudes, hayPlanes: planes.length > 0, sinPlanes: planes.length === 0,
+      haySol: solicitudes.length > 0, sinSol: solicitudes.length === 0,
+      total: P.money(targets.reduce((a, c) => a + P.pensionesDe(c).productos.reduce((b, p) => b + p.saldo, 0), 0)),
+      verConsolidado: () => this.openModal({ type: 'pensCons' })
+    };
   }
 
   // Gráfico de líneas por línea de producto (reutiliza el de la versión anterior).

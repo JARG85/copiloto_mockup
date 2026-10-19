@@ -67,10 +67,17 @@ página lo pinta con `<sc-for list="{{nav.items}}">` y obtiene los ítems con
      **modal de detalle**; pestaña **Evolución histórica**;
    - selector **Cliente individual / Grupo familiar**: consolidado del
      grupo con filtro por integrante.
-   - pestañas **Señales de churn**, **Next best action** y **Setup** (qué
-     documentos o firmas le faltan al cliente). Cada una aparece solo si su
-     módulo está visible (flags `modAlertas`, `modNBA`, `modSetup`), así que
-     en *Modo presentación* no se muestran.
+   - **pestañas adicionales** (ocultas por defecto; se habilitan una a una
+     desde el panel `Ctrl+Shift+Alt+F`, grupo "Vista 360 · pestañas
+     adicionales", o todas con "Todos los módulos"):
+     - **Pensiones** (`v360Pensiones`): planes FPV del cliente con saldo,
+       rentabilidad, aportes del año, permanencia y beneficio tributario, y
+       sus solicitudes en curso. El botón **"Ver consolidado de pensiones"**
+       abre en un modal la misma información de `Pensiones.dc.html` (KPIs,
+       bandeja de solicitudes, saldo por línea y permanencias), calculada en
+       `js/pensiones.js`;
+     - **Señales de churn** (`modAlertas`), **Next best action** (`modNBA`)
+       y **Setup** (`modSetup`: qué documentos o firmas le faltan al cliente).
 3. **Campañas comerciales** — campañas activas; al abrir una, la regla en
    lenguaje natural y los clientes de la cartera que encajan.
 
@@ -122,7 +129,7 @@ detalle en definición"*.
 
 El sitio no tiene build, así que no hay `.env`: el equivalente es
 `js/feature-flags.js`, un registro de flags booleanos guardados en
-`localStorage` (`alianza360:flags:v2`) que cada pantalla lee en `renderVals()`.
+`localStorage` (`alianza360:flags:v3`) que cada pantalla lee en `renderVals()`.
 
 1. En cualquier pantalla, presiona **Ctrl + Shift + Alt + F**. Se abre un
    panel en la esquina inferior izquierda, visible solo para quien conoce el
